@@ -1,0 +1,75 @@
+===
+text block
+===
+|||
+  x
+|||
+---
+(document
+  (string
+    (text_block
+      (text_block_start)
+      (text_block_content)
+      (text_block_end))))
+
+===
+leading blank lines
+===
+|||
+
+  x
+|||
+---
+(document
+  (string
+    (text_block
+      (text_block_start)
+      (text_block_content)
+      (text_block_end))))
+
+===
+in-block blank lines
+===
+|||
+  x
+
+  y
+|||
+---
+(document
+  (string
+    (text_block
+      (text_block_start)
+      (text_block_content)
+      (text_block_end))))
+
+===
+in-block whitespace-only blank line
+===
+|||
+    x
+  
+    y
+|||
+---
+(document
+  (string
+    (text_block
+      (text_block_start)
+      (text_block_content)
+      (text_block_end))))
+
+===
+lines with longer indentation
+===
+|||
+  x
+    y
+|||
+---
+(document
+  (string
+    (text_block
+      (text_block_start)
+      (text_block_content)
+      (text_block_end))))

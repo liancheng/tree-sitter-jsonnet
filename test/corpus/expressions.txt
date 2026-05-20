@@ -1,0 +1,124 @@
+===
+array (empty)
+===
+
+[]
+---
+(document (array))
+
+===
+array (without trailing comma)
+===
+
+[true, false]
+---
+(document
+  (array (boolean) (boolean)))
+
+===
+array (with trailing comma)
+===
+
+[true, false,]
+---
+(document
+  (array (boolean) (boolean)))
+
+===
+asserted expression
+===
+
+assert true; false
+---
+(document
+  (asserted_expression
+    (assert
+      condition: (boolean))
+    (boolean)))
+
+===
+boolean (true)
+===
+
+true
+---
+(document (boolean))
+
+===
+boolean (false)
+===
+
+false
+---
+(document (boolean))
+
+===
+conditional
+===
+
+if x then y else z
+---
+(document
+  (conditional
+    condition: (var_ref_id)
+    consequence: (var_ref_id)
+    alternative: (var_ref_id)))
+
+===
+local (var binding)
+===
+
+local x = 1; x
+---
+(document
+  (local
+    bindings:
+      (binding
+        variable: (var_id)
+        value: (number))
+    body: (var_ref_id)))
+
+===
+local (function binding)
+===
+
+local f(p) = p;
+f
+---
+(document
+  (local
+    bindings: (binding
+      function: (var_id)
+      params: (params
+        (param
+          (var_id)))
+      body: (var_ref_id))
+    body: (var_ref_id)))
+
+===
+null
+===
+
+null
+---
+(document (null))
+
+===
+number
+===
+
+[
+  0, 1, -1,
+  0b00, 0b11,
+  0o00, 0o77,
+  0x00, 0xff,
+  1e-10, 1.5e+2
+]
+---
+(document
+  (array
+    (number) (number) (number)
+    (number) (number)
+    (number) (number)
+    (number) (number)
+    (number) (number)))

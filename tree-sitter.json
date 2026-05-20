@@ -1,0 +1,42 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
+  "grammars": [
+    {
+      "name": "jsonnet",
+      "camelcase": "Jsonnet",
+      "title": "Jsonnet",
+      "scope": "source.jsonnet",
+      "file-types": [
+        "jsonnet"
+      ],
+      "injection-regex": "^jsonnet$",
+      "class-name": "TreeSitterJsonnet"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Jsonnet grammar for tree-sitter",
+    "authors": [
+      {
+        "name": "Cheng Lian",
+        "email": "lian.cs.zju@gmail.com",
+        "url": ""
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/tree-sitter/tree-sitter-jsonnet",
+      "funding": ""
+    }
+  },
+  "bindings": {
+    "c": false,
+    "go": false,
+    "java": false,
+    "node": false,
+    "python": false,
+    "rust": true,
+    "swift": false,
+    "zig": false
+  }
+}
