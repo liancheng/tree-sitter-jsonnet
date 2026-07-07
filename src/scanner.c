@@ -3,6 +3,7 @@
 #include "tree_sitter/parser.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include <string.h>
 
 typedef enum TokenType
 {
@@ -23,7 +24,7 @@ void tree_sitter_jsonnet_external_scanner_destroy(void *payload)
 {
     CharArray *indent_chars = (CharArray *)payload;
     array_delete(indent_chars);
-    ts_free(indent_chars);
+    ts_free(payload);
 }
 
 unsigned tree_sitter_jsonnet_external_scanner_serialize(void *payload, char *buffer)
@@ -54,9 +55,9 @@ inline static void skip(TSLexer *lexer)
 }
 
 /** Checks whether the next character matches the given character without advancing the cursor. */
-inline static bool lookahead(TSLexer *lexer, const char ch)
+inline static bool lookahead(TSLexer *lexer, uint32_t codepoint)
 {
-    return (char)lexer->lookahead == ch;
+    return lexer->lookahead == codepoint;
 }
 
 /**
@@ -173,6 +174,11 @@ inline static bool scan_text_block_end(void *payload, TSLexer *lexer)
     lexer->mark_end(lexer);
     lexer->result_symbol = TEXT_BLOCK_END;
     return true;
+}
+
+static bool scan_text_block_line(void *payload, TSLexer *lexer)
+{
+    return false;
 }
 
 static bool scan_text_block_content(void *payload, TSLexer *lexer)
