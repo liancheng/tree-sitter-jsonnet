@@ -29,11 +29,30 @@ void tree_sitter_jsonnet_external_scanner_destroy(void *payload)
 
 unsigned tree_sitter_jsonnet_external_scanner_serialize(void *payload, char *buffer)
 {
-    return 0;
+    CharArray *indent = (CharArray *)payload;
+
+    uint32_t size = indent->size;
+    memcpy(buffer, &size, sizeof(size));
+
+    for (uint32_t i = 0; i < indent->size; ++i)
+        buffer[sizeof(size) + i] = *array_get(indent, i);
+
+    return sizeof(size) + indent->size;
 }
 
 void tree_sitter_jsonnet_external_scanner_deserialize(void *payload, const char *buffer, unsigned length)
 {
+    CharArray *indent = (CharArray *)payload;
+    array_clear(indent);
+
+    if (length == 0)
+        return;
+
+    uint32_t size;
+    memcpy(&size, buffer, sizeof(size));
+
+    for (uint32_t i = 0; i < size; ++i)
+        array_push(indent, buffer[sizeof(size) + i]);
 }
 
 /** Checks whether the lexer has reached the EOF.*/
@@ -188,8 +207,8 @@ static bool scan_text_block_content(void *payload, TSLexer *lexer)
         // Reached
         return false;
 
-    CharArray *indent_chars = (CharArray *)payload;
-    array_clear(indent_chars);
+    CharArray *indent = (CharArray *)payload;
+    array_clear(indent);
 
     // Scans the first line of the text block.
     {
@@ -197,11 +216,15 @@ static bool scan_text_block_content(void *payload, TSLexer *lexer)
         {
             while (!eof(lexer) && (lookahead(lexer, ' ') || lookahead(lexer, '\t')))
             {
-                array_push(indent_chars, (char)lexer->lookahead);
+                if (indent->size > TREE_SITTER_SERIALIZATION_BUFFER_SIZE - sizeof(indent->size))
+                    // The indentation is too long to fit in the scanner state buffer.
+                    return false;
+
+                array_push(indent, (char)lexer->lookahead);
                 advance(lexer);
             }
 
-            if (indent_chars->size == 0)
+            if (indent->size == 0)
                 // Empty indentation
                 return false;
         }
@@ -219,7 +242,7 @@ static bool scan_text_block_content(void *payload, TSLexer *lexer)
     while (true)
     {
         // Checks the leading indentation.
-        if (match_indent(lexer, indent_chars))
+        if (match_indent(lexer, indent))
         {
             // Scans the rest of the line.
             if (!advance_after(lexer, '\n'))
