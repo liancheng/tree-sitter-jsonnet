@@ -28,7 +28,7 @@ export default grammar({
 
   externals: $ => [
     $.text_block_start,
-    $.text_block_content,
+    $.text_block_line,
     $.text_block_end,
   ],
 
@@ -205,8 +205,8 @@ export default grammar({
 
     text_block: $ => seq(
       $.text_block_start,
-      $.text_block_content,
-      $.text_block_end
+      repeat1($.text_block_line),
+      $.text_block_end,
     ),
 
     dollar: _ => "$",

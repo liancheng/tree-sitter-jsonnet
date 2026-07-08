@@ -5,11 +5,12 @@ text block
   x
 |||
 ---
+
 (document
   (string
     (text_block
       (text_block_start)
-      (text_block_content)
+      (text_block_line)
       (text_block_end))))
 
 ===
@@ -20,11 +21,13 @@ leading blank lines
   x
 |||
 ---
+
 (document
   (string
     (text_block
       (text_block_start)
-      (text_block_content)
+      (text_block_line)
+      (text_block_line)
       (text_block_end))))
 
 ===
@@ -36,11 +39,14 @@ in-block blank lines
   y
 |||
 ---
+
 (document
   (string
     (text_block
       (text_block_start)
-      (text_block_content)
+      (text_block_line)
+      (text_block_line)
+      (text_block_line)
       (text_block_end))))
 
 ===
@@ -52,11 +58,14 @@ in-block whitespace-only blank line
     y
 |||
 ---
+
 (document
   (string
     (text_block
       (text_block_start)
-      (text_block_content)
+      (text_block_line)
+      (text_block_line)
+      (text_block_line)
       (text_block_end))))
 
 ===
@@ -67,9 +76,11 @@ lines with longer indentation
     y
 |||
 ---
+
 (document
   (string
     (text_block
       (text_block_start)
-      (text_block_content)
+      (text_block_line)
+      (text_block_line)
       (text_block_end))))

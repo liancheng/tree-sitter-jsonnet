@@ -427,11 +427,11 @@
       "required": true,
       "types": [
         {
-          "type": "text_block_content",
+          "type": "text_block_end",
           "named": true
         },
         {
-          "type": "text_block_end",
+          "type": "text_block_line",
           "named": true
         },
         {
@@ -537,11 +537,11 @@
     "named": false
   },
   {
-    "type": "text_block_content",
+    "type": "text_block_end",
     "named": true
   },
   {
-    "type": "text_block_end",
+    "type": "text_block_line",
     "named": true
   },
   {
