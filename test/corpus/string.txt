@@ -1,5 +1,5 @@
 ===
-text block
+text block (single line)
 ===
 |||
   x
@@ -14,7 +14,71 @@ text block
       (text_block_end))))
 
 ===
-leading blank lines
+text block (multiple lines)
+===
+|||
+  a
+  b
+  c
+|||
+---
+
+(document
+  (string
+    (text_block
+      (text_block_start)
+      (text_block_line)
+      (text_block_line)
+      (text_block_line)
+      (text_block_end))))
+
+===
+text block with trailing dash on the start fence
+===
+|||-
+  x
+|||
+---
+
+(document
+  (string
+    (text_block
+      (text_block_start)
+      (text_block_line)
+      (text_block_end))))
+
+===
+text block with trailing whitespace on the start fence
+===
+|||   
+  x
+|||
+---
+
+(document
+  (string
+    (text_block
+      (text_block_start)
+      (text_block_line)
+      (text_block_end))))
+
+===
+text block with tab indentation
+===
+|||
+	x
+|||
+---
+
+(document
+  (string
+    (text_block
+      (text_block_start)
+      (text_block_line)
+      (text_block_end))))
+
+===
+leading empty line before the initial indentation
 ===
 |||
 
@@ -31,7 +95,24 @@ leading blank lines
       (text_block_end))))
 
 ===
-in-block blank lines
+leading whitespace-only line defines the indentation
+===
+|||
+ 
+  hi
+|||
+---
+
+(document
+  (string
+    (text_block
+      (text_block_start)
+      (text_block_line)
+      (text_block_line)
+      (text_block_end))))
+
+===
+in-block empty blank line
 ===
 |||
   x
@@ -82,5 +163,20 @@ lines with longer indentation
     (text_block
       (text_block_start)
       (text_block_line)
+      (text_block_line)
+      (text_block_end))))
+
+===
+content containing the fence delimiter
+===
+|||
+  a|||b
+|||
+---
+
+(document
+  (string
+    (text_block
+      (text_block_start)
       (text_block_line)
       (text_block_end))))
