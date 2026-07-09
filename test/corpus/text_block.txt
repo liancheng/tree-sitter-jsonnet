@@ -112,6 +112,16 @@ leading whitespace-only line defines the indentation
       (text_block_end))))
 
 ===
+leading whitespace-only line wider than the content indentation
+:error
+===
+|||
+    
+  hi
+|||
+---
+
+===
 in-block empty blank line
 ===
 |||

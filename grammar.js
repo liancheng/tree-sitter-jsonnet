@@ -201,7 +201,17 @@ export default grammar({
       )
     },
 
-    string: $ => $.text_block,
+    string: $ => choice(
+      $.quoted_string,
+      $.text_block,
+    ),
+
+    quoted_string: _ => choice(
+      quotedString('"', true),
+      quotedString("'", true),
+      quotedString('"', false),
+      quotedString("'", false),
+    ),
 
     text_block: $ => seq(
       $.text_block_start,
@@ -240,4 +250,23 @@ function commaSep(rule) {
 /** @param {Rule} rule */
 function commaSepStrict(rule) {
   return seq(rule, repeat(seq(",", rule)));
+}
+
+/**
+ * @param {'"' | "'"} quote
+ * @param {boolean} verbatim
+ */
+function quotedString(quote, verbatim) {
+  const verbatimEsc = `${quote}${quote}`;
+  const simpleEsc = /\\["'\\/bfnrt]/;
+  const codepointEsc = /\\u[0-9a-fA-F]{4}/;
+  const escapeSequence = verbatim ? verbatimEsc : token(choice(simpleEsc, codepointEsc));
+
+  return token(
+    seq(
+      verbatim ? `@${quote}` : quote,
+      repeat(choice(escapeSequence, verbatim ? /[\s\S]/ : /[^\\]/)),
+      quote,
+    )
+  )
 }

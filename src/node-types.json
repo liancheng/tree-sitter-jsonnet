@@ -404,6 +404,11 @@
     }
   },
   {
+    "type": "quoted_string",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "string",
     "named": true,
     "fields": {},
@@ -411,6 +416,10 @@
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "quoted_string",
+          "named": true
+        },
         {
           "type": "text_block",
           "named": true

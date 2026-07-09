@@ -1,0 +1,176 @@
+===
+double-quoted string
+===
+"hello"
+---
+
+(document
+  (string
+    (quoted_string)))
+
+===
+single-quoted string
+===
+'hello'
+---
+
+(document
+  (string
+    (quoted_string)))
+
+===
+empty string
+===
+""
+---
+
+(document
+  (string
+    (quoted_string)))
+
+===
+string with escape sequences
+===
+"line\ntab\tcr\r"
+---
+
+(document
+  (string
+    (quoted_string)))
+
+===
+string with escaped quote
+===
+"a\"b"
+---
+
+(document
+  (string
+    (quoted_string)))
+
+===
+string with unicode escape
+===
+"\u00e9"
+---
+
+(document
+  (string
+    (quoted_string)))
+
+===
+verbatim double-quoted string
+===
+@"c:\path"
+---
+
+(document
+  (string
+    (quoted_string)))
+
+===
+verbatim single-quoted string
+===
+@'raw'
+---
+
+(document
+  (string
+    (quoted_string)))
+
+===
+verbatim string with doubled quote
+===
+@"say ""hi"""
+---
+
+(document
+  (string
+    (quoted_string)))
+
+===
+verbatim string with consecutive escaped quotes
+===
+@""""""
+---
+
+(document
+  (string
+    (quoted_string)))
+
+===
+multi-line double-quoted string
+===
+"line one
+line two"
+---
+
+(document
+  (string
+    (quoted_string)))
+
+===
+multi-line single-quoted string
+===
+'line one
+line two'
+---
+
+(document
+  (string
+    (quoted_string)))
+
+===
+multi-line verbatim double-quoted string
+===
+@"line one
+line two"
+---
+
+(document
+  (string
+    (quoted_string)))
+
+===
+multi-line verbatim single-quoted string
+===
+@'line one
+line two'
+---
+
+(document
+  (string
+    (quoted_string)))
+
+
+===
+invalid escape sequence
+:error
+===
+"a\vb"
+---
+
+===
+invalid unicode escape
+:error
+===
+"\uzzzz"
+---
+
+===
+trailing backslash
+:error
+===
+"abc\"
+---
+
+
+===
+all valid simple escape sequences
+===
+"\"\\\/\b\f\n\r\t"
+---
+
+(document
+  (string
+    (quoted_string)))
