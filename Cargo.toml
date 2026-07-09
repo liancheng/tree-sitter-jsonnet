@@ -31,4 +31,5 @@ tree-sitter-language = "0.1"
 cc = "1.2"
 
 [dev-dependencies]
+indoc = "2.0.7"
 tree-sitter = "0.26.8"
