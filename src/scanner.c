@@ -22,8 +22,8 @@ void *tree_sitter_jsonnet_external_scanner_create()
 
 void tree_sitter_jsonnet_external_scanner_destroy(void *payload)
 {
-    CharArray *indent_chars = (CharArray *)payload;
-    array_delete(indent_chars);
+    CharArray *indent = (CharArray *)payload;
+    array_delete(indent);
     ts_free(payload);
 }
 
@@ -67,14 +67,8 @@ inline static void advance(TSLexer *lexer)
     lexer->advance(lexer, false);
 }
 
-/** Skips the next character. */
-inline static void skip(TSLexer *lexer)
-{
-    lexer->advance(lexer, true);
-}
-
 /** Checks whether the next character matches the given character without advancing the cursor. */
-inline static bool lookahead(TSLexer *lexer, uint32_t codepoint)
+inline static bool lookahead(TSLexer *lexer, int32_t codepoint)
 {
     return lexer->lookahead == codepoint;
 }
@@ -171,6 +165,8 @@ inline static bool match_indent(TSLexer *lexer, CharArray *indent_chars)
 
 inline static bool scan_text_block_start(void *payload, TSLexer *lexer)
 {
+    (void)payload;
+
     if (!match_string(lexer, "|||"))
         return false;
     // Scans the optional trailing dash, indicating that the last newline of the text block must be removed.
@@ -187,6 +183,8 @@ inline static bool scan_text_block_start(void *payload, TSLexer *lexer)
 
 inline static bool scan_text_block_end(void *payload, TSLexer *lexer)
 {
+    (void)payload;
+
     if (!match_string(lexer, "|||"))
         return false;
 
