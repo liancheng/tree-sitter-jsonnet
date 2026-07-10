@@ -436,11 +436,19 @@
       "required": true,
       "types": [
         {
+          "type": "text_block_blank_line",
+          "named": true
+        },
+        {
           "type": "text_block_end",
           "named": true
         },
         {
-          "type": "text_block_line",
+          "type": "text_block_indent",
+          "named": true
+        },
+        {
+          "type": "text_block_line_content",
           "named": true
         },
         {
@@ -546,11 +554,19 @@
     "named": false
   },
   {
+    "type": "text_block_blank_line",
+    "named": true
+  },
+  {
     "type": "text_block_end",
     "named": true
   },
   {
-    "type": "text_block_line",
+    "type": "text_block_indent",
+    "named": true
+  },
+  {
+    "type": "text_block_line_content",
     "named": true
   },
   {

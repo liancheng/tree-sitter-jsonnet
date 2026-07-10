@@ -115,19 +115,33 @@ mod tests {
         assert_node_eq(text_block, "text_block", (0, 0), (3, 3));
 
         assert_eq!(text_block.child(0).unwrap().kind(), "text_block_start");
-        assert_eq!(text_block.child(3).unwrap().kind(), "text_block_end");
+        assert_eq!(text_block.child(5).unwrap().kind(), "text_block_end");
 
         assert_node_eq(
             text_block.child(1).unwrap(),
-            "text_block_line",
+            "text_block_indent",
             (1, 0),
-            (2, 0),
+            (1, 2),
         );
 
         assert_node_eq(
             text_block.child(2).unwrap(),
-            "text_block_line",
+            "text_block_line_content",
+            (1, 2),
             (2, 0),
+        );
+
+        assert_node_eq(
+            text_block.child(3).unwrap(),
+            "text_block_indent",
+            (2, 0),
+            (2, 2),
+        );
+
+        assert_node_eq(
+            text_block.child(4).unwrap(),
+            "text_block_line_content",
+            (2, 2),
             (3, 0),
         );
     }

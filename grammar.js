@@ -28,7 +28,9 @@ export default grammar({
 
   externals: $ => [
     $.text_block_start,
-    $.text_block_line,
+    $.text_block_blank_line,
+    $.text_block_indent,
+    $.text_block_line_content,
     $.text_block_end,
   ],
 
@@ -215,7 +217,14 @@ export default grammar({
 
     text_block: $ => seq(
       $.text_block_start,
-      repeat1($.text_block_line),
+      repeat($.text_block_blank_line),
+      seq($.text_block_indent, $.text_block_line_content),
+      repeat(
+        choice(
+          $.text_block_blank_line,
+          seq($.text_block_indent, $.text_block_line_content),
+        )
+      ),
       $.text_block_end,
     ),
 

@@ -1478,10 +1478,48 @@
           "name": "text_block_start"
         },
         {
-          "type": "REPEAT1",
+          "type": "REPEAT",
           "content": {
             "type": "SYMBOL",
-            "name": "text_block_line"
+            "name": "text_block_blank_line"
+          }
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "text_block_indent"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "text_block_line_content"
+            }
+          ]
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "text_block_blank_line"
+              },
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "text_block_indent"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "text_block_line_content"
+                  }
+                ]
+              }
+            ]
           }
         },
         {
@@ -1570,7 +1608,15 @@
     },
     {
       "type": "SYMBOL",
-      "name": "text_block_line"
+      "name": "text_block_blank_line"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "text_block_indent"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "text_block_line_content"
     },
     {
       "type": "SYMBOL",

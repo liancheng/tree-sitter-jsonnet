@@ -10,7 +10,8 @@ text block (single line)
   (string
     (text_block
       (text_block_start)
-      (text_block_line)
+      (text_block_indent)
+      (text_block_line_content)
       (text_block_end))))
 
 ===
@@ -19,7 +20,6 @@ text block (multiple lines)
 |||
   a
   b
-  c
 |||
 ---
 
@@ -27,9 +27,10 @@ text block (multiple lines)
   (string
     (text_block
       (text_block_start)
-      (text_block_line)
-      (text_block_line)
-      (text_block_line)
+      (text_block_indent)
+      (text_block_line_content)
+      (text_block_indent)
+      (text_block_line_content)
       (text_block_end))))
 
 ===
@@ -44,7 +45,8 @@ text block with trailing dash on the start fence
   (string
     (text_block
       (text_block_start)
-      (text_block_line)
+      (text_block_indent)
+      (text_block_line_content)
       (text_block_end))))
 
 ===
@@ -59,7 +61,8 @@ text block with trailing whitespace on the start fence
   (string
     (text_block
       (text_block_start)
-      (text_block_line)
+      (text_block_indent)
+      (text_block_line_content)
       (text_block_end))))
 
 ===
@@ -74,7 +77,8 @@ text block with tab indentation
   (string
     (text_block
       (text_block_start)
-      (text_block_line)
+      (text_block_indent)
+      (text_block_line_content)
       (text_block_end))))
 
 ===
@@ -90,8 +94,9 @@ leading empty line before the initial indentation
   (string
     (text_block
       (text_block_start)
-      (text_block_line)
-      (text_block_line)
+      (text_block_blank_line)
+      (text_block_indent)
+      (text_block_line_content)
       (text_block_end))))
 
 ===
@@ -107,8 +112,10 @@ leading whitespace-only line defines the indentation
   (string
     (text_block
       (text_block_start)
-      (text_block_line)
-      (text_block_line)
+      (text_block_indent)
+      (text_block_line_content)
+      (text_block_indent)
+      (text_block_line_content)
       (text_block_end))))
 
 ===
@@ -120,6 +127,8 @@ leading whitespace-only line wider than the content indentation
   hi
 |||
 ---
+
+
 
 ===
 in-block empty blank line
@@ -135,13 +144,16 @@ in-block empty blank line
   (string
     (text_block
       (text_block_start)
-      (text_block_line)
-      (text_block_line)
-      (text_block_line)
+      (text_block_indent)
+      (text_block_line_content)
+      (text_block_blank_line)
+      (text_block_indent)
+      (text_block_line_content)
       (text_block_end))))
 
 ===
 in-block whitespace-only blank line
+:error
 ===
 |||
     x
@@ -150,14 +162,7 @@ in-block whitespace-only blank line
 |||
 ---
 
-(document
-  (string
-    (text_block
-      (text_block_start)
-      (text_block_line)
-      (text_block_line)
-      (text_block_line)
-      (text_block_end))))
+
 
 ===
 lines with longer indentation
@@ -172,8 +177,10 @@ lines with longer indentation
   (string
     (text_block
       (text_block_start)
-      (text_block_line)
-      (text_block_line)
+      (text_block_indent)
+      (text_block_line_content)
+      (text_block_indent)
+      (text_block_line_content)
       (text_block_end))))
 
 ===
@@ -188,5 +195,6 @@ content containing the fence delimiter
   (string
     (text_block
       (text_block_start)
-      (text_block_line)
+      (text_block_indent)
+      (text_block_line_content)
       (text_block_end))))

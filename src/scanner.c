@@ -1,6 +1,7 @@
 #include "tree_sitter/alloc.h"
 #include "tree_sitter/array.h"
 #include "tree_sitter/parser.h"
+#include <assert.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
@@ -8,7 +9,9 @@
 typedef enum TokenType
 {
     TEXT_BLOCK_START,
-    TEXT_BLOCK_LINE,
+    TEXT_BLOCK_BLANK_LINE,
+    TEXT_BLOCK_INDENT,
+    TEXT_BLOCK_LINE_CONTENT,
     TEXT_BLOCK_END,
 } TokenType;
 
@@ -91,7 +94,7 @@ inline static bool match(TSLexer *lexer, const char ch)
 /**
  * Tries to match a given string.
  *
- * When the successive input matches the given string pattern, returns `true` and advances the cursor by the length of
+ * When the subsequent input matches the given string pattern, returns `true` and advances the cursor by the length of
  * the pattern. Otherwise, returns `false`.
  */
 inline static bool match_string(TSLexer *lexer, char const *string)
@@ -160,6 +163,7 @@ inline static bool match_indent(TSLexer *lexer, CharArray *indent_chars)
     for (uint32_t i = 0; i < indent_chars->size; ++i)
         if (!match(lexer, *array_get(indent_chars, i)))
             return false;
+
     return true;
 }
 
@@ -169,6 +173,7 @@ inline static bool scan_text_block_start(void *payload, TSLexer *lexer)
 
     if (!match_string(lexer, "|||"))
         return false;
+
     // Scans the optional trailing dash, indicating that the last newline of the text block must be removed.
     match(lexer, '-');
 
@@ -183,33 +188,39 @@ inline static bool scan_text_block_start(void *payload, TSLexer *lexer)
 
 inline static bool scan_text_block_end(void *payload, TSLexer *lexer)
 {
-    (void)payload;
+    CharArray *indent = (CharArray *)payload;
 
     if (!match_string(lexer, "|||"))
         return false;
 
+    array_clear(indent);
     lexer->mark_end(lexer);
     lexer->result_symbol = TEXT_BLOCK_END;
     return true;
 }
 
-static bool scan_text_block_initial_line(void *payload, TSLexer *lexer)
+inline static bool scan_text_block_blank_line(void *payload, TSLexer *lexer)
 {
-    if (match(lexer, '\n'))
-    // Scans leading blank lines before the initial indentation.
-    {
-        lexer->mark_end(lexer);
-        lexer->result_symbol = TEXT_BLOCK_LINE;
-        return true;
-    }
+    (void)payload;
 
+    // Scans a newline-only blank line.
+    if (!match(lexer, '\n'))
+        return false;
+
+    lexer->mark_end(lexer);
+    lexer->result_symbol = TEXT_BLOCK_BLANK_LINE;
+    return true;
+}
+
+inline static bool scan_text_block_initial_indent(void *payload, TSLexer *lexer)
+{
     CharArray *indent = (CharArray *)payload;
 
     // Scans the initial indentation.
     while (!eof(lexer) && (lookahead(lexer, ' ') || lookahead(lexer, '\t')))
     {
         if (indent->size >= TREE_SITTER_SERIALIZATION_BUFFER_SIZE - sizeof(indent->size))
-            // The indentation is too long to fit in the scanner state buffer.
+            // The indentation is too long to fit in the 1024-byte scanner state buffer.
             return false;
 
         array_push(indent, (char)lexer->lookahead);
@@ -220,71 +231,50 @@ static bool scan_text_block_initial_line(void *payload, TSLexer *lexer)
         // Empty indentation
         return false;
 
-    // Scans the rest of the first line.
+    lexer->mark_end(lexer);
+    lexer->result_symbol = TEXT_BLOCK_INDENT;
+    return true;
+}
+
+inline static bool scan_text_block_subsequent_indent(void *payload, TSLexer *lexer)
+{
+    CharArray *indent = (CharArray *)payload;
+
+    if (!match_indent(lexer, indent))
+        return false;
+
+    lexer->mark_end(lexer);
+    lexer->result_symbol = TEXT_BLOCK_INDENT;
+    return true;
+}
+
+inline static bool scan_text_block_indent(void *payload, TSLexer *lexer)
+{
+    CharArray *indent = (CharArray *)payload;
+    return indent->size == 0 ? scan_text_block_initial_indent(payload, lexer)
+                             : scan_text_block_subsequent_indent(payload, lexer);
+}
+
+inline static bool scan_text_block_line_content(void *payload, TSLexer *lexer)
+{
+    (void)payload;
+
     if (!advance_after(lexer, '\n'))
         // Reached the EOF prematurely before seeing the newline.
         return false;
 
     lexer->mark_end(lexer);
-    lexer->result_symbol = TEXT_BLOCK_LINE;
+    lexer->result_symbol = TEXT_BLOCK_LINE_CONTENT;
     return true;
-}
-
-static bool scan_text_block_continued_line(void *payload, TSLexer *lexer)
-{
-    CharArray *indent = (CharArray *)payload;
-
-    // Checks the leading indentation.
-    if (match_indent(lexer, indent))
-    {
-        // Scans the rest of the line.
-        if (!advance_after(lexer, '\n'))
-            // Reached the EOF prematurely before seeing the newline.
-            return false;
-
-        lexer->mark_end(lexer);
-        lexer->result_symbol = TEXT_BLOCK_LINE;
-        return true;
-    }
-
-    // The leading whitespaces do not match the initial indentation. This line could be:
-    //  1. An in-block blank line (empty or whitespace-only), or
-    //  2. The ending fence, or
-    //  3. Invalid
-
-    // Consume any remaining leading whitespaces on this line.
-    advance_while_any(lexer, " \t");
-
-    if (lookahead(lexer, '\n'))
-    {
-        // A whitespace-only in-block blank line.
-        advance(lexer);
-        lexer->mark_end(lexer);
-        lexer->result_symbol = TEXT_BLOCK_LINE;
-        return true;
-    }
-
-    // Either the ending fence line or invalid.
-    return false;
-}
-
-static bool scan_text_block_line(void *payload, TSLexer *lexer)
-{
-    CharArray *indent = (CharArray *)payload;
-    return indent->size == 0 ? scan_text_block_initial_line(payload, lexer)
-                             : scan_text_block_continued_line(payload, lexer);
 }
 
 bool tree_sitter_jsonnet_external_scanner_scan(void *payload, TSLexer *lexer, const bool *valid_symbols)
 {
-    if (valid_symbols[TEXT_BLOCK_START] && scan_text_block_start(payload, lexer))
-        return true;
-
-    if (valid_symbols[TEXT_BLOCK_LINE] && scan_text_block_line(payload, lexer))
-        return true;
-
-    if (valid_symbols[TEXT_BLOCK_END] && scan_text_block_end(payload, lexer))
-        return true;
-
-    return false;
+    return (valid_symbols[TEXT_BLOCK_START] && scan_text_block_start(payload, lexer)) ||
+           (valid_symbols[TEXT_BLOCK_BLANK_LINE] && scan_text_block_blank_line(payload, lexer)) ||
+           (valid_symbols[TEXT_BLOCK_INDENT] && scan_text_block_indent(payload, lexer)) ||
+           (valid_symbols[TEXT_BLOCK_LINE_CONTENT] && scan_text_block_line_content(payload, lexer)) ||
+           (valid_symbols[TEXT_BLOCK_END] && scan_text_block_end(payload, lexer));
 }
+
+// vim:tw=120
