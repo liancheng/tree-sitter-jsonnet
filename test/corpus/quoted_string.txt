@@ -7,7 +7,9 @@ double-quoted string
 (document
   (string
     (quoted_string
-      (string_content))))
+      (string_start)
+      (string_content)
+      (string_end))))
 
 ===
 single-quoted string
@@ -18,7 +20,9 @@ single-quoted string
 (document
   (string
     (quoted_string
-      (string_content))))
+      (string_start)
+      (string_content)
+      (string_end))))
 
 ===
 empty string
@@ -28,7 +32,9 @@ empty string
 
 (document
   (string
-    (quoted_string)))
+    (quoted_string
+      (string_start)
+      (string_end))))
 
 ===
 string with escape sequences
@@ -39,12 +45,14 @@ string with escape sequences
 (document
   (string
     (quoted_string
+      (string_start)
       (string_content)
       (escape_sequence)
       (string_content)
       (escape_sequence)
       (string_content)
-      (escape_sequence))))
+      (escape_sequence)
+      (string_end))))
 
 ===
 string with escaped quote
@@ -55,9 +63,11 @@ string with escaped quote
 (document
   (string
     (quoted_string
+      (string_start)
       (string_content)
       (escape_sequence)
-      (string_content))))
+      (string_content)
+      (string_end))))
 
 ===
 string with unicode escape
@@ -68,7 +78,9 @@ string with unicode escape
 (document
   (string
     (quoted_string
-      (escape_sequence))))
+      (string_start)
+      (escape_sequence)
+      (string_end))))
 
 ===
 verbatim double-quoted string
@@ -79,7 +91,9 @@ verbatim double-quoted string
 (document
   (string
     (quoted_string
-      (string_content))))
+      (string_start)
+      (string_content)
+      (string_end))))
 
 ===
 verbatim single-quoted string
@@ -90,7 +104,9 @@ verbatim single-quoted string
 (document
   (string
     (quoted_string
-      (string_content))))
+      (string_start)
+      (string_content)
+      (string_end))))
 
 ===
 verbatim string with doubled quote
@@ -101,10 +117,12 @@ verbatim string with doubled quote
 (document
   (string
     (quoted_string
+      (string_start)
       (string_content)
       (escape_sequence)
       (string_content)
-      (escape_sequence))))
+      (escape_sequence)
+      (string_end))))
 
 ===
 verbatim string with consecutive escaped quotes
@@ -115,8 +133,10 @@ verbatim string with consecutive escaped quotes
 (document
   (string
     (quoted_string
+      (string_start)
       (escape_sequence)
-      (escape_sequence))))
+      (escape_sequence)
+      (string_end))))
 
 ===
 multi-line double-quoted string
@@ -128,7 +148,9 @@ line two"
 (document
   (string
     (quoted_string
-      (string_content))))
+      (string_start)
+      (string_content)
+      (string_end))))
 
 ===
 multi-line single-quoted string
@@ -140,7 +162,9 @@ line two'
 (document
   (string
     (quoted_string
-      (string_content))))
+      (string_start)
+      (string_content)
+      (string_end))))
 
 ===
 multi-line verbatim double-quoted string
@@ -152,7 +176,9 @@ line two"
 (document
   (string
     (quoted_string
-      (string_content))))
+      (string_start)
+      (string_content)
+      (string_end))))
 
 ===
 multi-line verbatim single-quoted string
@@ -164,7 +190,9 @@ line two'
 (document
   (string
     (quoted_string
-      (string_content))))
+      (string_start)
+      (string_content)
+      (string_end))))
 
 ===
 invalid escape sequence
@@ -173,8 +201,6 @@ invalid escape sequence
 "a\vb"
 ---
 
-
-
 ===
 invalid unicode escape
 :error
@@ -182,16 +208,12 @@ invalid unicode escape
 "\uzzzz"
 ---
 
-
-
 ===
 trailing backslash
 :error
 ===
 "abc\"
 ---
-
-
 
 ===
 all valid simple escape sequences
@@ -202,6 +224,7 @@ all valid simple escape sequences
 (document
   (string
     (quoted_string
+      (string_start)
       (escape_sequence)
       (escape_sequence)
       (escape_sequence)
@@ -209,7 +232,8 @@ all valid simple escape sequences
       (escape_sequence)
       (escape_sequence)
       (escape_sequence)
-      (escape_sequence))))
+      (escape_sequence)
+      (string_end))))
 
 ===
 string content followed by escape
@@ -220,8 +244,10 @@ string content followed by escape
 (document
   (string
     (quoted_string
+      (string_start)
       (string_content)
-      (escape_sequence))))
+      (escape_sequence)
+      (string_end))))
 
 ===
 escape followed by string content
@@ -232,8 +258,10 @@ escape followed by string content
 (document
   (string
     (quoted_string
+      (string_start)
       (escape_sequence)
-      (string_content))))
+      (string_content)
+      (string_end))))
 
 ===
 string content surrounding an escape
@@ -244,9 +272,11 @@ string content surrounding an escape
 (document
   (string
     (quoted_string
+      (string_start)
       (string_content)
       (escape_sequence)
-      (string_content))))
+      (string_content)
+      (string_end))))
 
 ===
 escapes surrounding string content
@@ -257,11 +287,13 @@ escapes surrounding string content
 (document
   (string
     (quoted_string
+      (string_start)
       (escape_sequence)
       (string_content)
       (escape_sequence)
       (string_content)
-      (escape_sequence))))
+      (escape_sequence)
+      (string_end))))
 
 ===
 verbatim double-quoted string mixing content and doubled quote
@@ -272,9 +304,11 @@ verbatim double-quoted string mixing content and doubled quote
 (document
   (string
     (quoted_string
+      (string_start)
       (string_content)
       (escape_sequence)
-      (string_content))))
+      (string_content)
+      (string_end))))
 
 ===
 verbatim single-quoted string mixing content and doubled quote
@@ -285,6 +319,8 @@ verbatim single-quoted string mixing content and doubled quote
 (document
   (string
     (quoted_string
+      (string_start)
       (string_content)
       (escape_sequence)
-      (string_content))))
+      (string_content)
+      (string_end))))

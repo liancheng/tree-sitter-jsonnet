@@ -267,7 +267,8 @@ function commaSepStrict(rule) {
  * @param {boolean} verbatim
  */
 function quotedString($, quote, verbatim) {
-  const open = verbatim ? '@' + quote : quote;
+  const start = verbatim ? '@' + quote : quote;
+  const end = token.immediate(quote);
 
   let escape, content;
   if (verbatim) {
@@ -290,11 +291,11 @@ function quotedString($, quote, verbatim) {
   }
 
   return seq(
-    open,
+    alias(start, $.string_start),
     repeat(choice(
       alias(escape, $.escape_sequence),
       alias(content, $.string_content),
     )),
-    token.immediate(quote),
+    alias(end, $.string_end),
   );
 }

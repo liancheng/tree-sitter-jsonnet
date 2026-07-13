@@ -145,4 +145,42 @@ mod tests {
             (3, 0),
         );
     }
+
+    #[test]
+    fn test_escape_sequence() {
+        let source = "@''''";
+        let tree = parser().parse(source, None).unwrap();
+        let root = tree.root_node();
+        assert!(!root.has_error());
+
+        assert_eq!(root.kind(), "document");
+        assert_eq!(root.child_count(), 1);
+
+        let string = root.child(0).unwrap();
+        assert_eq!(string.kind(), "string");
+
+        let quoted_string = string.child(0).unwrap();
+        assert_eq!(quoted_string.kind(), "quoted_string");
+
+        assert_node_eq(
+            quoted_string.named_child(0).unwrap(),
+            "string_start",
+            (0, 0),
+            (0, 2),
+        );
+
+        assert_node_eq(
+            quoted_string.named_child(1).unwrap(),
+            "escape_sequence",
+            (0, 2),
+            (0, 4),
+        );
+
+        assert_node_eq(
+            quoted_string.named_child(2).unwrap(),
+            "string_end",
+            (0, 4),
+            (0, 5),
+        );
+    }
 }

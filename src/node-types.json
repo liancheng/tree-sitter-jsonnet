@@ -409,7 +409,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "escape_sequence",
@@ -417,6 +417,14 @@
         },
         {
           "type": "string_content",
+          "named": true
+        },
+        {
+          "type": "string_end",
+          "named": true
+        },
+        {
+          "type": "string_start",
           "named": true
         }
       ]
@@ -483,14 +491,6 @@
     "fields": {}
   },
   {
-    "type": "\"",
-    "named": false
-  },
-  {
-    "type": "'",
-    "named": false
-  },
-  {
     "type": "(",
     "named": false
   },
@@ -512,14 +512,6 @@
   },
   {
     "type": "=",
-    "named": false
-  },
-  {
-    "type": "@\"",
-    "named": false
-  },
-  {
-    "type": "@'",
     "named": false
   },
   {
@@ -581,6 +573,14 @@
   },
   {
     "type": "string_content",
+    "named": true
+  },
+  {
+    "type": "string_end",
+    "named": true
+  },
+  {
+    "type": "string_start",
     "named": true
   },
   {

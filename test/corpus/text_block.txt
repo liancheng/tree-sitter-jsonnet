@@ -128,8 +128,6 @@ leading whitespace-only line wider than the content indentation
 |||
 ---
 
-
-
 ===
 in-block empty blank line
 ===
@@ -161,8 +159,6 @@ in-block whitespace-only blank line
     y
 |||
 ---
-
-
 
 ===
 lines with longer indentation
