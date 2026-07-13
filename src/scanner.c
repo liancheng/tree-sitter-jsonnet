@@ -58,24 +58,6 @@ void tree_sitter_jsonnet_external_scanner_deserialize(void *payload, const char 
         array_push(indent, buffer[sizeof(size) + i]);
 }
 
-/** Checks whether the lexer has reached the EOF.*/
-inline static bool eof(TSLexer *lexer)
-{
-    return lexer->eof(lexer);
-}
-
-/** Advances the cursor by one character. */
-inline static void advance(TSLexer *lexer)
-{
-    lexer->advance(lexer, false);
-}
-
-/** Checks whether the next character matches the given character without advancing the cursor. */
-inline static bool lookahead(TSLexer *lexer, int32_t codepoint)
-{
-    return lexer->lookahead == codepoint;
-}
-
 /**
  * Tries to match a single character.
  *
@@ -84,10 +66,10 @@ inline static bool lookahead(TSLexer *lexer, int32_t codepoint)
  */
 inline static bool match(TSLexer *lexer, const char ch)
 {
-    if (!lookahead(lexer, ch))
+    if (lexer->lookahead != ch)
         return false;
 
-    advance(lexer);
+    lexer->advance(lexer, false);
     return true;
 }
 
@@ -97,10 +79,10 @@ inline static bool match(TSLexer *lexer, const char ch)
  * When the subsequent input matches the given string pattern, returns `true` and advances the cursor by the length of
  * the pattern. Otherwise, returns `false`.
  */
-inline static bool match_string(TSLexer *lexer, char const *string)
+inline static bool match_all(TSLexer *lexer, char const *string)
 {
     for (char const *p = string; *p != '\0'; ++p)
-        if (eof(lexer) || !match(lexer, *p))
+        if (lexer->eof(lexer) || !match(lexer, *p))
             return false;
 
     return true;
@@ -114,7 +96,7 @@ inline static bool match_string(TSLexer *lexer, char const *string)
  */
 inline static bool match_any(TSLexer *lexer, char const *charset)
 {
-    for (char const *p = charset; !eof(lexer) && *p != '\0'; ++p)
+    for (char const *p = charset; !lexer->eof(lexer) && *p != '\0'; ++p)
         if (match(lexer, *p))
             return true;
 
@@ -131,16 +113,16 @@ inline static bool advance_after(TSLexer *lexer, const char ch)
 {
     while (true)
     {
-        if (eof(lexer))
+        if (lexer->eof(lexer))
             return false;
 
-        if (lookahead(lexer, ch))
+        if (lexer->lookahead == ch)
         {
-            advance(lexer);
+            lexer->advance(lexer, false);
             return true;
         }
 
-        advance(lexer);
+        lexer->advance(lexer, false);
     }
 }
 
@@ -155,7 +137,7 @@ inline static bool advance_while_any(TSLexer *lexer, char const *charset)
     while (match_any(lexer, charset))
         ;
 
-    return !eof(lexer);
+    return !lexer->eof(lexer);
 }
 
 inline static bool match_indent(TSLexer *lexer, CharArray *indent_chars)
@@ -171,7 +153,7 @@ inline static bool scan_text_block_start(void *payload, TSLexer *lexer)
 {
     (void)payload;
 
-    if (!match_string(lexer, "|||"))
+    if (!match_all(lexer, "|||"))
         return false;
 
     // Scans the optional trailing dash, indicating that the last newline of the text block must be removed.
@@ -190,7 +172,7 @@ inline static bool scan_text_block_end(void *payload, TSLexer *lexer)
 {
     CharArray *indent = (CharArray *)payload;
 
-    if (!match_string(lexer, "|||"))
+    if (!match_all(lexer, "|||"))
         return false;
 
     array_clear(indent);
@@ -217,14 +199,14 @@ inline static bool scan_text_block_initial_indent(void *payload, TSLexer *lexer)
     CharArray *indent = (CharArray *)payload;
 
     // Scans the initial indentation.
-    while (!eof(lexer) && (lookahead(lexer, ' ') || lookahead(lexer, '\t')))
+    while (!lexer->eof(lexer) && (lexer->lookahead == ' ' || lexer->lookahead == '\t'))
     {
         if (indent->size >= TREE_SITTER_SERIALIZATION_BUFFER_SIZE - sizeof(indent->size))
             // The indentation is too long to fit in the 1024-byte scanner state buffer.
             return false;
 
         array_push(indent, (char)lexer->lookahead);
-        advance(lexer);
+        lexer->advance(lexer, false);
     }
 
     if (indent->size == 0)
