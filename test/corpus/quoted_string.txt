@@ -6,7 +6,8 @@ double-quoted string
 
 (document
   (string
-    (quoted_string)))
+    (quoted_string
+      (string_content))))
 
 ===
 single-quoted string
@@ -16,7 +17,8 @@ single-quoted string
 
 (document
   (string
-    (quoted_string)))
+    (quoted_string
+      (string_content))))
 
 ===
 empty string
@@ -36,7 +38,13 @@ string with escape sequences
 
 (document
   (string
-    (quoted_string)))
+    (quoted_string
+      (string_content)
+      (escape_sequence)
+      (string_content)
+      (escape_sequence)
+      (string_content)
+      (escape_sequence))))
 
 ===
 string with escaped quote
@@ -46,7 +54,10 @@ string with escaped quote
 
 (document
   (string
-    (quoted_string)))
+    (quoted_string
+      (string_content)
+      (escape_sequence)
+      (string_content))))
 
 ===
 string with unicode escape
@@ -56,7 +67,8 @@ string with unicode escape
 
 (document
   (string
-    (quoted_string)))
+    (quoted_string
+      (escape_sequence))))
 
 ===
 verbatim double-quoted string
@@ -66,7 +78,8 @@ verbatim double-quoted string
 
 (document
   (string
-    (quoted_string)))
+    (quoted_string
+      (string_content))))
 
 ===
 verbatim single-quoted string
@@ -76,7 +89,8 @@ verbatim single-quoted string
 
 (document
   (string
-    (quoted_string)))
+    (quoted_string
+      (string_content))))
 
 ===
 verbatim string with doubled quote
@@ -86,7 +100,11 @@ verbatim string with doubled quote
 
 (document
   (string
-    (quoted_string)))
+    (quoted_string
+      (string_content)
+      (escape_sequence)
+      (string_content)
+      (escape_sequence))))
 
 ===
 verbatim string with consecutive escaped quotes
@@ -96,7 +114,9 @@ verbatim string with consecutive escaped quotes
 
 (document
   (string
-    (quoted_string)))
+    (quoted_string
+      (escape_sequence)
+      (escape_sequence))))
 
 ===
 multi-line double-quoted string
@@ -107,7 +127,8 @@ line two"
 
 (document
   (string
-    (quoted_string)))
+    (quoted_string
+      (string_content))))
 
 ===
 multi-line single-quoted string
@@ -118,7 +139,8 @@ line two'
 
 (document
   (string
-    (quoted_string)))
+    (quoted_string
+      (string_content))))
 
 ===
 multi-line verbatim double-quoted string
@@ -129,7 +151,8 @@ line two"
 
 (document
   (string
-    (quoted_string)))
+    (quoted_string
+      (string_content))))
 
 ===
 multi-line verbatim single-quoted string
@@ -140,8 +163,8 @@ line two'
 
 (document
   (string
-    (quoted_string)))
-
+    (quoted_string
+      (string_content))))
 
 ===
 invalid escape sequence
@@ -150,6 +173,8 @@ invalid escape sequence
 "a\vb"
 ---
 
+
+
 ===
 invalid unicode escape
 :error
@@ -157,12 +182,15 @@ invalid unicode escape
 "\uzzzz"
 ---
 
+
+
 ===
 trailing backslash
 :error
 ===
 "abc\"
 ---
+
 
 
 ===
@@ -173,4 +201,90 @@ all valid simple escape sequences
 
 (document
   (string
-    (quoted_string)))
+    (quoted_string
+      (escape_sequence)
+      (escape_sequence)
+      (escape_sequence)
+      (escape_sequence)
+      (escape_sequence)
+      (escape_sequence)
+      (escape_sequence)
+      (escape_sequence))))
+
+===
+string content followed by escape
+===
+"abc\n"
+---
+
+(document
+  (string
+    (quoted_string
+      (string_content)
+      (escape_sequence))))
+
+===
+escape followed by string content
+===
+"\nabc"
+---
+
+(document
+  (string
+    (quoted_string
+      (escape_sequence)
+      (string_content))))
+
+===
+string content surrounding an escape
+===
+"ab\ncd"
+---
+
+(document
+  (string
+    (quoted_string
+      (string_content)
+      (escape_sequence)
+      (string_content))))
+
+===
+escapes surrounding string content
+===
+"\nab\tcd\n"
+---
+
+(document
+  (string
+    (quoted_string
+      (escape_sequence)
+      (string_content)
+      (escape_sequence)
+      (string_content)
+      (escape_sequence))))
+
+===
+verbatim double-quoted string mixing content and doubled quote
+===
+@"a""b"
+---
+
+(document
+  (string
+    (quoted_string
+      (string_content)
+      (escape_sequence)
+      (string_content))))
+
+===
+verbatim single-quoted string mixing content and doubled quote
+===
+@'a''b'
+---
+
+(document
+  (string
+    (quoted_string
+      (string_content)
+      (escape_sequence)
+      (string_content))))

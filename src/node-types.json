@@ -406,7 +406,21 @@
   {
     "type": "quoted_string",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "escape_sequence",
+          "named": true
+        },
+        {
+          "type": "string_content",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "string",
@@ -469,6 +483,14 @@
     "fields": {}
   },
   {
+    "type": "\"",
+    "named": false
+  },
+  {
+    "type": "'",
+    "named": false
+  },
+  {
     "type": "(",
     "named": false
   },
@@ -490,6 +512,14 @@
   },
   {
     "type": "=",
+    "named": false
+  },
+  {
+    "type": "@\"",
+    "named": false
+  },
+  {
+    "type": "@'",
     "named": false
   },
   {
@@ -518,6 +548,10 @@
     "named": false
   },
   {
+    "type": "escape_sequence",
+    "named": true
+  },
+  {
     "type": "false",
     "named": false
   },
@@ -543,6 +577,10 @@
   },
   {
     "type": "self",
+    "named": true
+  },
+  {
+    "type": "string_content",
     "named": true
   },
   {

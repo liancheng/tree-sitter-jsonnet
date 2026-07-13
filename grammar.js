@@ -208,11 +208,11 @@ export default grammar({
       $.text_block,
     ),
 
-    quoted_string: _ => choice(
-      quotedString('"', true),
-      quotedString("'", true),
-      quotedString('"', false),
-      quotedString("'", false),
+    quoted_string: $ => choice(
+      quotedString($, '"', true),
+      quotedString($, "'", true),
+      quotedString($, '"', false),
+      quotedString($, "'", false),
     ),
 
     text_block: $ => seq(
@@ -262,20 +262,39 @@ function commaSepStrict(rule) {
 }
 
 /**
+ * @param {GrammarSymbols<string>} $
  * @param {'"' | "'"} quote
  * @param {boolean} verbatim
  */
-function quotedString(quote, verbatim) {
-  const verbatimEsc = `${quote}${quote}`;
-  const simpleEsc = /\\["'\\/bfnrt]/;
-  const codepointEsc = /\\u[0-9a-fA-F]{4}/;
-  const escapeSequence = verbatim ? verbatimEsc : token(choice(simpleEsc, codepointEsc));
+function quotedString($, quote, verbatim) {
+  const open = verbatim ? '@' + quote : quote;
 
-  return token(
-    seq(
-      verbatim ? `@${quote}` : quote,
-      repeat(choice(escapeSequence, verbatim ? /[\s\S]/ : /[^\\]/)),
-      quote,
-    )
-  )
+  let escape, content;
+  if (verbatim) {
+    // String `""""` (4 double-quotes) parses correctly as:
+    //
+    //  (string
+    //    (string_start)      -> "
+    //    (escape_sequence)   -> ""
+    //    (escape_end))       -> "
+    //
+    // This is because `""` is longer than `"` and takes a higher precedence.
+    escape = token.immediate(quote + quote);
+    content = token.immediate(new RegExp(`[^${quote}]+`));
+  } else {
+    const simpleEsc = /\\["'\\/bfnrt]/;
+    const codepointEsc = /\\u[0-9a-fA-F]{4}/;
+    escape = token.immediate(choice(simpleEsc, codepointEsc));
+    // Stops content at the quote and at the backslash starting an escape.
+    content = token.immediate(new RegExp(`[^${quote}\\\\]+`));
+  }
+
+  return seq(
+    open,
+    repeat(choice(
+      alias(escape, $.escape_sequence),
+      alias(content, $.string_content),
+    )),
+    token.immediate(quote),
+  );
 }

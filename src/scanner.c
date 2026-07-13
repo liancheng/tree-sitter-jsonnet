@@ -140,15 +140,6 @@ inline static bool advance_while_any(TSLexer *lexer, char const *charset)
     return !lexer->eof(lexer);
 }
 
-inline static bool match_indent(TSLexer *lexer, CharArray *indent_chars)
-{
-    for (uint32_t i = 0; i < indent_chars->size; ++i)
-        if (!match(lexer, *array_get(indent_chars, i)))
-            return false;
-
-    return true;
-}
-
 inline static bool scan_text_block_start(void *payload, TSLexer *lexer)
 {
     (void)payload;
@@ -222,8 +213,9 @@ inline static bool scan_text_block_subsequent_indent(void *payload, TSLexer *lex
 {
     CharArray *indent = (CharArray *)payload;
 
-    if (!match_indent(lexer, indent))
-        return false;
+    for (uint32_t i = 0; i < indent->size; ++i)
+        if (!match(lexer, *array_get(indent, i)))
+            return false;
 
     lexer->mark_end(lexer);
     lexer->result_symbol = TEXT_BLOCK_INDENT;
