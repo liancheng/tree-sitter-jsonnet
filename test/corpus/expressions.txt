@@ -165,3 +165,122 @@ a && b || c
       right: (var_ref_id))
     operator: (or)
     right: (var_ref_id)))
+
+===
+field access
+===
+
+x.y
+---
+
+(document
+  (field_access
+    object: (var_ref_id)
+    field: (field_ref_id)))
+
+===
+field access (chained)
+===
+
+x.y.z
+---
+
+(document
+  (field_access
+    object: (field_access
+      object: (var_ref_id)
+      field: (field_ref_id))
+    field: (field_ref_id)))
+
+===
+index
+===
+
+x[0]
+---
+
+(document
+  (index
+    object: (var_ref_id)
+    index: (number)))
+
+===
+slice (start and end)
+===
+
+x[1:2]
+---
+
+(document
+  (index
+    object: (var_ref_id)
+    (slice
+      start: (number)
+      end: (number))))
+
+===
+slice (step only)
+===
+
+x[::2]
+---
+
+(document
+  (index
+    object: (var_ref_id)
+    (slice
+      step: (number))))
+
+===
+unary (logical not)
+===
+
+!true
+---
+
+(document
+  (unary
+    operator: (unary_operator)
+    operand: (boolean)))
+
+===
+unary (bitwise not)
+===
+
+~x
+---
+
+(document
+  (unary
+    operator: (unary_operator)
+    operand: (var_ref_id)))
+
+===
+unary binds looser than field access
+===
+
+-x.y
+---
+
+(document
+  (unary
+    operator: (unary_operator)
+    operand: (field_access
+      object: (var_ref_id)
+      field: (field_ref_id))))
+
+===
+mixed postfix chain
+===
+
+a.b[0].c
+---
+
+(document
+  (field_access
+    object: (index
+      object: (field_access
+        object: (var_ref_id)
+        field: (field_ref_id))
+      index: (number))
+    field: (field_ref_id)))

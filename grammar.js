@@ -54,12 +54,15 @@ export default grammar({
       $.call,
       $.conditional,
       $.dollar,
+      $.field_access,
       $.function,
+      $.index,
       $.local,
       $.null,
       $.number,
       $.self,
       $.super,
+      $.unary,
       $.string,
       $.var_ref_id,
     ),
@@ -133,6 +136,45 @@ export default grammar({
       optional(seq(field("param", $.param_ref_id), "=")),
       field('value', $.expression),
     ),
+
+    field_access: $ => prec(
+      PREC.highest,
+      seq(
+        field("object", $.expression),
+        ".",
+        field("field", $.field_ref_id),
+      )
+    ),
+
+    index: $ => prec(
+      PREC.highest,
+      seq(
+        field("object", $.expression),
+        "[",
+        choice(
+          field("index", $.expression),
+          $.slice,
+        ),
+        "]",
+      )
+    ),
+
+    slice: $ => seq(
+      optional(field("start", $.expression)),
+      ":",
+      optional(field("end", $.expression)),
+      optional(seq(":", optional(field("step", $.expression)))),
+    ),
+
+    unary: $ => prec(
+      PREC.unary,
+      seq(
+        field("operator", $.unary_operator),
+        field("operand", $.expression),
+      )
+    ),
+
+    unary_operator: _ => choice("-", "+", "!", "~"),
 
     conditional: $ => prec.right(
       seq(
