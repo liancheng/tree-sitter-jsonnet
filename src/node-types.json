@@ -12,6 +12,10 @@
         "named": true
       },
       {
+        "type": "binary",
+        "named": true
+      },
+      {
         "type": "boolean",
         "named": true
       },
@@ -60,6 +64,11 @@
         "named": true
       }
     ]
+  },
+  {
+    "type": "additive",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "argument",
@@ -163,6 +172,78 @@
     }
   },
   {
+    "type": "binary",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "additive",
+            "named": true
+          },
+          {
+            "type": "and",
+            "named": true
+          },
+          {
+            "type": "bit_and",
+            "named": true
+          },
+          {
+            "type": "bit_or",
+            "named": true
+          },
+          {
+            "type": "bit_shift",
+            "named": true
+          },
+          {
+            "type": "bit_xor",
+            "named": true
+          },
+          {
+            "type": "comparison",
+            "named": true
+          },
+          {
+            "type": "equality",
+            "named": true
+          },
+          {
+            "type": "multiplicative",
+            "named": true
+          },
+          {
+            "type": "or",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "binding",
     "named": true,
     "fields": {
@@ -219,6 +300,11 @@
     }
   },
   {
+    "type": "bit_shift",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "boolean",
     "named": true,
     "fields": {}
@@ -248,6 +334,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "comparison",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "conditional",
@@ -300,6 +391,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "equality",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "function",
@@ -356,6 +452,11 @@
         ]
       }
     }
+  },
+  {
+    "type": "multiplicative",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "param",
@@ -491,6 +592,14 @@
     "fields": {}
   },
   {
+    "type": "!=",
+    "named": false
+  },
+  {
+    "type": "%",
+    "named": false
+  },
+  {
     "type": "(",
     "named": false
   },
@@ -499,7 +608,23 @@
     "named": false
   },
   {
+    "type": "*",
+    "named": false
+  },
+  {
+    "type": "+",
+    "named": false
+  },
+  {
     "type": ",",
+    "named": false
+  },
+  {
+    "type": "-",
+    "named": false
+  },
+  {
+    "type": "/",
     "named": false
   },
   {
@@ -511,7 +636,35 @@
     "named": false
   },
   {
+    "type": "<",
+    "named": false
+  },
+  {
+    "type": "<<",
+    "named": false
+  },
+  {
+    "type": "<=",
+    "named": false
+  },
+  {
     "type": "=",
+    "named": false
+  },
+  {
+    "type": "==",
+    "named": false
+  },
+  {
+    "type": ">",
+    "named": false
+  },
+  {
+    "type": ">=",
+    "named": false
+  },
+  {
+    "type": ">>",
     "named": false
   },
   {
@@ -523,8 +676,24 @@
     "named": false
   },
   {
+    "type": "and",
+    "named": true
+  },
+  {
     "type": "assert",
     "named": false
+  },
+  {
+    "type": "bit_and",
+    "named": true
+  },
+  {
+    "type": "bit_or",
+    "named": true
+  },
+  {
+    "type": "bit_xor",
+    "named": true
   },
   {
     "type": "comment",
@@ -556,6 +725,10 @@
     "named": false
   },
   {
+    "type": "in",
+    "named": false
+  },
+  {
     "type": "local",
     "named": false
   },
@@ -565,6 +738,10 @@
   },
   {
     "type": "number",
+    "named": true
+  },
+  {
+    "type": "or",
     "named": true
   },
   {

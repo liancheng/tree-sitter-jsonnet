@@ -1,7 +1,6 @@
 ===
 array (empty)
 ===
-
 []
 ---
 (document (array))
@@ -9,7 +8,6 @@ array (empty)
 ===
 array (without trailing comma)
 ===
-
 [true, false]
 ---
 (document
@@ -18,7 +16,6 @@ array (without trailing comma)
 ===
 array (with trailing comma)
 ===
-
 [true, false,]
 ---
 (document
@@ -27,7 +24,6 @@ array (with trailing comma)
 ===
 asserted expression
 ===
-
 assert true; false
 ---
 (document
@@ -39,7 +35,6 @@ assert true; false
 ===
 boolean (true)
 ===
-
 true
 ---
 (document (boolean))
@@ -47,7 +42,6 @@ true
 ===
 boolean (false)
 ===
-
 false
 ---
 (document (boolean))
@@ -55,7 +49,6 @@ false
 ===
 conditional
 ===
-
 if x then y else z
 ---
 (document
@@ -67,7 +60,6 @@ if x then y else z
 ===
 local (var binding)
 ===
-
 local x = 1; x
 ---
 (document
@@ -81,7 +73,6 @@ local x = 1; x
 ===
 local (function binding)
 ===
-
 local f(p) = p;
 f
 ---
@@ -98,7 +89,6 @@ f
 ===
 null
 ===
-
 null
 ---
 (document (null))
@@ -106,7 +96,6 @@ null
 ===
 number
 ===
-
 [
   0, 1, -1,
   0b00, 0b11,
@@ -122,3 +111,57 @@ number
     (number) (number)
     (number) (number)
     (number) (number)))
+
+===
+binary (additive)
+===
+1 + 2
+---
+(document
+  (binary
+    left: (number)
+    operator: (additive)
+    right: (number)))
+
+===
+binary (precedence: multiplicative over additive)
+===
+1 + 2 * 3
+---
+(document
+  (binary
+    left: (number)
+    operator: (additive)
+    right: (binary
+      left: (number)
+      operator: (multiplicative)
+      right: (number))))
+
+===
+binary (left associative)
+===
+1 - 2 - 3
+---
+(document
+  (binary
+    left: (binary
+      left: (number)
+      operator: (additive)
+      right: (number))
+    operator: (additive)
+    right: (number)))
+
+===
+binary (logical precedence: and over or)
+===
+a && b || c
+---
+
+(document
+  (binary
+    left: (binary
+      left: (var_ref_id)
+      operator: (and)
+      right: (var_ref_id))
+    operator: (or)
+    right: (var_ref_id)))

@@ -20,6 +20,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "binary"
+        },
+        {
+          "type": "SYMBOL",
           "name": "boolean"
         },
         {

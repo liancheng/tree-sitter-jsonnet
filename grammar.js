@@ -49,6 +49,7 @@ export default grammar({
     expression: $ => choice(
       $.array,
       $.asserted_expression,
+      $.binary,
       $.boolean,
       $.call,
       $.conditional,
