@@ -1,10 +1,24 @@
 ===
+C-style comment
+===
+1 /* ... */ + 2
+---
+
+(document
+  (binary
+    (number)
+    (comment)
+    (additive)
+    (number)))
+
+===
 array (empty)
 ===
 []
 ---
 
-(document (array))
+(document
+  (array))
 
 ===
 array (without trailing comma)
@@ -13,7 +27,9 @@ array (without trailing comma)
 ---
 
 (document
-  (array (boolean) (boolean)))
+  (array
+    (boolean)
+    (boolean)))
 
 ===
 array (with trailing comma)
@@ -22,7 +38,9 @@ array (with trailing comma)
 ---
 
 (document
-  (array (boolean) (boolean)))
+  (array
+    (boolean)
+    (boolean)))
 
 ===
 asserted expression
@@ -42,7 +60,8 @@ boolean (true)
 true
 ---
 
-(document (boolean))
+(document
+  (boolean))
 
 ===
 boolean (false)
@@ -50,7 +69,8 @@ boolean (false)
 false
 ---
 
-(document (boolean))
+(document
+  (boolean))
 
 ===
 conditional
@@ -72,10 +92,9 @@ local x = 1; x
 
 (document
   (local
-    bindings:
-      (binding
-        variable: (var_id)
-        value: (number))
+    bindings: (binding
+      variable: (var_id)
+      value: (number))
     body: (var_ref_id)))
 
 ===
@@ -101,7 +120,8 @@ null
 null
 ---
 
-(document (null))
+(document
+  (null))
 
 ===
 number
@@ -117,11 +137,17 @@ number
 
 (document
   (array
-    (number) (number) (number)
-    (number) (number)
-    (number) (number)
-    (number) (number)
-    (number) (number)))
+    (number)
+    (number)
+    (number)
+    (number)
+    (number)
+    (number)
+    (number)
+    (number)
+    (number)
+    (number)
+    (number)))
 
 ===
 binary (additive)
@@ -422,3 +448,13 @@ parenthesized callee
     (arguments
       (argument
         value: (var_ref_id)))))
+
+===
+C-style comment (closing slash abutting)
+===
+1000/* 4 hours */
+---
+
+(document
+  (number)
+  (comment))
