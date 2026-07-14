@@ -23,11 +23,9 @@ A tree-sitter grammar for [Jsonnet](https://jsonnet.org/ref/spec.html). Author: 
 
 ## Grammar implementation status (vs. Jsonnet spec)
 
-Implemented: literals (null/bool/number/string/self/super/$), arrays, **array comprehension**, `local`, `function`, `if/then/else`, calls (named args + `tailstrict`), `assert;`, **binary operators** (full precedence), **field access** `x.y`, **index/slice** `x[i]`, `x[a:b:c]`, **unary** `- + ! ~`, **objects** `{ … }` (`field` with `+`/`:`/`::`/`:::`, computed/string/id `field_key`, method sugar `f(x): …`, `object_local`, object-level `assert`), **object comprehension** `{ [k]: v for … }` (only `:` visibility, per spec), **object composition** `expr { … }` (`object_apply`, postfix at `PREC.highest`; body is `object` or `object_comp`).
+Implemented: literals (null/bool/number/string/self/super/$), arrays, **array comprehension**, `local`, `function`, `if/then/else`, calls (named args + `tailstrict`), `assert;`, **binary operators** (full precedence), **field access** `x.y`, **index/slice** `x[i]`, `x[a:b:c]`, **unary** `- + ! ~`, **objects** `{ … }` (`field` with `+`/`:`/`::`/`:::`, computed/string/id `field_key`, method sugar `f(x): …`, `object_local`, object-level `assert`), **object comprehension** `{ [k]: v for … }` (only `:` visibility, per spec), **object composition** `expr { … }` (`object_apply`, postfix at `PREC.highest`; body is `object` or `object_comp`), **`super` field access / index** (`super.x`, `super[e]` — these fall out of `field_access`/`index` taking any `expression`, no dedicated rule), **`import` / `importstr` / `importbin`** (`import` rule; operand is `$.string` — a string literal, not an expression, since computed imports are disallowed).
 
 Objects need two declared `conflicts` (see the `conflicts` block in `grammar.js`): `[member, object_comp]` (a leading `{ local x = 1, …`) and `[_computed_key, object_comp]` (`{ [expr] : …`) — both because only a later `for` distinguishes a plain object from a comprehension. Object corpus tests live in `test/corpus/object.txt`.
 
 **Still pending (rough priority order):**
-1. `super` field access / index (`super.x`, `super[e]`) — bare `super` parses, access forms don't.
-2. `import` / `importstr` / `importbin`.
-3. `error expr`.
+1. `error expr`.

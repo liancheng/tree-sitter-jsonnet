@@ -44,6 +44,10 @@
         "named": true
       },
       {
+        "type": "import",
+        "named": true
+      },
+      {
         "type": "index",
         "named": true
       },
@@ -664,6 +668,40 @@
     }
   },
   {
+    "type": "import",
+    "named": true,
+    "fields": {
+      "kind": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "import",
+            "named": false
+          },
+          {
+            "type": "importbin",
+            "named": false
+          },
+          {
+            "type": "importstr",
+            "named": false
+          }
+        ]
+      },
+      "path": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "index",
     "named": true,
     "fields": {
@@ -1212,6 +1250,18 @@
   },
   {
     "type": "if",
+    "named": false
+  },
+  {
+    "type": "import",
+    "named": false
+  },
+  {
+    "type": "importbin",
+    "named": false
+  },
+  {
+    "type": "importstr",
     "named": false
   },
   {

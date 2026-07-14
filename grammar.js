@@ -64,6 +64,7 @@ export default grammar({
       $.dollar,
       $.field_access,
       $.function,
+      $.import,
       $.index,
       $.local,
       $.null,
@@ -284,6 +285,13 @@ export default grammar({
       "function",
       field("params", $.params),
       field("body", $.expression)
+    ),
+
+    // `import` / `importstr` / `importbin` — the operand must be a string
+    // literal (computed imports are not allowed).
+    import: $ => seq(
+      field("kind", choice("import", "importstr", "importbin")),
+      field("path", $.string),
     ),
 
     params: $ => seq("(", optional(commaSep($.param)), ")"),

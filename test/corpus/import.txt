@@ -1,0 +1,73 @@
+===
+import
+===
+import "lib.libsonnet"
+---
+
+(document
+  (import
+    path: (string
+      (quoted_string
+        (string_start)
+        (string_content)
+        (string_end)))))
+
+===
+importstr
+===
+importstr "data.txt"
+---
+
+(document
+  (import
+    path: (string
+      (quoted_string
+        (string_start)
+        (string_content)
+        (string_end)))))
+
+===
+importbin
+===
+importbin "blob.bin"
+---
+
+(document
+  (import
+    path: (string
+      (quoted_string
+        (string_start)
+        (string_content)
+        (string_end)))))
+
+===
+import (verbatim string path)
+===
+import @'raw.jsonnet'
+---
+
+(document
+  (import
+    path: (string
+      (quoted_string
+        (string_start)
+        (string_content)
+        (string_end)))))
+
+===
+import (in local binding)
+===
+local lib = import "lib.libsonnet"; lib
+---
+
+(document
+  (local
+    bindings: (binding
+      variable: (var_id)
+      value: (import
+        path: (string
+          (quoted_string
+            (string_start)
+            (string_content)
+            (string_end)))))
+    body: (var_ref_id)))
