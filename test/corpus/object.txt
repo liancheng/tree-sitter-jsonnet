@@ -205,3 +205,115 @@ object comprehension (leading local)
     (for_spec
       variable: (var_id)
       collection: (var_ref_id))))
+
+===
+object comprehension (trailing local)
+===
+{[k]: v, local y = 1 for k in ks}
+---
+
+(document
+  (object_comp
+    key: (var_ref_id)
+    value: (var_ref_id)
+    (object_local
+      (binding
+        variable: (var_id)
+        value: (number)))
+    (for_spec
+      variable: (var_id)
+      collection: (var_ref_id))))
+
+===
+object comprehension (locals before and after)
+===
+{local x = 0, [k]: v, local y = 1 for k in ks}
+---
+
+(document
+  (object_comp
+    (object_local
+      (binding
+        variable: (var_id)
+        value: (number)))
+    key: (var_ref_id)
+    value: (var_ref_id)
+    (object_local
+      (binding
+        variable: (var_id)
+        value: (number)))
+    (for_spec
+      variable: (var_id)
+      collection: (var_ref_id))))
+
+===
+object composition
+===
+base { b: 2 }
+---
+
+(document
+  (object_apply
+    target: (var_ref_id)
+    object: (object
+      (member
+        (field
+          key: (field_key (field_id))
+          value: (number))))))
+
+===
+object composition (object literal target)
+===
+{a: 1} { b: 2 }
+---
+
+(document
+  (object_apply
+    target: (object
+      (member
+        (field
+          key: (field_key (field_id))
+          value: (number))))
+    object: (object
+      (member
+        (field
+          key: (field_key (field_id))
+          value: (number))))))
+
+===
+object composition (comprehension body)
+===
+x { [k]: v for k in ks }
+---
+
+(document
+  (object_apply
+    target: (var_ref_id)
+    object: (object_comp
+      key: (var_ref_id)
+      value: (var_ref_id)
+      (for_spec
+        variable: (var_id)
+        collection: (var_ref_id)))))
+
+===
+object composition (chained)
+===
+a { b: 1 } { c: 2 }
+---
+
+(document
+  (object_apply
+    target: (object_apply
+      target: (var_ref_id)
+      object: (object
+        (member
+          (field
+            key: (field_key (field_id))
+            value: (number)))))
+    object: (object
+      (member
+        (field
+          key: (field_key (field_id))
+          value: (number))))))
+

@@ -64,6 +64,10 @@
         "named": true
       },
       {
+        "type": "object_apply",
+        "named": true
+      },
+      {
         "type": "object_comp",
         "named": true
       },
@@ -766,6 +770,36 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "object_apply",
+    "named": true,
+    "fields": {
+      "object": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "object",
+            "named": true
+          },
+          {
+            "type": "object_comp",
+            "named": true
+          }
+        ]
+      },
+      "target": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {

@@ -72,6 +72,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "object_apply"
+        },
+        {
+          "type": "SYMBOL",
           "name": "object_comp"
         },
         {
@@ -487,6 +491,40 @@
           "value": "]"
         }
       ]
+    },
+    "object_apply": {
+      "type": "PREC",
+      "value": 13,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "target",
+            "content": {
+              "type": "SYMBOL",
+              "name": "expression"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "object",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "object"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "object_comp"
+                }
+              ]
+            }
+          }
+        ]
+      }
     },
     "object_local": {
       "type": "SEQ",

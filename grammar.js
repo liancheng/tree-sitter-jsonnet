@@ -44,9 +44,9 @@ export default grammar({
   supertypes: $ => [$.expression],
 
   conflicts: $ => [
-    // `{ local x = 1, ... }` could be an object member list or the leading object-locals of an object comprehension; only a later `for` decides.
+    // NOTE: `object_local` (part of `member`) and `_computed_key` can appear in both `object` and `object_comp`, only a
+    // later `for` decides.
     [$.member, $.object_comp],
-    // `{ [expr] : ... }` — the `[expr]` is either a computed key (plain object) or the key of an object comprehension; only a later `for` decides.
     [$._computed_key, $.object_comp],
   ],
 
@@ -69,6 +69,7 @@ export default grammar({
       $.null,
       $.number,
       $.object,
+      $.object_apply,
       $.object_comp,
       $.self,
       $.super,
@@ -138,6 +139,14 @@ export default grammar({
       "[",
       field("expression", $.expression),
       "]"
+    ),
+
+    object_apply: $ => prec(
+      PREC.highest,
+      seq(
+        field("target", $.expression),
+        field("object", choice($.object, $.object_comp)),
+      )
     ),
 
     object_local: $ => seq("local", $.binding),
