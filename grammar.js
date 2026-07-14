@@ -48,6 +48,7 @@ export default grammar({
 
     expression: $ => choice(
       $.array,
+      $.array_comp,
       $.asserted_expression,
       $.binary,
       $.boolean,
@@ -68,6 +69,27 @@ export default grammar({
     ),
 
     array: $ => seq("[", optional(commaSep($.expression)), "]"),
+
+    array_comp: $ => seq(
+      "[",
+      field("expression", $.expression),
+      optional(","),
+      $.for_spec,
+      repeat(choice($.for_spec, $.if_spec)),
+      "]",
+    ),
+
+    for_spec: $ => seq(
+      "for",
+      field("variable", $.var_id),
+      "in",
+      field("collection", $.expression),
+    ),
+
+    if_spec: $ => seq(
+      "if",
+      field("condition", $.expression),
+    ),
 
     asserted_expression: $ => seq($.assert, ";", $.expression),
 

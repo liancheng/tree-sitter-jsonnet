@@ -8,6 +8,10 @@
         "named": true
       },
       {
+        "type": "array_comp",
+        "named": true
+      },
+      {
         "type": "asserted_expression",
         "named": true
       },
@@ -133,6 +137,36 @@
       "types": [
         {
           "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "array_comp",
+    "named": true,
+    "fields": {
+      "expression": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "for_spec",
+          "named": true
+        },
+        {
+          "type": "if_spec",
           "named": true
         }
       ]
@@ -441,6 +475,32 @@
     "fields": {}
   },
   {
+    "type": "for_spec",
+    "named": true,
+    "fields": {
+      "collection": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "variable": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "var_id",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "function",
     "named": true,
     "fields": {
@@ -460,6 +520,22 @@
         "types": [
           {
             "type": "params",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "if_spec",
+    "named": true,
+    "fields": {
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
             "named": true
           }
         ]
@@ -868,6 +944,10 @@
   },
   {
     "type": "false",
+    "named": false
+  },
+  {
+    "type": "for",
     "named": false
   },
   {

@@ -169,7 +169,6 @@ a && b || c
 ===
 field access
 ===
-
 x.y
 ---
 
@@ -181,7 +180,6 @@ x.y
 ===
 field access (chained)
 ===
-
 x.y.z
 ---
 
@@ -195,7 +193,6 @@ x.y.z
 ===
 index
 ===
-
 x[0]
 ---
 
@@ -207,7 +204,6 @@ x[0]
 ===
 slice (start and end)
 ===
-
 x[1:2]
 ---
 
@@ -221,7 +217,6 @@ x[1:2]
 ===
 slice (step only)
 ===
-
 x[::2]
 ---
 
@@ -234,7 +229,6 @@ x[::2]
 ===
 unary (logical not)
 ===
-
 !true
 ---
 
@@ -246,7 +240,6 @@ unary (logical not)
 ===
 unary (bitwise not)
 ===
-
 ~x
 ---
 
@@ -258,7 +251,6 @@ unary (bitwise not)
 ===
 unary binds looser than field access
 ===
-
 -x.y
 ---
 
@@ -272,7 +264,6 @@ unary binds looser than field access
 ===
 mixed postfix chain
 ===
-
 a.b[0].c
 ---
 
@@ -284,3 +275,60 @@ a.b[0].c
         field: (field_ref_id))
       index: (number))
     field: (field_ref_id)))
+
+===
+array comprehension
+===
+[x for x in y]
+---
+
+(document
+  (array_comp
+    expression: (var_ref_id)
+    (for_spec
+      variable: (var_id)
+      collection: (var_ref_id))))
+
+===
+array comprehension (with if)
+===
+[x for x in y if x]
+---
+
+(document
+  (array_comp
+    expression: (var_ref_id)
+    (for_spec
+      variable: (var_id)
+      collection: (var_ref_id))
+    (if_spec
+      condition: (var_ref_id))))
+
+===
+array comprehension (nested for)
+===
+[x for x in y for z in w]
+---
+
+(document
+  (array_comp
+    expression: (var_ref_id)
+    (for_spec
+      variable: (var_id)
+      collection: (var_ref_id))
+    (for_spec
+      variable: (var_id)
+      collection: (var_ref_id))))
+
+===
+array comprehension (trailing comma after expression)
+===
+[x, for x in y]
+---
+
+(document
+  (array_comp
+    expression: (var_ref_id)
+    (for_spec
+      variable: (var_id)
+      collection: (var_ref_id))))
