@@ -346,8 +346,12 @@
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "STRING",
-                  "value": "+"
+                  "type": "FIELD",
+                  "name": "inherit",
+                  "content": {
+                    "type": "STRING",
+                    "value": "+"
+                  }
                 },
                 {
                   "type": "BLANK"
@@ -358,8 +362,21 @@
               "type": "FIELD",
               "name": "visibility",
               "content": {
-                "type": "SYMBOL",
-                "name": "visibility"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": ":"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "::"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": ":::"
+                  }
+                ]
               }
             },
             {
@@ -395,8 +412,21 @@
               "type": "FIELD",
               "name": "visibility",
               "content": {
-                "type": "SYMBOL",
-                "name": "visibility"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": ":"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "::"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": ":::"
+                  }
+                ]
               }
             },
             {
@@ -408,23 +438,6 @@
               }
             }
           ]
-        }
-      ]
-    },
-    "visibility": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": ":"
-        },
-        {
-          "type": "STRING",
-          "value": "::"
-        },
-        {
-          "type": "STRING",
-          "value": ":::"
         }
       ]
     },
@@ -528,12 +541,8 @@
           "value": "]"
         },
         {
-          "type": "FIELD",
-          "name": "visibility",
-          "content": {
-            "type": "SYMBOL",
-            "name": "visibility"
-          }
+          "type": "STRING",
+          "value": ":"
         },
         {
           "type": "FIELD",

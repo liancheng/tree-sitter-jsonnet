@@ -115,19 +115,17 @@ export default grammar({
     field: $ => choice(
       seq(
         field("key", $.field_key),
-        optional("+"),
-        field("visibility", $.visibility),
+        optional(field("inherit", "+")),
+        field("visibility", choice(":", "::", ":::")),
         field("value", $.expression),
       ),
       seq(
         field("key", $.field_key),
         field("params", $.params),
-        field("visibility", $.visibility),
+        field("visibility", choice(":", "::", ":::")),
         field("body", $.expression),
       ),
     ),
-
-    visibility: _ => choice(":", "::", ":::"),
 
     field_key: $ => choice(
       $._static_key,
@@ -147,8 +145,7 @@ export default grammar({
     object_comp: $ => seq(
       "{",
       repeat(seq($.object_local, ",")),
-      "[", field("key", $.expression), "]",
-      field("visibility", $.visibility),
+      "[", field("key", $.expression), "]", ":",
       field("value", $.expression),
       repeat(seq(",", $.object_local)),
       optional(","),

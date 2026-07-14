@@ -19,7 +19,6 @@ object (single field)
       (field
         key: (field_key
           (field_id))
-        visibility: (visibility)
         value: (number)))))
 
 ===
@@ -34,13 +33,11 @@ object (multiple fields with trailing comma)
       (field
         key: (field_key
           (field_id))
-        visibility: (visibility)
         value: (number)))
     (member
       (field
         key: (field_key
           (field_id))
-        visibility: (visibility)
         value: (number)))))
 
 ===
@@ -59,7 +56,6 @@ object (string fieldname)
               (string_start)
               (string_content)
               (string_end))))
-        visibility: (visibility)
         value: (number)))))
 
 ===
@@ -74,7 +70,6 @@ object (computed fieldname)
       (field
         key: (field_key
           expression: (var_ref_id))
-        visibility: (visibility)
         value: (number)))))
 
 ===
@@ -89,13 +84,11 @@ object (hidden fields)
       (field
         key: (field_key
           (field_id))
-        visibility: (visibility)
         value: (number)))
     (member
       (field
         key: (field_key
           (field_id))
-        visibility: (visibility)
         value: (number)))))
 
 ===
@@ -110,7 +103,6 @@ object (merge field)
       (field
         key: (field_key
           (field_id))
-        visibility: (visibility)
         value: (number)))))
 
 ===
@@ -128,7 +120,6 @@ object (method sugar)
         params: (params
           (param
             (var_id)))
-        visibility: (visibility)
         body: (var_ref_id)))))
 
 ===
@@ -148,7 +139,6 @@ object (local member)
       (field
         key: (field_key
           (field_id))
-        visibility: (visibility)
         value: (var_ref_id)))))
 
 ===
@@ -166,7 +156,6 @@ object (assert member)
       (field
         key: (field_key
           (field_id))
-        visibility: (visibility)
         value: (number)))))
 
 ===
@@ -178,7 +167,6 @@ object comprehension
 (document
   (object_comp
     key: (var_ref_id)
-    visibility: (visibility)
     value: (var_ref_id)
     (for_spec
       variable: (var_id)
@@ -193,7 +181,6 @@ object comprehension (with if)
 (document
   (object_comp
     key: (var_ref_id)
-    visibility: (visibility)
     value: (var_ref_id)
     (for_spec
       variable: (var_id)
@@ -214,7 +201,6 @@ object comprehension (leading local)
         variable: (var_id)
         value: (number)))
     key: (var_ref_id)
-    visibility: (visibility)
     value: (var_ref_id)
     (for_spec
       variable: (var_id)

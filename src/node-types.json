@@ -465,6 +465,16 @@
           }
         ]
       },
+      "inherit": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "+",
+            "named": false
+          }
+        ]
+      },
       "key": {
         "multiple": false,
         "required": true,
@@ -500,8 +510,16 @@
         "required": true,
         "types": [
           {
-            "type": "visibility",
-            "named": true
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": "::",
+            "named": false
+          },
+          {
+            "type": ":::",
+            "named": false
           }
         ]
       }
@@ -773,16 +791,6 @@
             "named": true
           }
         ]
-      },
-      "visibility": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "visibility",
-            "named": true
-          }
-        ]
       }
     },
     "children": {
@@ -1016,11 +1024,6 @@
   },
   {
     "type": "var_ref_id",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "visibility",
     "named": true,
     "fields": {}
   },
