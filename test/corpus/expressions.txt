@@ -346,3 +346,25 @@ array comprehension (trailing comma after expression)
     (for_spec
       variable: (var_id)
       collection: (var_ref_id))))
+
+===
+super field access
+===
+super.x
+---
+
+(document
+  (field_access
+    object: (super)
+    field: (field_ref_id)))
+
+===
+super index
+===
+super[e]
+---
+
+(document
+  (index
+    object: (super)
+    index: (var_ref_id)))
