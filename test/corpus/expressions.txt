@@ -368,3 +368,57 @@ super[e]
   (index
     object: (super)
     index: (var_ref_id)))
+
+===
+error
+===
+error "boom"
+---
+
+(document
+  (error
+    expression: (string
+      (quoted_string
+        (string_start)
+        (string_content)
+        (string_end)))))
+
+===
+error (expression operand)
+===
+error 1 + 2
+---
+
+(document
+  (error
+    expression: (binary
+      left: (number)
+      operator: (additive)
+      right: (number))))
+
+===
+parenthesized expression
+===
+(1 + 2)
+---
+
+(document
+  (parenthesized
+    expression: (binary
+      left: (number)
+      operator: (additive)
+      right: (number))))
+
+===
+parenthesized callee
+===
+(f)(x)
+---
+
+(document
+  (call
+    callee: (parenthesized
+      expression: (var_ref_id))
+    (arguments
+      (argument
+        value: (var_ref_id)))))

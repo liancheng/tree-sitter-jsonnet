@@ -62,6 +62,7 @@ export default grammar({
       $.call,
       $.conditional,
       $.dollar,
+      $.error,
       $.field_access,
       $.function,
       $.import,
@@ -72,6 +73,7 @@ export default grammar({
       $.object,
       $.object_apply,
       $.object_comp,
+      $.parenthesized,
       $.self,
       $.super,
       $.unary,
@@ -270,6 +272,12 @@ export default grammar({
     ),
 
     unary_operator: _ => choice("-", "+", "!", "~"),
+
+    // `error expr` — the operand is an arbitrary expression; the prefix
+    // extends as far right as possible (e.g. `error a + b` is `error (a + b)`).
+    error: $ => prec.right(seq("error", field("expression", $.expression))),
+
+    parenthesized: $ => seq("(", field("expression", $.expression), ")"),
 
     conditional: $ => prec.right(
       seq(

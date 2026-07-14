@@ -36,6 +36,10 @@
         "named": true
       },
       {
+        "type": "error",
+        "named": true
+      },
+      {
         "type": "field_access",
         "named": true
       },
@@ -73,6 +77,10 @@
       },
       {
         "type": "object_comp",
+        "named": true
+      },
+      {
+        "type": "parenthesized",
         "named": true
       },
       {
@@ -458,6 +466,22 @@
     "type": "equality",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "error",
+    "named": true,
+    "fields": {
+      "expression": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "field",
@@ -946,6 +970,22 @@
     }
   },
   {
+    "type": "parenthesized",
+    "named": true,
+    "fields": {
+      "expression": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "quoted_string",
     "named": true,
     "fields": {},
@@ -1230,6 +1270,10 @@
   },
   {
     "type": "else",
+    "named": false
+  },
+  {
+    "type": "error",
     "named": false
   },
   {

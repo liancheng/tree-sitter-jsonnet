@@ -44,6 +44,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "error"
+        },
+        {
+          "type": "SYMBOL",
           "name": "field_access"
         },
         {
@@ -81,6 +85,10 @@
         {
           "type": "SYMBOL",
           "name": "object_comp"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "parenthesized"
         },
         {
           "type": "SYMBOL",
@@ -1473,6 +1481,48 @@
         {
           "type": "STRING",
           "value": "~"
+        }
+      ]
+    },
+    "error": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "error"
+          },
+          {
+            "type": "FIELD",
+            "name": "expression",
+            "content": {
+              "type": "SYMBOL",
+              "name": "expression"
+            }
+          }
+        ]
+      }
+    },
+    "parenthesized": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "FIELD",
+          "name": "expression",
+          "content": {
+            "type": "SYMBOL",
+            "name": "expression"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ")"
         }
       ]
     },
