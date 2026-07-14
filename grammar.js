@@ -43,13 +43,20 @@ export default grammar({
 
   supertypes: $ => [$.expression],
 
+  conflicts: $ => [
+    // `{ local x = 1, ... }` could be an object member list or the leading object-locals of an object comprehension; only a later `for` decides.
+    [$.member, $.object_comp],
+    // `{ [expr] : ... }` — the `[expr]` is either a computed key (plain object) or the key of an object comprehension; only a later `for` decides.
+    [$._computed_key, $.object_comp],
+  ],
+
   rules: {
     document: $ => $.expression,
 
     expression: $ => choice(
       $.array,
       $.array_comp,
-      $.asserted_expression,
+      $.asserted_expr,
       $.binary,
       $.boolean,
       $.call,
@@ -61,6 +68,8 @@ export default grammar({
       $.local,
       $.null,
       $.number,
+      $.object,
+      $.object_comp,
       $.self,
       $.super,
       $.unary,
@@ -91,7 +100,64 @@ export default grammar({
       field("condition", $.expression),
     ),
 
-    asserted_expression: $ => seq($.assert, ";", $.expression),
+    object: $ => seq(
+      "{",
+      optional(commaSep($.member)),
+      "}",
+    ),
+
+    member: $ => choice(
+      $.object_local,
+      $.assert,
+      $.field,
+    ),
+
+    field: $ => choice(
+      seq(
+        field("key", $.field_key),
+        optional("+"),
+        field("visibility", $.visibility),
+        field("value", $.expression),
+      ),
+      seq(
+        field("key", $.field_key),
+        field("params", $.params),
+        field("visibility", $.visibility),
+        field("body", $.expression),
+      ),
+    ),
+
+    visibility: _ => choice(":", "::", ":::"),
+
+    field_key: $ => choice(
+      $._static_key,
+      $._computed_key,
+    ),
+
+    _static_key: $ => choice($.field_id, $.string),
+
+    _computed_key: $ => seq(
+      "[",
+      field("expression", $.expression),
+      "]"
+    ),
+
+    object_local: $ => seq("local", $.binding),
+
+    object_comp: $ => seq(
+      "{",
+      repeat(seq($.object_local, ",")),
+      "[", field("key", $.expression), "]",
+      field("visibility", $.visibility),
+      field("value", $.expression),
+      repeat(seq(",", $.object_local)),
+      optional(","),
+      $.for_spec,
+      repeat(choice($.for_spec, $.if_spec)),
+      "}",
+    ),
+
+    asserted_expr: $ => seq($.assert, ";", $.expression),
 
     assert: $ => seq(
       "assert",

@@ -1,0 +1,221 @@
+===
+object (empty)
+===
+{}
+---
+
+(document
+  (object))
+
+===
+object (single field)
+===
+{a: 1}
+---
+
+(document
+  (object
+    (member
+      (field
+        key: (field_key
+          (field_id))
+        visibility: (visibility)
+        value: (number)))))
+
+===
+object (multiple fields with trailing comma)
+===
+{a: 1, b: 2,}
+---
+
+(document
+  (object
+    (member
+      (field
+        key: (field_key
+          (field_id))
+        visibility: (visibility)
+        value: (number)))
+    (member
+      (field
+        key: (field_key
+          (field_id))
+        visibility: (visibility)
+        value: (number)))))
+
+===
+object (string fieldname)
+===
+{"key": 1}
+---
+
+(document
+  (object
+    (member
+      (field
+        key: (field_key
+          (string
+            (quoted_string
+              (string_start)
+              (string_content)
+              (string_end))))
+        visibility: (visibility)
+        value: (number)))))
+
+===
+object (computed fieldname)
+===
+{[x]: 1}
+---
+
+(document
+  (object
+    (member
+      (field
+        key: (field_key
+          expression: (var_ref_id))
+        visibility: (visibility)
+        value: (number)))))
+
+===
+object (hidden fields)
+===
+{a:: 1, b::: 2}
+---
+
+(document
+  (object
+    (member
+      (field
+        key: (field_key
+          (field_id))
+        visibility: (visibility)
+        value: (number)))
+    (member
+      (field
+        key: (field_key
+          (field_id))
+        visibility: (visibility)
+        value: (number)))))
+
+===
+object (merge field)
+===
+{a+: 1}
+---
+
+(document
+  (object
+    (member
+      (field
+        key: (field_key
+          (field_id))
+        visibility: (visibility)
+        value: (number)))))
+
+===
+object (method sugar)
+===
+{f(x): x}
+---
+
+(document
+  (object
+    (member
+      (field
+        key: (field_key
+          (field_id))
+        params: (params
+          (param
+            (var_id)))
+        visibility: (visibility)
+        body: (var_ref_id)))))
+
+===
+object (local member)
+===
+{local y = 1, a: y}
+---
+
+(document
+  (object
+    (member
+      (object_local
+        (binding
+          variable: (var_id)
+          value: (number))))
+    (member
+      (field
+        key: (field_key
+          (field_id))
+        visibility: (visibility)
+        value: (var_ref_id)))))
+
+===
+object (assert member)
+===
+{assert true, a: 1}
+---
+
+(document
+  (object
+    (member
+      (assert
+        condition: (boolean)))
+    (member
+      (field
+        key: (field_key
+          (field_id))
+        visibility: (visibility)
+        value: (number)))))
+
+===
+object comprehension
+===
+{[k]: v for k in keys}
+---
+
+(document
+  (object_comp
+    key: (var_ref_id)
+    visibility: (visibility)
+    value: (var_ref_id)
+    (for_spec
+      variable: (var_id)
+      collection: (var_ref_id))))
+
+===
+object comprehension (with if)
+===
+{[k]: v for k in keys if k}
+---
+
+(document
+  (object_comp
+    key: (var_ref_id)
+    visibility: (visibility)
+    value: (var_ref_id)
+    (for_spec
+      variable: (var_id)
+      collection: (var_ref_id))
+    (if_spec
+      condition: (var_ref_id))))
+
+===
+object comprehension (leading local)
+===
+{local z = 1, [k]: z for k in keys}
+---
+
+(document
+  (object_comp
+    (object_local
+      (binding
+        variable: (var_id)
+        value: (number)))
+    key: (var_ref_id)
+    visibility: (visibility)
+    value: (var_ref_id)
+    (for_spec
+      variable: (var_id)
+      collection: (var_ref_id))))
