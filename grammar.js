@@ -434,13 +434,15 @@ function quotedString($, quote, verbatim) {
     //
     // This is because `""` is longer than `"` and takes a higher precedence.
     escape = token.immediate(quote + quote);
-    content = token.immediate(new RegExp(`[^${quote}]+`));
+    content = token.immediate(prec(1, new RegExp(`[^${quote}]+`)));
   } else {
     const simpleEsc = /\\["'\\/bfnrt]/;
     const codepointEsc = /\\u[0-9a-fA-F]{4}/;
     escape = token.immediate(choice(simpleEsc, codepointEsc));
     // Stops content at the quote and at the backslash starting an escape.
-    content = token.immediate(new RegExp(`[^${quote}\\\\]+`));
+    // The `prec` keeps string content winning over the `//`/`/*` comment
+    // tokens when a string body starts with a slash (e.g. `"//path"`).
+    content = token.immediate(prec(1, new RegExp(`[^${quote}\\\\]+`)));
   }
 
   return seq(

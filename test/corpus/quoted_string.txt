@@ -324,3 +324,29 @@ verbatim single-quoted string mixing content and doubled quote
       (escape_sequence)
       (string_content)
       (string_end))))
+
+===
+string containing a double slash
+===
+"//connector/snowflake/..."
+---
+
+(document
+  (string
+    (quoted_string
+      (string_start)
+      (string_content)
+      (string_end))))
+
+===
+string containing block comment delimiters
+===
+"/* not a comment */"
+---
+
+(document
+  (string
+    (quoted_string
+      (string_start)
+      (string_content)
+      (string_end))))
