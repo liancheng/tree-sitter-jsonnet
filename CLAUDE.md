@@ -35,7 +35,7 @@ Implemented:
 - **Field access** `x.y` and **index/slice** `x[i]`, `x[a:b:c]` — postfix at `PREC.highest`.
 - **Unary** `- + ! ~`.
 - **Objects** `{ … }` — `field` with `+`/`:`/`::`/`:::`, computed/string/id `field_key`, method sugar `f(x): …`, `object_local`, object-level `assert`.
-- **Object comprehension** `{ [k]: v for … }` — only `:` visibility, per spec.
+- **Object comprehension** `{ [k]: v for … }` — visible fields only (`:` or `+:`; hidden `::`/`:::` are rejected by the reference `jsonnet`, which does accept the additive `+:` even though the spec grammar shows only `:`).
 - **Object composition** `expr { … }` — `object_apply`, postfix at `PREC.highest`; body is `object` or `object_comp`.
 - **`super` field access / index** — `super.x`, `super[e]`; these fall out of `field_access`/`index` taking any `expression`, no dedicated rule.
 - **`import` / `importstr` / `importbin`** — `import` rule; operand is `$.string` (a string literal, not an expression, since computed imports are disallowed).

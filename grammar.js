@@ -157,7 +157,10 @@ export default grammar({
     object_comp: $ => seq(
       "{",
       repeat(seq($.object_local, ",")),
-      "[", field("key", $.expression), "]", ":",
+      "[", field("key", $.expression), "]",
+      // NOTE: The Jsonnet language spec does not allow `+` here but the Google Jsonnet reference implementation does.
+      optional(field("inherit", "+")),
+      ":",
       field("value", $.expression),
       repeat(seq(",", $.object_local)),
       optional(","),

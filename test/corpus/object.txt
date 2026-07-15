@@ -189,6 +189,20 @@ object comprehension (with if)
       condition: (var_ref_id))))
 
 ===
+object comprehension (additive inherit)
+===
+{[k]+: v for k in keys}
+---
+
+(document
+  (object_comp
+    key: (var_ref_id)
+    value: (var_ref_id)
+    (for_spec
+      variable: (var_id)
+      collection: (var_ref_id))))
+
+===
 object comprehension (leading local)
 ===
 {local z = 1, [k]: z for k in keys}

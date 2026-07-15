@@ -591,6 +591,22 @@
           "value": "]"
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "inherit",
+              "content": {
+                "type": "STRING",
+                "value": "+"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "STRING",
           "value": ":"
         },

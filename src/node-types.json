@@ -868,6 +868,16 @@
     "type": "object_comp",
     "named": true,
     "fields": {
+      "inherit": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "+",
+            "named": false
+          }
+        ]
+      },
       "key": {
         "multiple": false,
         "required": true,
