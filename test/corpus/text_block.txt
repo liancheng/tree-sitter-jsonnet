@@ -128,6 +128,8 @@ leading whitespace-only line wider than the content indentation
 |||
 ---
 
+
+
 ===
 in-block empty blank line
 ===
@@ -159,6 +161,8 @@ in-block whitespace-only blank line
     y
 |||
 ---
+
+
 
 ===
 lines with longer indentation
@@ -194,3 +198,46 @@ content containing the fence delimiter
       (text_block_indent)
       (text_block_line_content)
       (text_block_end))))
+
+===
+text block following a token on the same line
+===
+"x" + /* ... */ |||
+  hi
+|||
+---
+
+(document
+  (binary
+    (string
+      (quoted_string
+        (string_start)
+        (string_content)
+        (string_end)))
+    (additive)
+    (comment)
+    (string
+      (text_block
+        (text_block_start)
+        (text_block_indent)
+        (text_block_line_content)
+        (text_block_end)))))
+
+===
+text block opening on its own line after a token
+===
+[
+  |||
+    hi
+  |||,
+]
+---
+
+(document
+  (array
+    (string
+      (text_block
+        (text_block_start)
+        (text_block_indent)
+        (text_block_line_content)
+        (text_block_end)))))

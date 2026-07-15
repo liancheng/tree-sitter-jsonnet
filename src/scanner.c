@@ -144,6 +144,13 @@ inline static bool scan_text_block_start(void *payload, TSLexer *lexer)
 {
     (void)payload;
 
+    // Skips whitespaces before the starting fence.
+    //
+    // NOTE: Not consuming comments here is safe. Comments start with a slash, but this scanner never emits a token
+    // starting with a slash, so on a comment it returns `false` and lets the internal lexer scan the comment.
+    while (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\n' || lexer->lookahead == '\r')
+        lexer->advance(lexer, true);
+
     if (!match_all(lexer, "|||"))
         return false;
 
