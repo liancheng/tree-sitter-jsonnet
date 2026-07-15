@@ -328,7 +328,7 @@ export default grammar({
 
       const sign = /[-+]/;
       const decimal_digits = /\d+/;
-      const signed_integer = seq(sign, decimal_digits);
+      const signed_integer = seq(optional(sign), decimal_digits);
       const exponent_part = seq(/e/i, signed_integer);
       const decimal_integer_literal = seq(
         optional(sign),

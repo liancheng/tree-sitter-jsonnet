@@ -1734,6 +1734,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
     case 13:
       if (lookahead == '+' ||
           lookahead == '-') ADVANCE(16);
+      if (('0' <= lookahead && lookahead <= '9')) ADVANCE(69);
       END_STATE();
     case 14:
       if (lookahead == '0' ||

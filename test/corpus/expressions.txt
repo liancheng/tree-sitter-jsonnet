@@ -131,12 +131,17 @@ number
   0b00, 0b11,
   0o00, 0o77,
   0x00, 0xff,
-  1e-10, 1.5e+2
+  1e-10, 1.5e+2,
+  3e6, 30e6, 1.0e7, 7.2e6
 ]
 ---
 
 (document
   (array
+    (number)
+    (number)
+    (number)
+    (number)
     (number)
     (number)
     (number)
