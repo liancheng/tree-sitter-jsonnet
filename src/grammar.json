@@ -1654,7 +1654,7 @@
           "name": "path",
           "content": {
             "type": "SYMBOL",
-            "name": "string"
+            "name": "quoted_string"
           }
         }
       ]

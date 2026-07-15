@@ -6,11 +6,10 @@ import "lib.libsonnet"
 
 (document
   (import
-    path: (string
-      (quoted_string
-        (string_start)
-        (string_content)
-        (string_end)))))
+    path: (quoted_string
+      (string_start)
+      (string_content)
+      (string_end))))
 
 ===
 importstr
@@ -20,11 +19,10 @@ importstr "data.txt"
 
 (document
   (import
-    path: (string
-      (quoted_string
-        (string_start)
-        (string_content)
-        (string_end)))))
+    path: (quoted_string
+      (string_start)
+      (string_content)
+      (string_end))))
 
 ===
 importbin
@@ -34,11 +32,10 @@ importbin "blob.bin"
 
 (document
   (import
-    path: (string
-      (quoted_string
-        (string_start)
-        (string_content)
-        (string_end)))))
+    path: (quoted_string
+      (string_start)
+      (string_content)
+      (string_end))))
 
 ===
 import (verbatim string path)
@@ -48,11 +45,10 @@ import @'raw.jsonnet'
 
 (document
   (import
-    path: (string
-      (quoted_string
-        (string_start)
-        (string_content)
-        (string_end)))))
+    path: (quoted_string
+      (string_start)
+      (string_content)
+      (string_end))))
 
 ===
 import (in local binding)
@@ -65,9 +61,24 @@ local lib = import "lib.libsonnet"; lib
     bindings: (binding
       variable: (var_id)
       value: (import
-        path: (string
-          (quoted_string
-            (string_start)
-            (string_content)
-            (string_end)))))
+        path: (quoted_string
+          (string_start)
+          (string_content)
+          (string_end))))
     body: (var_ref_id)))
+
+===
+import (text block path is rejected)
+:error
+===
+import |||
+  lib.libsonnet
+|||
+---
+
+===
+import (computed path is rejected)
+:error
+===
+import ("foo" + ".libsonnet")
+---

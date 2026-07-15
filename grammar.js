@@ -298,11 +298,10 @@ export default grammar({
       field("body", $.expression)
     ),
 
-    // `import` / `importstr` / `importbin` — the operand must be a string
-    // literal (computed imports are not allowed).
+    // Paths in imports must be single-/double-quoted string literals.
     import: $ => seq(
       field("kind", choice("import", "importstr", "importbin")),
-      field("path", $.string),
+      field("path", $.quoted_string),
     ),
 
     params: $ => seq("(", optional(commaSep($.param)), ")"),
