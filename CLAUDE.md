@@ -14,6 +14,7 @@ A tree-sitter grammar for [Jsonnet](https://jsonnet.org/ref/spec.html). Author: 
 
 ## Conventions
 
+- **Git commit messages:** follow [Semantic Commit Messages](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716) — a concise `<type>: <subject>` line (e.g. `feat:`, `fix:`, `docs:`, `chore:`) with an **empty body**.
 - **Corpus format** (match `tree-sitter test --update` output so `--update` never churns the files):
   - Input text follows the closing `===` **immediately** — no blank line between them.
   - After the `---` separator, put **one blank line** before the parse tree. Exception: `:error` / empty-tree cases have no tree, so their `---` is followed by a blank line and then the next `===` (which is the case separator, not a pre-tree blank — leave it).
