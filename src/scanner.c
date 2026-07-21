@@ -140,6 +140,13 @@ inline static bool advance_while_any(TSLexer *lexer, char const *charset)
     return !lexer->eof(lexer);
 }
 
+inline static bool emit_token(TSLexer *lexer, TokenType type)
+{
+    lexer->mark_end(lexer);
+    lexer->result_symbol = type;
+    return true;
+}
+
 inline static bool scan_text_block_start(void *payload, TSLexer *lexer)
 {
     (void)payload;
@@ -161,9 +168,7 @@ inline static bool scan_text_block_start(void *payload, TSLexer *lexer)
     if (!advance_while_any(lexer, " \t") || !match(lexer, '\n'))
         return false;
 
-    lexer->mark_end(lexer);
-    lexer->result_symbol = TEXT_BLOCK_START;
-    return true;
+    return emit_token(lexer, TEXT_BLOCK_START);
 }
 
 inline static bool scan_text_block_end(void *payload, TSLexer *lexer)
@@ -174,9 +179,7 @@ inline static bool scan_text_block_end(void *payload, TSLexer *lexer)
         return false;
 
     array_clear(indent);
-    lexer->mark_end(lexer);
-    lexer->result_symbol = TEXT_BLOCK_END;
-    return true;
+    return emit_token(lexer, TEXT_BLOCK_END);
 }
 
 inline static bool scan_text_block_blank_line(void *payload, TSLexer *lexer)
@@ -187,9 +190,7 @@ inline static bool scan_text_block_blank_line(void *payload, TSLexer *lexer)
     if (!match(lexer, '\n'))
         return false;
 
-    lexer->mark_end(lexer);
-    lexer->result_symbol = TEXT_BLOCK_BLANK_LINE;
-    return true;
+    return emit_token(lexer, TEXT_BLOCK_BLANK_LINE);
 }
 
 inline static bool scan_text_block_initial_indent(void *payload, TSLexer *lexer)
@@ -211,9 +212,7 @@ inline static bool scan_text_block_initial_indent(void *payload, TSLexer *lexer)
         // Empty indentation
         return false;
 
-    lexer->mark_end(lexer);
-    lexer->result_symbol = TEXT_BLOCK_INDENT;
-    return true;
+    return emit_token(lexer, TEXT_BLOCK_INDENT);
 }
 
 inline static bool scan_text_block_subsequent_indent(void *payload, TSLexer *lexer)
@@ -224,9 +223,7 @@ inline static bool scan_text_block_subsequent_indent(void *payload, TSLexer *lex
         if (!match(lexer, *array_get(indent, i)))
             return false;
 
-    lexer->mark_end(lexer);
-    lexer->result_symbol = TEXT_BLOCK_INDENT;
-    return true;
+    return emit_token(lexer, TEXT_BLOCK_INDENT);
 }
 
 inline static bool scan_text_block_indent(void *payload, TSLexer *lexer)
@@ -244,9 +241,7 @@ inline static bool scan_text_block_line_content(void *payload, TSLexer *lexer)
         // Reached the EOF prematurely before seeing the newline.
         return false;
 
-    lexer->mark_end(lexer);
-    lexer->result_symbol = TEXT_BLOCK_LINE_CONTENT;
-    return true;
+    return emit_token(lexer, TEXT_BLOCK_LINE_CONTENT);
 }
 
 bool tree_sitter_jsonnet_external_scanner_scan(void *payload, TSLexer *lexer, const bool *valid_symbols)
