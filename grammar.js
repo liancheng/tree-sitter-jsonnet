@@ -41,7 +41,10 @@ export default grammar({
 
   word: $ => $._id,
 
-  supertypes: $ => [$.expression],
+  supertypes: $ => [
+    $.expression,
+    $.string
+  ],
 
   conflicts: $ => [
     // NOTE: `object_local` (part of `member`) and `_computed_key` can appear in both `object` and `object_comp`, only a

@@ -51,11 +51,10 @@ object (string fieldname)
     (member
       (field
         key: (field_key
-          (string
-            (quoted_string
-              (string_start)
-              (string_content)
-              (string_end))))
+          (quoted_string
+            (string_start)
+            (string_content)
+            (string_end)))
         value: (number)))))
 
 ===
@@ -272,7 +271,8 @@ base { b: 2 }
     object: (object
       (member
         (field
-          key: (field_key (field_id))
+          key: (field_key
+            (field_id))
           value: (number))))))
 
 ===
@@ -286,12 +286,14 @@ object composition (object literal target)
     target: (object
       (member
         (field
-          key: (field_key (field_id))
+          key: (field_key
+            (field_id))
           value: (number))))
     object: (object
       (member
         (field
-          key: (field_key (field_id))
+          key: (field_key
+            (field_id))
           value: (number))))))
 
 ===
@@ -323,11 +325,12 @@ a { b: 1 } { c: 2 }
       object: (object
         (member
           (field
-            key: (field_key (field_id))
+            key: (field_key
+              (field_id))
             value: (number)))))
     object: (object
       (member
         (field
-          key: (field_key (field_id))
+          key: (field_key
+            (field_id))
           value: (number))))))
-

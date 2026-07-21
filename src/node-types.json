@@ -106,6 +106,20 @@
     ]
   },
   {
+    "type": "string",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "quoted_string",
+        "named": true
+      },
+      {
+        "type": "text_block",
+        "named": true
+      }
+    ]
+  },
+  {
     "type": "additive",
     "named": true,
     "fields": {}
@@ -1056,25 +1070,6 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "string",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "quoted_string",
-          "named": true
-        },
-        {
-          "type": "text_block",
-          "named": true
-        }
-      ]
     }
   },
   {

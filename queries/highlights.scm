@@ -3,7 +3,8 @@
 (boolean) @boolean
 (null) @constant.builtin
 
-(string) @string
+(quoted_string) @string
+(text_block) @string
 (escape_sequence) @string.escape
 
 (comment) @comment @spell

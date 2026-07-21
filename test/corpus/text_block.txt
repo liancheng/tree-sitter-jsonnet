@@ -7,12 +7,11 @@ text block (single line)
 ---
 
 (document
-  (string
-    (text_block
-      (text_block_start)
-      (text_block_indent)
-      (text_block_line_content)
-      (text_block_end))))
+  (text_block
+    (text_block_start)
+    (text_block_indent)
+    (text_block_line_content)
+    (text_block_end)))
 
 ===
 text block (multiple lines)
@@ -24,14 +23,13 @@ text block (multiple lines)
 ---
 
 (document
-  (string
-    (text_block
-      (text_block_start)
-      (text_block_indent)
-      (text_block_line_content)
-      (text_block_indent)
-      (text_block_line_content)
-      (text_block_end))))
+  (text_block
+    (text_block_start)
+    (text_block_indent)
+    (text_block_line_content)
+    (text_block_indent)
+    (text_block_line_content)
+    (text_block_end)))
 
 ===
 text block with trailing dash on the start fence
@@ -42,12 +40,11 @@ text block with trailing dash on the start fence
 ---
 
 (document
-  (string
-    (text_block
-      (text_block_start)
-      (text_block_indent)
-      (text_block_line_content)
-      (text_block_end))))
+  (text_block
+    (text_block_start)
+    (text_block_indent)
+    (text_block_line_content)
+    (text_block_end)))
 
 ===
 text block with trailing whitespace on the start fence
@@ -58,12 +55,11 @@ text block with trailing whitespace on the start fence
 ---
 
 (document
-  (string
-    (text_block
-      (text_block_start)
-      (text_block_indent)
-      (text_block_line_content)
-      (text_block_end))))
+  (text_block
+    (text_block_start)
+    (text_block_indent)
+    (text_block_line_content)
+    (text_block_end)))
 
 ===
 text block with tab indentation
@@ -74,12 +70,11 @@ text block with tab indentation
 ---
 
 (document
-  (string
-    (text_block
-      (text_block_start)
-      (text_block_indent)
-      (text_block_line_content)
-      (text_block_end))))
+  (text_block
+    (text_block_start)
+    (text_block_indent)
+    (text_block_line_content)
+    (text_block_end)))
 
 ===
 leading empty line before the initial indentation
@@ -91,13 +86,12 @@ leading empty line before the initial indentation
 ---
 
 (document
-  (string
-    (text_block
-      (text_block_start)
-      (text_block_blank_line)
-      (text_block_indent)
-      (text_block_line_content)
-      (text_block_end))))
+  (text_block
+    (text_block_start)
+    (text_block_blank_line)
+    (text_block_indent)
+    (text_block_line_content)
+    (text_block_end)))
 
 ===
 leading whitespace-only line defines the indentation
@@ -109,14 +103,13 @@ leading whitespace-only line defines the indentation
 ---
 
 (document
-  (string
-    (text_block
-      (text_block_start)
-      (text_block_indent)
-      (text_block_line_content)
-      (text_block_indent)
-      (text_block_line_content)
-      (text_block_end))))
+  (text_block
+    (text_block_start)
+    (text_block_indent)
+    (text_block_line_content)
+    (text_block_indent)
+    (text_block_line_content)
+    (text_block_end)))
 
 ===
 leading whitespace-only line wider than the content indentation
@@ -141,15 +134,14 @@ in-block empty blank line
 ---
 
 (document
-  (string
-    (text_block
-      (text_block_start)
-      (text_block_indent)
-      (text_block_line_content)
-      (text_block_blank_line)
-      (text_block_indent)
-      (text_block_line_content)
-      (text_block_end))))
+  (text_block
+    (text_block_start)
+    (text_block_indent)
+    (text_block_line_content)
+    (text_block_blank_line)
+    (text_block_indent)
+    (text_block_line_content)
+    (text_block_end)))
 
 ===
 in-block whitespace-only blank line
@@ -174,14 +166,13 @@ lines with longer indentation
 ---
 
 (document
-  (string
-    (text_block
-      (text_block_start)
-      (text_block_indent)
-      (text_block_line_content)
-      (text_block_indent)
-      (text_block_line_content)
-      (text_block_end))))
+  (text_block
+    (text_block_start)
+    (text_block_indent)
+    (text_block_line_content)
+    (text_block_indent)
+    (text_block_line_content)
+    (text_block_end)))
 
 ===
 content containing the fence delimiter
@@ -192,12 +183,11 @@ content containing the fence delimiter
 ---
 
 (document
-  (string
-    (text_block
-      (text_block_start)
-      (text_block_indent)
-      (text_block_line_content)
-      (text_block_end))))
+  (text_block
+    (text_block_start)
+    (text_block_indent)
+    (text_block_line_content)
+    (text_block_end)))
 
 ===
 text block following a token on the same line
@@ -209,19 +199,17 @@ text block following a token on the same line
 
 (document
   (binary
-    (string
-      (quoted_string
-        (string_start)
-        (string_content)
-        (string_end)))
+    (quoted_string
+      (string_start)
+      (string_content)
+      (string_end))
     (additive)
     (comment)
-    (string
-      (text_block
-        (text_block_start)
-        (text_block_indent)
-        (text_block_line_content)
-        (text_block_end)))))
+    (text_block
+      (text_block_start)
+      (text_block_indent)
+      (text_block_line_content)
+      (text_block_end))))
 
 ===
 text block opening on its own line after a token
@@ -235,9 +223,8 @@ text block opening on its own line after a token
 
 (document
   (array
-    (string
-      (text_block
-        (text_block_start)
-        (text_block_indent)
-        (text_block_line_content)
-        (text_block_end)))))
+    (text_block
+      (text_block_start)
+      (text_block_indent)
+      (text_block_line_content)
+      (text_block_end))))

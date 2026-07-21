@@ -2577,7 +2577,8 @@
   ],
   "inline": [],
   "supertypes": [
-    "expression"
+    "expression",
+    "string"
   ],
   "reserved": {}
 }

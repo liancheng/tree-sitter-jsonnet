@@ -408,11 +408,10 @@ error "boom"
 
 (document
   (error
-    expression: (string
-      (quoted_string
-        (string_start)
-        (string_content)
-        (string_end)))))
+    expression: (quoted_string
+      (string_start)
+      (string_content)
+      (string_end))))
 
 ===
 error (expression operand)

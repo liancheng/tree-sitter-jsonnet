@@ -17,7 +17,7 @@
 #define MAX_ALIAS_SEQUENCE_LENGTH 13
 #define MAX_RESERVED_WORD_SET_SIZE 0
 #define PRODUCTION_ID_COUNT 38
-#define SUPERTYPE_COUNT 1
+#define SUPERTYPE_COUNT 2
 
 enum ts_symbol_identifiers {
   sym__id = 1,
@@ -901,8 +901,9 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .named = true,
   },
   [sym_string] = {
-    .visible = true,
+    .visible = false,
     .named = true,
+    .supertype = true,
   },
   [sym_quoted_string] = {
     .visible = true,
@@ -1595,10 +1596,12 @@ static const TSStateId ts_primary_state_ids[STATE_COUNT] = {
 
 static const TSSymbol ts_supertype_symbols[SUPERTYPE_COUNT] = {
   sym_expression,
+  sym_string,
 };
 
 static const TSMapSlice ts_supertype_map_slices[] = {
   [sym_expression] = {.index = 0, .length = 25},
+  [sym_string] = {.index = 25, .length = 2},
 };
 
 static const TSSymbol ts_supertype_map_entries[] = {
@@ -1628,6 +1631,9 @@ static const TSSymbol ts_supertype_map_entries[] = {
     sym_super,
     sym_unary,
     sym_var_ref_id,
+  [25] =
+    sym_quoted_string,
+    sym_text_block,
 };
 
 static bool ts_lex(TSLexer *lexer, TSStateId state) {

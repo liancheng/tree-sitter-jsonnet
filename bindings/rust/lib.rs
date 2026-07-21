@@ -107,10 +107,7 @@ mod tests {
         assert_eq!(root.kind(), "document");
         assert_eq!(root.child_count(), 1);
 
-        let string = root.child(0).unwrap();
-        assert_eq!(string.kind(), "string");
-
-        let text_block = string.child(0).unwrap();
+        let text_block = root.child(0).unwrap();
 
         assert_node_eq(text_block, "text_block", (0, 0), (3, 3));
 
@@ -156,10 +153,7 @@ mod tests {
         assert_eq!(root.kind(), "document");
         assert_eq!(root.child_count(), 1);
 
-        let string = root.child(0).unwrap();
-        assert_eq!(string.kind(), "string");
-
-        let quoted_string = string.child(0).unwrap();
+        let quoted_string = root.child(0).unwrap();
         assert_eq!(quoted_string.kind(), "quoted_string");
 
         assert_node_eq(
