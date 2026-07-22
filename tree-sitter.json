@@ -10,7 +10,8 @@
         "jsonnet"
       ],
       "injection-regex": "^jsonnet$",
-      "class-name": "TreeSitterJsonnet"
+      "class-name": "TreeSitterJsonnet",
+      "highlights": "queries/highlights.scm"
     }
   ],
   "metadata": {

@@ -432,7 +432,7 @@ function quotedString($, quote, verbatim) {
   if (verbatim) {
     // String `""""` (4 double-quotes) parses correctly as:
     //
-    //  (string
+    //  (quoted_string
     //    (string_start)      -> "
     //    (escape_sequence)   -> ""
     //    (escape_end))       -> "
