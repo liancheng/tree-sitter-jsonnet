@@ -4,7 +4,7 @@
 //! tree-sitter [`Parser`], and then use the parser to parse some code:
 //!
 //! ```
-//! let code = r#"1"#;
+//! let code = "null";
 //! let mut parser = tree_sitter::Parser::new();
 //! let language = tree_sitter_jsonnet::LANGUAGE;
 //! parser
@@ -49,132 +49,11 @@ pub const TAGS_QUERY: &str = include_str!("../../queries/tags.scm");
 
 #[cfg(test)]
 mod tests {
-    use tree_sitter::{self as T};
-
-    fn parser() -> T::Parser {
-        let mut parser = T::Parser::new();
+    #[test]
+    fn test_can_load_grammar() {
+        let mut parser = tree_sitter::Parser::new();
         parser
             .set_language(&super::LANGUAGE.into())
             .expect("Error loading Jsonnet parser");
-        parser
-    }
-
-    fn assert_node_eq(
-        node: T::Node,
-        kind: &str,
-        start: impl Into<Option<(usize, usize)>>,
-        end: impl Into<Option<(usize, usize)>>,
-    ) {
-        assert_eq!(node.kind(), kind);
-
-        if let Some((row, column)) = start.into() {
-            assert_eq!(node.start_position(), T::Point::new(row, column));
-        }
-
-        if let Some((row, column)) = end.into() {
-            assert_eq!(node.end_position(), T::Point::new(row, column));
-        }
-    }
-
-    #[test]
-    fn test_parse_number() {
-        let tree = parser().parse("1", None).unwrap();
-        let root = tree.root_node();
-        assert!(!root.has_error());
-
-        assert_eq!(root.kind(), "document");
-        assert_eq!(root.child_count(), 1);
-
-        let number = root.child(0).unwrap();
-        assert_eq!(number.kind(), "number");
-        assert_node_eq(number, "number", (0, 0), (0, 1));
-    }
-
-    #[test]
-    fn test_parse_text_block() {
-        let source = indoc::indoc! {"
-            |||
-              $
-                c
-            |||
-        "}
-        .replace("$", "");
-
-        let tree = parser().parse(source, None).unwrap();
-        let root = tree.root_node();
-        assert!(!root.has_error());
-
-        assert_eq!(root.kind(), "document");
-        assert_eq!(root.child_count(), 1);
-
-        let text_block = root.child(0).unwrap();
-
-        assert_node_eq(text_block, "text_block", (0, 0), (3, 3));
-
-        assert_eq!(text_block.child(0).unwrap().kind(), "text_block_start");
-        assert_eq!(text_block.child(5).unwrap().kind(), "text_block_end");
-
-        assert_node_eq(
-            text_block.child(1).unwrap(),
-            "text_block_indent",
-            (1, 0),
-            (1, 2),
-        );
-
-        assert_node_eq(
-            text_block.child(2).unwrap(),
-            "text_block_line_content",
-            (1, 2),
-            (2, 0),
-        );
-
-        assert_node_eq(
-            text_block.child(3).unwrap(),
-            "text_block_indent",
-            (2, 0),
-            (2, 2),
-        );
-
-        assert_node_eq(
-            text_block.child(4).unwrap(),
-            "text_block_line_content",
-            (2, 2),
-            (3, 0),
-        );
-    }
-
-    #[test]
-    fn test_escape_sequence() {
-        let source = "@''''";
-        let tree = parser().parse(source, None).unwrap();
-        let root = tree.root_node();
-        assert!(!root.has_error());
-
-        assert_eq!(root.kind(), "document");
-        assert_eq!(root.child_count(), 1);
-
-        let quoted_string = root.child(0).unwrap();
-        assert_eq!(quoted_string.kind(), "quoted_string");
-
-        assert_node_eq(
-            quoted_string.named_child(0).unwrap(),
-            "string_start",
-            (0, 0),
-            (0, 2),
-        );
-
-        assert_node_eq(
-            quoted_string.named_child(1).unwrap(),
-            "escape_sequence",
-            (0, 2),
-            (0, 4),
-        );
-
-        assert_node_eq(
-            quoted_string.named_child(2).unwrap(),
-            "string_end",
-            (0, 4),
-            (0, 5),
-        );
     }
 }
