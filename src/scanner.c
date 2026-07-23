@@ -17,6 +17,11 @@ typedef enum TokenType
 
 typedef Array(char) CharArray;
 
+inline static void consume(TSLexer *lexer)
+{
+    lexer->advance(lexer, false);
+}
+
 /**
  * Skips or consumes the next character if it matches the given one.
  *
@@ -31,7 +36,7 @@ inline static bool match(TSLexer *lexer, const char ch, bool skip)
     return true;
 }
 
-inline static bool consume(TSLexer *lexer, const char ch)
+inline static bool consume_if_match(TSLexer *lexer, const char ch)
 {
     return match(lexer, ch, false);
 }
@@ -44,7 +49,7 @@ inline static bool consume(TSLexer *lexer, const char ch)
 inline static bool consume_all(TSLexer *lexer, char const *string)
 {
     for (char const *p = string; *p != '\0'; ++p)
-        if (lexer->eof(lexer) || !consume(lexer, *p))
+        if (lexer->eof(lexer) || !consume_if_match(lexer, *p))
             return false;
 
     return true;
@@ -58,18 +63,15 @@ inline static bool consume_all(TSLexer *lexer, char const *string)
 inline static bool consume_past(TSLexer *lexer, const char ch)
 {
     while (true)
-    {
         if (lexer->eof(lexer))
             return false;
-
-        if (lexer->lookahead == ch)
+        else if (lexer->lookahead != ch)
+            consume(lexer);
+        else
         {
-            lexer->advance(lexer, false);
+            consume(lexer);
             return true;
         }
-
-        lexer->advance(lexer, false);
-    }
 }
 
 /**
@@ -171,10 +173,10 @@ inline static bool scan_text_block_start(void *payload, TSLexer *lexer)
         return false;
 
     // Scans the optional trailing dash, indicating that the last newline of the text block must be removed.
-    consume(lexer, '-');
+    consume_if_match(lexer, '-');
 
     // The starting fence must end with zero or more whitespaces and a newline.
-    if (!consume_while_any(lexer, " \t") || !consume(lexer, '\n'))
+    if (!consume_while_any(lexer, " \t") || !consume_if_match(lexer, '\n'))
         return false;
 
     return emit_token(lexer, TEXT_BLOCK_START);
@@ -196,7 +198,7 @@ inline static bool scan_text_block_blank_line(void *payload, TSLexer *lexer)
     (void)payload;
 
     // Scans a newline-only blank line.
-    if (!consume(lexer, '\n'))
+    if (!consume_if_match(lexer, '\n'))
         return false;
 
     return emit_token(lexer, TEXT_BLOCK_BLANK_LINE);
@@ -214,7 +216,7 @@ inline static bool scan_text_block_initial_indent(void *payload, TSLexer *lexer)
             return false;
 
         array_push(indent, (char)lexer->lookahead);
-        lexer->advance(lexer, false);
+        consume(lexer);
     }
 
     if (indent->size == 0)
@@ -229,7 +231,7 @@ inline static bool scan_text_block_subsequent_indent(void *payload, TSLexer *lex
     CharArray *indent = (CharArray *)payload;
 
     for (uint32_t i = 0; i < indent->size; ++i)
-        if (!consume(lexer, *array_get(indent, i)))
+        if (!consume_if_match(lexer, *array_get(indent, i)))
             return false;
 
     return emit_token(lexer, TEXT_BLOCK_INDENT);
