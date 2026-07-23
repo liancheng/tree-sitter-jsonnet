@@ -17,6 +17,105 @@ typedef enum TokenType
 
 typedef Array(char) CharArray;
 
+/**
+ * Skips or consumes the next character if it matches the given one.
+ *
+ * \return `true` if the character matched, `false` otherwise.
+ */
+inline static bool match(TSLexer *lexer, const char ch, bool skip)
+{
+    if (lexer->lookahead != ch)
+        return false;
+
+    lexer->advance(lexer, skip);
+    return true;
+}
+
+inline static bool consume(TSLexer *lexer, const char ch)
+{
+    return match(lexer, ch, false);
+}
+
+/**
+ * Consumes the next characters if they match the given string.
+ *
+ * \return `true` if every character matched, `false` on a mismatch or EOF.
+ */
+inline static bool consume_all(TSLexer *lexer, char const *string)
+{
+    for (char const *p = string; *p != '\0'; ++p)
+        if (lexer->eof(lexer) || !consume(lexer, *p))
+            return false;
+
+    return true;
+}
+
+/**
+ * Consumes the input until the cursor is past the first occurrence of the given character.
+ *
+ * \return `false` if the cursor reached the EOF first, otherwise `true`.
+ */
+inline static bool consume_past(TSLexer *lexer, const char ch)
+{
+    while (true)
+    {
+        if (lexer->eof(lexer))
+            return false;
+
+        if (lexer->lookahead == ch)
+        {
+            lexer->advance(lexer, false);
+            return true;
+        }
+
+        lexer->advance(lexer, false);
+    }
+}
+
+/**
+ * Skips or consumes the next character if it matches any character in the given string.
+ *
+ * \return `true` if a character matched, `false` on no match or EOF.
+ */
+inline static bool match_any(TSLexer *lexer, char const *charset, bool skip)
+{
+    for (char const *p = charset; !lexer->eof(lexer) && *p != '\0'; ++p)
+        if (match(lexer, *p, skip))
+            return true;
+
+    return false;
+}
+
+/**
+ * Skips or consumes the input repeatedly when the next character is in the given character set.
+ *
+ * \return `true` if the cursor stopped on more input, `false` if it reached EOF.
+ */
+inline static bool advance_while_any(TSLexer *lexer, char const *charset, bool skip)
+{
+    while (match_any(lexer, charset, skip))
+        ;
+
+    return !lexer->eof(lexer);
+}
+
+inline static bool consume_while_any(TSLexer *lexer, char const *charset)
+{
+    return advance_while_any(lexer, charset, false);
+}
+
+inline static bool skip_while_any(TSLexer *lexer, char const *charset)
+{
+    return advance_while_any(lexer, charset, true);
+}
+
+inline static bool emit_token(TSLexer *lexer, TokenType type)
+{
+    lexer->mark_end(lexer);
+    lexer->result_symbol = type;
+    return true;
+}
+
 void *tree_sitter_jsonnet_external_scanner_create()
 {
     // An array storing the initial indentation of the text block.
@@ -58,95 +157,6 @@ void tree_sitter_jsonnet_external_scanner_deserialize(void *payload, const char 
         array_push(indent, buffer[sizeof(size) + i]);
 }
 
-/**
- * Tries to match a single character.
- *
- * When the next character matches the given one, returns `true` and advances the cursor by one character. Otherwise,
- * returns `false`.
- */
-inline static bool match(TSLexer *lexer, const char ch)
-{
-    if (lexer->lookahead != ch)
-        return false;
-
-    lexer->advance(lexer, false);
-    return true;
-}
-
-/**
- * Tries to match a given string.
- *
- * When the subsequent input matches the given string pattern, returns `true` and advances the cursor by the length of
- * the pattern. Otherwise, returns `false`.
- */
-inline static bool match_all(TSLexer *lexer, char const *string)
-{
-    for (char const *p = string; *p != '\0'; ++p)
-        if (lexer->eof(lexer) || !match(lexer, *p))
-            return false;
-
-    return true;
-}
-
-/**
- * Tries to match any character in the given string.
- *
- * When the next character matches any character in the given string, returns `true` and advances the cursor by one
- * character. Otherwise, returns `false`.
- */
-inline static bool match_any(TSLexer *lexer, char const *charset)
-{
-    for (char const *p = charset; !lexer->eof(lexer) && *p != '\0'; ++p)
-        if (match(lexer, *p))
-            return true;
-
-    return false;
-}
-
-/**
- * Advances the cursor after the first occurrence of the given character.
- *
- * If the cursor indeed advanced after the first occurrence of the given character, returns `true`. Otherwise, returns
- * `false`, indicating the cursor has reached the EOF.
- */
-inline static bool advance_after(TSLexer *lexer, const char ch)
-{
-    while (true)
-    {
-        if (lexer->eof(lexer))
-            return false;
-
-        if (lexer->lookahead == ch)
-        {
-            lexer->advance(lexer, false);
-            return true;
-        }
-
-        lexer->advance(lexer, false);
-    }
-}
-
-/**
- * Advances the cursor repeatedly when the next character is in the given character set.
- *
- * If the cursor indeed reached a character not in the character set, returns `true`. Otherwise, returns `false`,
- * indicating that the cursor has reached the EOF.
- */
-inline static bool advance_while_any(TSLexer *lexer, char const *charset)
-{
-    while (match_any(lexer, charset))
-        ;
-
-    return !lexer->eof(lexer);
-}
-
-inline static bool emit_token(TSLexer *lexer, TokenType type)
-{
-    lexer->mark_end(lexer);
-    lexer->result_symbol = type;
-    return true;
-}
-
 inline static bool scan_text_block_start(void *payload, TSLexer *lexer)
 {
     (void)payload;
@@ -155,17 +165,16 @@ inline static bool scan_text_block_start(void *payload, TSLexer *lexer)
     //
     // NOTE: Not consuming comments here is safe. Comments start with a slash, but this scanner never emits a token
     // starting with a slash, so on a comment it returns `false` and lets the internal lexer scan the comment.
-    while (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\n' || lexer->lookahead == '\r')
-        lexer->advance(lexer, true);
+    skip_while_any(lexer, " \t\n");
 
-    if (!match_all(lexer, "|||"))
+    if (!consume_all(lexer, "|||"))
         return false;
 
     // Scans the optional trailing dash, indicating that the last newline of the text block must be removed.
-    match(lexer, '-');
+    consume(lexer, '-');
 
     // The starting fence must end with zero or more whitespaces and a newline.
-    if (!advance_while_any(lexer, " \t") || !match(lexer, '\n'))
+    if (!consume_while_any(lexer, " \t") || !consume(lexer, '\n'))
         return false;
 
     return emit_token(lexer, TEXT_BLOCK_START);
@@ -175,7 +184,7 @@ inline static bool scan_text_block_end(void *payload, TSLexer *lexer)
 {
     CharArray *indent = (CharArray *)payload;
 
-    if (!match_all(lexer, "|||"))
+    if (!consume_all(lexer, "|||"))
         return false;
 
     array_clear(indent);
@@ -187,7 +196,7 @@ inline static bool scan_text_block_blank_line(void *payload, TSLexer *lexer)
     (void)payload;
 
     // Scans a newline-only blank line.
-    if (!match(lexer, '\n'))
+    if (!consume(lexer, '\n'))
         return false;
 
     return emit_token(lexer, TEXT_BLOCK_BLANK_LINE);
@@ -220,7 +229,7 @@ inline static bool scan_text_block_subsequent_indent(void *payload, TSLexer *lex
     CharArray *indent = (CharArray *)payload;
 
     for (uint32_t i = 0; i < indent->size; ++i)
-        if (!match(lexer, *array_get(indent, i)))
+        if (!consume(lexer, *array_get(indent, i)))
             return false;
 
     return emit_token(lexer, TEXT_BLOCK_INDENT);
@@ -237,7 +246,8 @@ inline static bool scan_text_block_line_content(void *payload, TSLexer *lexer)
 {
     (void)payload;
 
-    if (!advance_after(lexer, '\n'))
+    // Consumes through the newline that terminates the line content.
+    if (!consume_past(lexer, '\n'))
         // Reached the EOF prematurely before seeing the newline.
         return false;
 
