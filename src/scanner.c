@@ -41,6 +41,11 @@ inline static bool consume_if_match(TSLexer *lexer, const char ch)
     return match(lexer, ch, false);
 }
 
+inline static bool skip_if_match(TSLexer *lexer, const char ch)
+{
+    return match(lexer, ch, true);
+}
+
 /**
  * Consumes the next characters if they match the given string.
  *
@@ -75,45 +80,34 @@ inline static bool consume_past(TSLexer *lexer, const char ch)
 }
 
 /**
- * Skips or consumes the next character if it matches any character in the given string.
+ * Skips the next character if it matches any character in the given string.
  *
  * \return `true` if a character matched, `false` on no match or EOF.
  */
-inline static bool match_any(TSLexer *lexer, char const *charset, bool skip)
+inline static bool skip_any(TSLexer *lexer, char const *charset)
 {
     for (char const *p = charset; !lexer->eof(lexer) && *p != '\0'; ++p)
-        if (match(lexer, *p, skip))
+        if (skip_if_match(lexer, *p))
             return true;
 
     return false;
 }
 
 /**
- * Skips or consumes the input repeatedly when the next character is in the given character set.
+ * Skips the input repeatedly when the next character is in the given character set.
  *
  * \return `true` if the cursor stopped on more input, `false` if it reached EOF.
  */
-inline static bool advance_while_any(TSLexer *lexer, char const *charset, bool skip)
+inline static bool skip_while_any(TSLexer *lexer, char const *charset)
 {
-    while (match_any(lexer, charset, skip))
+    while (skip_any(lexer, charset))
         ;
 
     return !lexer->eof(lexer);
 }
 
-inline static bool consume_while_any(TSLexer *lexer, char const *charset)
-{
-    return advance_while_any(lexer, charset, false);
-}
-
-inline static bool skip_while_any(TSLexer *lexer, char const *charset)
-{
-    return advance_while_any(lexer, charset, true);
-}
-
 inline static bool emit_token(TSLexer *lexer, TokenType type)
 {
-    lexer->mark_end(lexer);
     lexer->result_symbol = type;
     return true;
 }
@@ -174,10 +168,6 @@ inline static bool scan_text_block_start(void *payload, TSLexer *lexer)
 
     // Scans the optional trailing dash, indicating that the last newline of the text block must be removed.
     consume_if_match(lexer, '-');
-
-    // The starting fence must end with zero or more whitespaces and a newline.
-    if (!consume_while_any(lexer, " \t") || !consume_if_match(lexer, '\n'))
-        return false;
 
     return emit_token(lexer, TEXT_BLOCK_START);
 }

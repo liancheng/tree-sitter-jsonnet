@@ -374,7 +374,7 @@ export default grammar({
     ),
 
     text_block: $ => seq(
-      $.text_block_start,
+      seq($.text_block_start, token.immediate(/[ \t]*\n/)),
       repeat($.text_block_blank_line),
       seq($.text_block_indent, $.text_block_line_content),
       repeat(
