@@ -33,3 +33,6 @@ cc = "1.2"
 [dev-dependencies]
 indoc = "2.0.7"
 tree-sitter = "0.26.8"
+
+[package.metadata.bin]
+tree-sitter-cli = { version = "0.26.11", bins = ["tree-sitter"] }
