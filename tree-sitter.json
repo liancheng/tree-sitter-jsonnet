@@ -21,13 +21,11 @@
     "authors": [
       {
         "name": "Cheng Lian",
-        "email": "lian.cs.zju@gmail.com",
-        "url": ""
+        "email": "lian.cs.zju@gmail.com"
       }
     ],
     "links": {
-      "repository": "https://github.com/tree-sitter/tree-sitter-jsonnet",
-      "funding": ""
+      "repository": "https://github.com/tree-sitter/tree-sitter-jsonnet"
     }
   },
   "bindings": {
@@ -35,7 +33,7 @@
     "go": false,
     "java": false,
     "node": false,
-    "python": false,
+    "python": true,
     "rust": true,
     "swift": false,
     "zig": false
