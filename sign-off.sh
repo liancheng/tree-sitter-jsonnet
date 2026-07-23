@@ -2,6 +2,6 @@
 
 tree-sitter generate &&
 	tree-sitter test &&
-	tree-sitter fuzz -r --iterations 1000 --edits 5 &&
+	uv run --frozen --reinstall-package tree-sitter-jsonnet pytest &&
 	cargo test &&
-	uv run --frozen --reinstall-package tree-sitter-jsonnet pytest
+	tree-sitter fuzz -r --iterations 1000 --edits 5
