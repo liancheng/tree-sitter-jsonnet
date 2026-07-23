@@ -2,6 +2,7 @@ root = true
 
 [*]
 charset = utf-8
+max_line_length = 120
 
 [*.{json,toml,yml,gyp,xml}]
 indent_style = space

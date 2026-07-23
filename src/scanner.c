@@ -264,5 +264,3 @@ bool tree_sitter_jsonnet_external_scanner_scan(void *payload, TSLexer *lexer, co
            (valid_symbols[TEXT_BLOCK_LINE_CONTENT] && scan_text_block_line_content(payload, lexer)) ||
            (valid_symbols[TEXT_BLOCK_END] && scan_text_block_end(payload, lexer));
 }
-
-// vim:tw=120
