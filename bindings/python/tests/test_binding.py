@@ -22,6 +22,33 @@ class TestLanguage(TestCase):
         self.assertEqual(node.start_point, start_point)
         self.assertEqual(node.end_point, end_point)
 
+    def test_quoted_string(self):
+        tree = self.parse(r'@"\n"')
+
+        quoted_string = just(tree.root_node.child(0))
+        self.assertEqual(quoted_string.grammar_name, "quoted_string")
+
+        self.checkNode(
+            just(quoted_string.child(0)),
+            "string_start",
+            Point(0, 0),
+            Point(0, 2),
+        )
+
+        self.checkNode(
+            just(quoted_string.child(1)),
+            "string_content",
+            Point(0, 2),
+            Point(0, 4),
+        )
+
+        self.checkNode(
+            just(quoted_string.child(2)),
+            "string_end",
+            Point(0, 4),
+            Point(0, 5),
+        )
+
     def test_text_block(self):
         tree = self.parse(
             """\
