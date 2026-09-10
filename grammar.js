@@ -335,10 +335,7 @@ export default grammar({
       const decimal_digits = /\d+/;
       const signed_integer = seq(optional(sign), decimal_digits);
       const exponent_part = seq(/e/i, signed_integer);
-      const decimal_integer_literal = seq(
-        optional(sign),
-        choice("0", seq(/[1-9]/, optional(decimal_digits))),
-      );
+      const decimal_integer_literal = choice("0", seq(/[1-9]/, optional(decimal_digits)));
 
       const decimal_literal = choice(
         seq(

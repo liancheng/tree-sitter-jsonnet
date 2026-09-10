@@ -1876,45 +1876,28 @@
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "SEQ",
+                    "type": "CHOICE",
                     "members": [
                       {
-                        "type": "CHOICE",
+                        "type": "STRING",
+                        "value": "0"
+                      },
+                      {
+                        "type": "SEQ",
                         "members": [
                           {
                             "type": "PATTERN",
-                            "value": "[-+]"
+                            "value": "[1-9]"
                           },
                           {
-                            "type": "BLANK"
-                          }
-                        ]
-                      },
-                      {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "STRING",
-                            "value": "0"
-                          },
-                          {
-                            "type": "SEQ",
+                            "type": "CHOICE",
                             "members": [
                               {
                                 "type": "PATTERN",
-                                "value": "[1-9]"
+                                "value": "\\d+"
                               },
                               {
-                                "type": "CHOICE",
-                                "members": [
-                                  {
-                                    "type": "PATTERN",
-                                    "value": "\\d+"
-                                  },
-                                  {
-                                    "type": "BLANK"
-                                  }
-                                ]
+                                "type": "BLANK"
                               }
                             ]
                           }
@@ -1983,45 +1966,28 @@
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "SEQ",
+                    "type": "CHOICE",
                     "members": [
                       {
-                        "type": "CHOICE",
+                        "type": "STRING",
+                        "value": "0"
+                      },
+                      {
+                        "type": "SEQ",
                         "members": [
                           {
                             "type": "PATTERN",
-                            "value": "[-+]"
+                            "value": "[1-9]"
                           },
                           {
-                            "type": "BLANK"
-                          }
-                        ]
-                      },
-                      {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "STRING",
-                            "value": "0"
-                          },
-                          {
-                            "type": "SEQ",
+                            "type": "CHOICE",
                             "members": [
                               {
                                 "type": "PATTERN",
-                                "value": "[1-9]"
+                                "value": "\\d+"
                               },
                               {
-                                "type": "CHOICE",
-                                "members": [
-                                  {
-                                    "type": "PATTERN",
-                                    "value": "\\d+"
-                                  },
-                                  {
-                                    "type": "BLANK"
-                                  }
-                                ]
+                                "type": "BLANK"
                               }
                             ]
                           }
@@ -2063,45 +2029,28 @@
                 ]
               },
               {
-                "type": "SEQ",
+                "type": "CHOICE",
                 "members": [
                   {
-                    "type": "CHOICE",
+                    "type": "STRING",
+                    "value": "0"
+                  },
+                  {
+                    "type": "SEQ",
                     "members": [
                       {
                         "type": "PATTERN",
-                        "value": "[-+]"
+                        "value": "[1-9]"
                       },
                       {
-                        "type": "BLANK"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "0"
-                      },
-                      {
-                        "type": "SEQ",
+                        "type": "CHOICE",
                         "members": [
                           {
                             "type": "PATTERN",
-                            "value": "[1-9]"
+                            "value": "\\d+"
                           },
                           {
-                            "type": "CHOICE",
-                            "members": [
-                              {
-                                "type": "PATTERN",
-                                "value": "\\d+"
-                              },
-                              {
-                                "type": "BLANK"
-                              }
-                            ]
+                            "type": "BLANK"
                           }
                         ]
                       }

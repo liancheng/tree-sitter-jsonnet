@@ -127,7 +127,7 @@ null
 number
 ===
 [
-  0, 1, -1,
+  0, 1,
   0b00, 0b11,
   0o00, 0o77,
   0x00, 0xff,
@@ -138,7 +138,6 @@ number
 
 (document
   (array
-    (number)
     (number)
     (number)
     (number)
@@ -292,6 +291,17 @@ unary (bitwise not)
   (unary
     operator: (unary_operator)
     operand: (var_ref_id)))
+
+===
+unary (negative number)
+===
+-1
+---
+
+(document
+  (unary
+    operator: (unary_operator)
+    operand: (number)))
 
 ===
 unary binds looser than field access
