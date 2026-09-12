@@ -199,13 +199,13 @@ text block following a token on the same line
 
 (document
   (binary
-    (quoted_string
+    left: (quoted_string
       (string_start)
       (string_content)
       (string_end))
-    (additive)
+    operator: (additive)
     (comment)
-    (text_block
+    right: (text_block
       (text_block_start)
       (text_block_indent)
       (text_block_line_content)

@@ -19,6 +19,7 @@ object (single field)
       (field
         key: (field_key
           (field_id))
+        visibility: (visibility)
         value: (number)))))
 
 ===
@@ -33,11 +34,13 @@ object (multiple fields with trailing comma)
       (field
         key: (field_key
           (field_id))
+        visibility: (visibility)
         value: (number)))
     (member
       (field
         key: (field_key
           (field_id))
+        visibility: (visibility)
         value: (number)))))
 
 ===
@@ -55,6 +58,7 @@ object (string fieldname)
             (string_start)
             (string_content)
             (string_end)))
+        visibility: (visibility)
         value: (number)))))
 
 ===
@@ -69,6 +73,7 @@ object (computed fieldname)
       (field
         key: (field_key
           expression: (var_ref_id))
+        visibility: (visibility)
         value: (number)))))
 
 ===
@@ -83,11 +88,13 @@ object (hidden fields)
       (field
         key: (field_key
           (field_id))
+        visibility: (visibility)
         value: (number)))
     (member
       (field
         key: (field_key
           (field_id))
+        visibility: (visibility)
         value: (number)))))
 
 ===
@@ -102,6 +109,8 @@ object (merge field)
       (field
         key: (field_key
           (field_id))
+        inherit: (inherit)
+        visibility: (visibility)
         value: (number)))))
 
 ===
@@ -116,9 +125,10 @@ object (method sugar)
       (field
         key: (field_key
           (field_id))
-        params: (params
+        parameters: (params
           (param
             (var_id)))
+        visibility: (visibility)
         body: (var_ref_id)))))
 
 ===
@@ -138,6 +148,7 @@ object (local member)
       (field
         key: (field_key
           (field_id))
+        visibility: (visibility)
         value: (var_ref_id)))))
 
 ===
@@ -155,6 +166,7 @@ object (assert member)
       (field
         key: (field_key
           (field_id))
+        visibility: (visibility)
         value: (number)))))
 
 ===
@@ -168,8 +180,8 @@ object comprehension
     key: (var_ref_id)
     value: (var_ref_id)
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))))
+      (var_id)
+      (var_ref_id))))
 
 ===
 object comprehension (with if)
@@ -182,10 +194,10 @@ object comprehension (with if)
     key: (var_ref_id)
     value: (var_ref_id)
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))
+      (var_id)
+      (var_ref_id))
     (if_spec
-      condition: (var_ref_id))))
+      (var_ref_id))))
 
 ===
 object comprehension (additive inherit)
@@ -198,8 +210,8 @@ object comprehension (additive inherit)
     key: (var_ref_id)
     value: (var_ref_id)
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))))
+      (var_id)
+      (var_ref_id))))
 
 ===
 object comprehension (leading local)
@@ -216,8 +228,8 @@ object comprehension (leading local)
     key: (var_ref_id)
     value: (var_ref_id)
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))))
+      (var_id)
+      (var_ref_id))))
 
 ===
 object comprehension (trailing local)
@@ -234,8 +246,8 @@ object comprehension (trailing local)
         variable: (var_id)
         (number)))
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))))
+      (var_id)
+      (var_ref_id))))
 
 ===
 object comprehension (locals before and after)
@@ -256,8 +268,8 @@ object comprehension (locals before and after)
         variable: (var_id)
         (number)))
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))))
+      (var_id)
+      (var_ref_id))))
 
 ===
 object composition
@@ -273,6 +285,7 @@ base { b: 2 }
         (field
           key: (field_key
             (field_id))
+          visibility: (visibility)
           value: (number))))))
 
 ===
@@ -288,12 +301,14 @@ object composition (object literal target)
         (field
           key: (field_key
             (field_id))
+          visibility: (visibility)
           value: (number))))
     object: (object
       (member
         (field
           key: (field_key
             (field_id))
+          visibility: (visibility)
           value: (number))))))
 
 ===
@@ -309,8 +324,8 @@ x { [k]: v for k in ks }
       key: (var_ref_id)
       value: (var_ref_id)
       (for_spec
-        variable: (var_id)
-        collection: (var_ref_id)))))
+        (var_id)
+        (var_ref_id)))))
 
 ===
 object composition (chained)
@@ -327,10 +342,12 @@ a { b: 1 } { c: 2 }
           (field
             key: (field_key
               (field_id))
+            visibility: (visibility)
             value: (number)))))
     object: (object
       (member
         (field
           key: (field_key
             (field_id))
+          visibility: (visibility)
           value: (number))))))

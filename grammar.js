@@ -88,30 +88,18 @@ export default grammar({
 
     array_comp: $ => seq(
       "[",
-      field("expression", $.expression),
+      $.expression,
       optional(","),
       $.for_spec,
       repeat(choice($.for_spec, $.if_spec)),
       "]",
     ),
 
-    for_spec: $ => seq(
-      "for",
-      field("variable", $.var_id),
-      "in",
-      field("collection", $.expression),
-    ),
+    for_spec: $ => seq("for", $.var_id, "in", $.expression),
 
-    if_spec: $ => seq(
-      "if",
-      field("condition", $.expression),
-    ),
+    if_spec: $ => seq("if", $.expression),
 
-    object: $ => seq(
-      "{",
-      optional(commaSep($.member)),
-      "}",
-    ),
+    object: $ => seq("{", optional(commaSep($.member)), "}"),
 
     member: $ => choice(
       $.object_local,
@@ -119,18 +107,22 @@ export default grammar({
       $.field,
     ),
 
+    inherit: _ => "+",
+
+    visibility: _ => choice(":", "::", ":::"),
+
     field: $ => choice(
       seq(
         field("key", $.field_key),
-        optional(field("inherit", "+")),
-        field("visibility", choice(":", "::", ":::")),
-        field("value", $.expression),
+        field("inherit", optional($.inherit)),
+        field("visibility", $.visibility),
+        field("value", $.expression)
       ),
       seq(
         field("key", $.field_key),
-        field("params", $.params),
-        field("visibility", choice(":", "::", ":::")),
-        field("body", $.expression),
+        field("parameters", $.params),
+        field("visibility", $.visibility),
+        field("body", $.expression)
       ),
     ),
 
@@ -226,18 +218,14 @@ export default grammar({
 
     call: $ => prec(
       PREC.highest,
-      seq(
-        field("callee", $.expression),
-        $.arguments,
-        optional("tailstrict"),
-      )
+      seq($.expression, $.arguments, optional("tailstrict"))
     ),
 
     arguments: $ => seq("(", optional(commaSep($.argument)), ")"),
 
     argument: $ => seq(
-      optional(seq(field("param", $.param_ref_id), "=")),
-      field('value', $.expression),
+      optional(seq(field("name", $.param_ref_id), "=")),
+      $.expression
     ),
 
     field_access: $ => prec(
@@ -254,10 +242,7 @@ export default grammar({
       seq(
         field("object", $.expression),
         "[",
-        choice(
-          field("index", $.expression),
-          $.slice,
-        ),
+        choice(field("index", $.expression), $.slice,),
         "]",
       )
     ),
@@ -295,17 +280,13 @@ export default grammar({
       )
     ),
 
-    function: $ => seq(
-      "function",
-      field("params", $.params),
-      field("body", $.expression)
-    ),
-
     // Paths in imports must be single-/double-quoted string literals.
     import: $ => seq(
       field("kind", choice("import", "importstr", "importbin")),
       field("path", $.quoted_string),
     ),
+
+    function: $ => seq("function", $.params, $.expression),
 
     params: $ => seq("(", optional(commaSep($.param)), ")"),
 
