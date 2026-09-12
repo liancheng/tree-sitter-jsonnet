@@ -133,7 +133,7 @@ object (local member)
       (object_local
         (binding
           variable: (var_id)
-          value: (number))))
+          (number))))
     (member
       (field
         key: (field_key
@@ -212,7 +212,7 @@ object comprehension (leading local)
     (object_local
       (binding
         variable: (var_id)
-        value: (number)))
+        (number)))
     key: (var_ref_id)
     value: (var_ref_id)
     (for_spec
@@ -232,7 +232,7 @@ object comprehension (trailing local)
     (object_local
       (binding
         variable: (var_id)
-        value: (number)))
+        (number)))
     (for_spec
       variable: (var_id)
       collection: (var_ref_id))))
@@ -248,13 +248,13 @@ object comprehension (locals before and after)
     (object_local
       (binding
         variable: (var_id)
-        value: (number)))
+        (number)))
     key: (var_ref_id)
     value: (var_ref_id)
     (object_local
       (binding
         variable: (var_id)
-        value: (number)))
+        (number)))
     (for_spec
       variable: (var_id)
       collection: (var_ref_id))))

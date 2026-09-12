@@ -314,16 +314,13 @@ export default grammar({
       optional(seq("=", field("default", $.expression)))
     ),
 
-    local: $ => seq(
-      "local",
-      field("bindings", commaSepStrict($.binding)),
-      ";",
-      field("body", $.expression),
-    ),
+    local: $ => seq("local", $.bindings, ";", $.expression),
+
+    bindings: $ => commaSepStrict($.binding),
 
     binding: $ => choice(
-      seq(field("function", $.var_id), field("params", $.params), "=", field("body", $.expression)),
-      seq(field("variable", $.var_id), "=", field("value", $.expression)),
+      seq(field("variable", $.var_id), "=", $.expression),
+      seq(field("function", $.var_id), $.params, "=", $.expression),
     ),
 
     number: _ => {

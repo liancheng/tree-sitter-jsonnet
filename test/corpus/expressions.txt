@@ -92,10 +92,11 @@ local x = 1; x
 
 (document
   (local
-    bindings: (binding
-      variable: (var_id)
-      value: (number))
-    body: (var_ref_id)))
+    (bindings
+      (binding
+        variable: (var_id)
+        (number)))
+    (var_ref_id)))
 
 ===
 local (function binding)
@@ -106,13 +107,35 @@ f
 
 (document
   (local
-    bindings: (binding
-      function: (var_id)
-      params: (params
-        (param
-          (var_id)))
-      body: (var_ref_id))
-    body: (var_ref_id)))
+    (bindings
+      (binding
+        (var_id)
+        (params
+          (param
+            (var_id)))
+        (var_ref_id)))
+    (var_ref_id)))
+
+===
+local (multiple bindings)
+===
+local x = 1, y = 2;
+x + y
+---
+
+(document
+  (local
+    (bindings
+      (binding
+        (var_id)
+        (number))
+      (binding
+        (var_id)
+        (number)))
+    (binary
+      (var_ref_id)
+      (additive)
+      (var_ref_id))))
 
 ===
 null

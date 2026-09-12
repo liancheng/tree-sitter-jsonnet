@@ -58,14 +58,15 @@ local lib = import "lib.libsonnet"; lib
 
 (document
   (local
-    bindings: (binding
-      variable: (var_id)
-      value: (import
-        path: (quoted_string
-          (string_start)
-          (string_content)
-          (string_end))))
-    body: (var_ref_id)))
+    (bindings
+      (binding
+        variable: (var_id)
+        (import
+          path: (quoted_string
+            (string_start)
+            (string_content)
+            (string_end)))))
+    (var_ref_id)))
 
 ===
 import (text block path is rejected)
@@ -76,9 +77,13 @@ import |||
 |||
 ---
 
+
+
 ===
 import (computed path is rejected)
 :error
 ===
 import ("foo" + ".libsonnet")
 ---
+
+
