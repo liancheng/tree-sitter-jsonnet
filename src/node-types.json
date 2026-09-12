@@ -183,22 +183,15 @@
   {
     "type": "array_comp",
     "named": true,
-    "fields": {
-      "expression": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
         {
           "type": "for_spec",
           "named": true
@@ -499,75 +492,32 @@
   {
     "type": "field",
     "named": true,
-    "fields": {
-      "body": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      },
-      "inherit": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "+",
-            "named": false
-          }
-        ]
-      },
-      "key": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "field_key",
-            "named": true
-          }
-        ]
-      },
-      "params": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "params",
-            "named": true
-          }
-        ]
-      },
-      "value": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      },
-      "visibility": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": ":",
-            "named": false
-          },
-          {
-            "type": "::",
-            "named": false
-          },
-          {
-            "type": ":::",
-            "named": false
-          }
-        ]
-      }
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "field_key",
+          "named": true
+        },
+        {
+          "type": "inherit",
+          "named": true
+        },
+        {
+          "type": "params",
+          "named": true
+        },
+        {
+          "type": "visibility",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -639,69 +589,54 @@
   {
     "type": "for_spec",
     "named": true,
-    "fields": {
-      "collection": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      },
-      "variable": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "var_id",
-            "named": true
-          }
-        ]
-      }
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "var_id",
+          "named": true
+        }
+      ]
     }
   },
   {
     "type": "function",
     "named": true,
-    "fields": {
-      "body": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      },
-      "params": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "params",
-            "named": true
-          }
-        ]
-      }
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "params",
+          "named": true
+        }
+      ]
     }
   },
   {
     "type": "if_spec",
     "named": true,
-    "fields": {
-      "condition": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      }
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -773,6 +708,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "inherit",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "local",
@@ -1129,6 +1069,11 @@
   },
   {
     "type": "var_ref_id",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "visibility",
     "named": true,
     "fields": {}
   },

@@ -109,7 +109,7 @@ f
   (local
     (bindings
       (binding
-        (var_id)
+        function: (var_id)
         (params
           (param
             (var_id)))
@@ -127,15 +127,15 @@ x + y
   (local
     (bindings
       (binding
-        (var_id)
+        variable: (var_id)
         (number))
       (binding
-        (var_id)
+        variable: (var_id)
         (number)))
     (binary
-      (var_ref_id)
-      (additive)
-      (var_ref_id))))
+      left: (var_ref_id)
+      operator: (additive)
+      right: (var_ref_id))))
 
 ===
 null
@@ -362,10 +362,10 @@ array comprehension
 
 (document
   (array_comp
-    expression: (var_ref_id)
+    (var_ref_id)
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))))
+      (var_id)
+      (var_ref_id))))
 
 ===
 array comprehension (with if)
@@ -375,12 +375,12 @@ array comprehension (with if)
 
 (document
   (array_comp
-    expression: (var_ref_id)
+    (var_ref_id)
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))
+      (var_id)
+      (var_ref_id))
     (if_spec
-      condition: (var_ref_id))))
+      (var_ref_id))))
 
 ===
 array comprehension (nested for)
@@ -390,13 +390,13 @@ array comprehension (nested for)
 
 (document
   (array_comp
-    expression: (var_ref_id)
+    (var_ref_id)
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))
+      (var_id)
+      (var_ref_id))
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))))
+      (var_id)
+      (var_ref_id))))
 
 ===
 array comprehension (trailing comma after expression)
@@ -406,10 +406,10 @@ array comprehension (trailing comma after expression)
 
 (document
   (array_comp
-    expression: (var_ref_id)
+    (var_ref_id)
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))))
+      (var_id)
+      (var_ref_id))))
 
 ===
 super field access

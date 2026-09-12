@@ -39,18 +39,18 @@
 ] @variable.builtin
 
 ; Object fields
-(field key: (field_key (field_id) @property))
-(field key: (field_key (string) @property))
+(field (field_key (field_id) @property))
+(field (field_key (string) @property))
 (object_local "local" @keyword)
 
 ; Method / function definition names
 (field
-  key: (field_key (field_id) @function.method)
-  params: (params))
+  (field_key (field_id) @function.method)
+  (params))
 
 ; Bindings & parameters
-(binding function: (var_id) @function)
-(binding variable: (var_id) @variable)
+(binding (var_id) @function (params) _)
+(binding (var_id) @variable "=" _)
 (param (var_id) @variable.parameter)
 (param_ref_id) @variable.parameter
 
@@ -78,8 +78,8 @@
   (unary_operator)
 ] @operator
 
-(field visibility: _ @operator)
-(field inherit: _ @operator)
+(field (visibility) @operator)
+(field (inherit) @operator)
 
 ; Punctuation
 ["{" "}"] @punctuation.bracket

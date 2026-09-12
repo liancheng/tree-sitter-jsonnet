@@ -88,30 +88,18 @@ export default grammar({
 
     array_comp: $ => seq(
       "[",
-      field("expression", $.expression),
+      $.expression,
       optional(","),
       $.for_spec,
       repeat(choice($.for_spec, $.if_spec)),
       "]",
     ),
 
-    for_spec: $ => seq(
-      "for",
-      field("variable", $.var_id),
-      "in",
-      field("collection", $.expression),
-    ),
+    for_spec: $ => seq("for", $.var_id, "in", $.expression),
 
-    if_spec: $ => seq(
-      "if",
-      field("condition", $.expression),
-    ),
+    if_spec: $ => seq("if", $.expression),
 
-    object: $ => seq(
-      "{",
-      optional(commaSep($.member)),
-      "}",
-    ),
+    object: $ => seq("{", optional(commaSep($.member)), "}"),
 
     member: $ => choice(
       $.object_local,
@@ -119,19 +107,13 @@ export default grammar({
       $.field,
     ),
 
+    inherit: _ => "+",
+
+    visibility: _ => choice(":", "::", ":::"),
+
     field: $ => choice(
-      seq(
-        field("key", $.field_key),
-        optional(field("inherit", "+")),
-        field("visibility", choice(":", "::", ":::")),
-        field("value", $.expression),
-      ),
-      seq(
-        field("key", $.field_key),
-        field("params", $.params),
-        field("visibility", choice(":", "::", ":::")),
-        field("body", $.expression),
-      ),
+      seq($.field_key, optional($.inherit), $.visibility, $.expression),
+      seq($.field_key, $.params, $.visibility, $.expression),
     ),
 
     field_key: $ => choice(
@@ -295,17 +277,13 @@ export default grammar({
       )
     ),
 
-    function: $ => seq(
-      "function",
-      field("params", $.params),
-      field("body", $.expression)
-    ),
-
     // Paths in imports must be single-/double-quoted string literals.
     import: $ => seq(
       field("kind", choice("import", "importstr", "importbin")),
       field("path", $.quoted_string),
     ),
+
+    function: $ => seq("function", $.params, $.expression),
 
     params: $ => seq("(", optional(commaSep($.param)), ")"),
 

@@ -17,9 +17,10 @@ object (single field)
   (object
     (member
       (field
-        key: (field_key
+        (field_key
           (field_id))
-        value: (number)))))
+        (visibility)
+        (number)))))
 
 ===
 object (multiple fields with trailing comma)
@@ -31,14 +32,16 @@ object (multiple fields with trailing comma)
   (object
     (member
       (field
-        key: (field_key
+        (field_key
           (field_id))
-        value: (number)))
+        (visibility)
+        (number)))
     (member
       (field
-        key: (field_key
+        (field_key
           (field_id))
-        value: (number)))))
+        (visibility)
+        (number)))))
 
 ===
 object (string fieldname)
@@ -50,12 +53,13 @@ object (string fieldname)
   (object
     (member
       (field
-        key: (field_key
+        (field_key
           (quoted_string
             (string_start)
             (string_content)
             (string_end)))
-        value: (number)))))
+        (visibility)
+        (number)))))
 
 ===
 object (computed fieldname)
@@ -67,9 +71,10 @@ object (computed fieldname)
   (object
     (member
       (field
-        key: (field_key
+        (field_key
           expression: (var_ref_id))
-        value: (number)))))
+        (visibility)
+        (number)))))
 
 ===
 object (hidden fields)
@@ -81,14 +86,16 @@ object (hidden fields)
   (object
     (member
       (field
-        key: (field_key
+        (field_key
           (field_id))
-        value: (number)))
+        (visibility)
+        (number)))
     (member
       (field
-        key: (field_key
+        (field_key
           (field_id))
-        value: (number)))))
+        (visibility)
+        (number)))))
 
 ===
 object (merge field)
@@ -100,9 +107,11 @@ object (merge field)
   (object
     (member
       (field
-        key: (field_key
+        (field_key
           (field_id))
-        value: (number)))))
+        (inherit)
+        (visibility)
+        (number)))))
 
 ===
 object (method sugar)
@@ -114,12 +123,13 @@ object (method sugar)
   (object
     (member
       (field
-        key: (field_key
+        (field_key
           (field_id))
-        params: (params
+        (params
           (param
             (var_id)))
-        body: (var_ref_id)))))
+        (visibility)
+        (var_ref_id)))))
 
 ===
 object (local member)
@@ -136,9 +146,10 @@ object (local member)
           (number))))
     (member
       (field
-        key: (field_key
+        (field_key
           (field_id))
-        value: (var_ref_id)))))
+        (visibility)
+        (var_ref_id)))))
 
 ===
 object (assert member)
@@ -153,9 +164,10 @@ object (assert member)
         condition: (boolean)))
     (member
       (field
-        key: (field_key
+        (field_key
           (field_id))
-        value: (number)))))
+        (visibility)
+        (number)))))
 
 ===
 object comprehension
@@ -168,8 +180,8 @@ object comprehension
     key: (var_ref_id)
     value: (var_ref_id)
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))))
+      (var_id)
+      (var_ref_id))))
 
 ===
 object comprehension (with if)
@@ -182,10 +194,10 @@ object comprehension (with if)
     key: (var_ref_id)
     value: (var_ref_id)
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))
+      (var_id)
+      (var_ref_id))
     (if_spec
-      condition: (var_ref_id))))
+      (var_ref_id))))
 
 ===
 object comprehension (additive inherit)
@@ -198,8 +210,8 @@ object comprehension (additive inherit)
     key: (var_ref_id)
     value: (var_ref_id)
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))))
+      (var_id)
+      (var_ref_id))))
 
 ===
 object comprehension (leading local)
@@ -216,8 +228,8 @@ object comprehension (leading local)
     key: (var_ref_id)
     value: (var_ref_id)
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))))
+      (var_id)
+      (var_ref_id))))
 
 ===
 object comprehension (trailing local)
@@ -234,8 +246,8 @@ object comprehension (trailing local)
         variable: (var_id)
         (number)))
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))))
+      (var_id)
+      (var_ref_id))))
 
 ===
 object comprehension (locals before and after)
@@ -256,8 +268,8 @@ object comprehension (locals before and after)
         variable: (var_id)
         (number)))
     (for_spec
-      variable: (var_id)
-      collection: (var_ref_id))))
+      (var_id)
+      (var_ref_id))))
 
 ===
 object composition
@@ -271,9 +283,10 @@ base { b: 2 }
     object: (object
       (member
         (field
-          key: (field_key
+          (field_key
             (field_id))
-          value: (number))))))
+          (visibility)
+          (number))))))
 
 ===
 object composition (object literal target)
@@ -286,15 +299,17 @@ object composition (object literal target)
     target: (object
       (member
         (field
-          key: (field_key
+          (field_key
             (field_id))
-          value: (number))))
+          (visibility)
+          (number))))
     object: (object
       (member
         (field
-          key: (field_key
+          (field_key
             (field_id))
-          value: (number))))))
+          (visibility)
+          (number))))))
 
 ===
 object composition (comprehension body)
@@ -309,8 +324,8 @@ x { [k]: v for k in ks }
       key: (var_ref_id)
       value: (var_ref_id)
       (for_spec
-        variable: (var_id)
-        collection: (var_ref_id)))))
+        (var_id)
+        (var_ref_id)))))
 
 ===
 object composition (chained)
@@ -325,12 +340,14 @@ a { b: 1 } { c: 2 }
       object: (object
         (member
           (field
-            key: (field_key
+            (field_key
               (field_id))
-            value: (number)))))
+            (visibility)
+            (number)))))
     object: (object
       (member
         (field
-          key: (field_key
+          (field_key
             (field_id))
-          value: (number))))))
+          (visibility)
+          (number))))))
