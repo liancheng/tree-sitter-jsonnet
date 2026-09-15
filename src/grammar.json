@@ -1571,37 +1571,33 @@
         ]
       }
     },
+    "import_kind": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "import"
+        },
+        {
+          "type": "STRING",
+          "value": "importstr"
+        },
+        {
+          "type": "STRING",
+          "value": "importbin"
+        }
+      ]
+    },
     "import": {
       "type": "SEQ",
       "members": [
         {
-          "type": "FIELD",
-          "name": "kind",
-          "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "import"
-              },
-              {
-                "type": "STRING",
-                "value": "importstr"
-              },
-              {
-                "type": "STRING",
-                "value": "importbin"
-              }
-            ]
-          }
+          "type": "SYMBOL",
+          "name": "import_kind"
         },
         {
-          "type": "FIELD",
-          "name": "path",
-          "content": {
-            "type": "SYMBOL",
-            "name": "quoted_string"
-          }
+          "type": "SYMBOL",
+          "name": "quoted_string"
         }
       ]
     },

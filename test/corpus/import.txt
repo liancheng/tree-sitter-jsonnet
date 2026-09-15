@@ -6,7 +6,8 @@ import "lib.libsonnet"
 
 (document
   (import
-    path: (quoted_string
+    (import_kind)
+    (quoted_string
       (string_start)
       (string_content)
       (string_end))))
@@ -19,7 +20,8 @@ importstr "data.txt"
 
 (document
   (import
-    path: (quoted_string
+    (import_kind)
+    (quoted_string
       (string_start)
       (string_content)
       (string_end))))
@@ -32,7 +34,8 @@ importbin "blob.bin"
 
 (document
   (import
-    path: (quoted_string
+    (import_kind)
+    (quoted_string
       (string_start)
       (string_content)
       (string_end))))
@@ -45,7 +48,8 @@ import @'raw.jsonnet'
 
 (document
   (import
-    path: (quoted_string
+    (import_kind)
+    (quoted_string
       (string_start)
       (string_content)
       (string_end))))
@@ -62,7 +66,8 @@ local lib = import "lib.libsonnet"; lib
       (binding
         variable: (var_id)
         (import
-          path: (quoted_string
+          (import_kind)
+          (quoted_string
             (string_start)
             (string_content)
             (string_end)))))

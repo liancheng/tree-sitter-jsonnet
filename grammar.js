@@ -280,11 +280,10 @@ export default grammar({
       )
     ),
 
+    import_kind: _ => choice("import", "importstr", "importbin"),
+
     // Paths in imports must be single-/double-quoted string literals.
-    import: $ => seq(
-      field("kind", choice("import", "importstr", "importbin")),
-      field("path", $.quoted_string),
-    ),
+    import: $ => seq($.import_kind, $.quoted_string),
 
     function: $ => seq("function", $.params, $.expression),
 
