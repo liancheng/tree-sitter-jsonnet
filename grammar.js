@@ -8,19 +8,18 @@
 // @ts-check
 
 const PREC = {
-  highest: 13,
-  unary: 12,
-  multiplicative: 11,
-  additive: 10,
-  bit_shift: 9,
-  comparison: 8,
-  equality: 7,
-  bit_and: 6,
-  bit_xor: 5,
-  bit_or: 4,
-  and: 3,
-  or: 2,
-  object_member: 1,
+  highest: 12,
+  unary: 11,
+  multiplicative: 10,
+  additive: 9,
+  bit_shift: 8,
+  comparison: 7,
+  equality: 6,
+  bit_and: 5,
+  bit_xor: 4,
+  bit_or: 3,
+  and: 2,
+  or: 1,
 };
 
 export default grammar({
