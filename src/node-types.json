@@ -752,29 +752,6 @@
     }
   },
   {
-    "type": "member",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "assert",
-          "named": true
-        },
-        {
-          "type": "field",
-          "named": true
-        },
-        {
-          "type": "object_local",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "multiplicative",
     "named": true,
     "fields": {}
@@ -788,7 +765,15 @@
       "required": false,
       "types": [
         {
-          "type": "member",
+          "type": "assert",
+          "named": true
+        },
+        {
+          "type": "field",
+          "named": true
+        },
+        {
+          "type": "object_local",
           "named": true
         }
       ]

@@ -15,12 +15,11 @@ object (single field)
 
 (document
   (object
-    (member
-      (field
-        key: (field_key
-          (field_id))
-        visibility: (visibility)
-        value: (number)))))
+    (field
+      key: (field_key
+        (field_id))
+      visibility: (visibility)
+      value: (number))))
 
 ===
 object (multiple fields with trailing comma)
@@ -30,18 +29,16 @@ object (multiple fields with trailing comma)
 
 (document
   (object
-    (member
-      (field
-        key: (field_key
-          (field_id))
-        visibility: (visibility)
-        value: (number)))
-    (member
-      (field
-        key: (field_key
-          (field_id))
-        visibility: (visibility)
-        value: (number)))))
+    (field
+      key: (field_key
+        (field_id))
+      visibility: (visibility)
+      value: (number))
+    (field
+      key: (field_key
+        (field_id))
+      visibility: (visibility)
+      value: (number))))
 
 ===
 object (string fieldname)
@@ -51,15 +48,14 @@ object (string fieldname)
 
 (document
   (object
-    (member
-      (field
-        key: (field_key
-          (quoted_string
-            (string_start)
-            (string_content)
-            (string_end)))
-        visibility: (visibility)
-        value: (number)))))
+    (field
+      key: (field_key
+        (quoted_string
+          (string_start)
+          (string_content)
+          (string_end)))
+      visibility: (visibility)
+      value: (number))))
 
 ===
 object (computed fieldname)
@@ -69,12 +65,11 @@ object (computed fieldname)
 
 (document
   (object
-    (member
-      (field
-        key: (field_key
-          expression: (var_ref_id))
-        visibility: (visibility)
-        value: (number)))))
+    (field
+      key: (field_key
+        expression: (var_ref_id))
+      visibility: (visibility)
+      value: (number))))
 
 ===
 object (hidden fields)
@@ -84,18 +79,16 @@ object (hidden fields)
 
 (document
   (object
-    (member
-      (field
-        key: (field_key
-          (field_id))
-        visibility: (visibility)
-        value: (number)))
-    (member
-      (field
-        key: (field_key
-          (field_id))
-        visibility: (visibility)
-        value: (number)))))
+    (field
+      key: (field_key
+        (field_id))
+      visibility: (visibility)
+      value: (number))
+    (field
+      key: (field_key
+        (field_id))
+      visibility: (visibility)
+      value: (number))))
 
 ===
 object (merge field)
@@ -105,13 +98,12 @@ object (merge field)
 
 (document
   (object
-    (member
-      (field
-        key: (field_key
-          (field_id))
-        inherit: (inherit)
-        visibility: (visibility)
-        value: (number)))))
+    (field
+      key: (field_key
+        (field_id))
+      inherit: (inherit)
+      visibility: (visibility)
+      value: (number))))
 
 ===
 object (method sugar)
@@ -121,15 +113,14 @@ object (method sugar)
 
 (document
   (object
-    (member
-      (field
-        key: (field_key
-          (field_id))
-        parameters: (params
-          (param
-            (var_id)))
-        visibility: (visibility)
-        body: (var_ref_id)))))
+    (field
+      key: (field_key
+        (field_id))
+      parameters: (params
+        (param
+          (var_id)))
+      visibility: (visibility)
+      body: (var_ref_id))))
 
 ===
 object (local member)
@@ -139,17 +130,15 @@ object (local member)
 
 (document
   (object
-    (member
-      (object_local
-        (binding
-          variable: (var_id)
-          (number))))
-    (member
-      (field
-        key: (field_key
-          (field_id))
-        visibility: (visibility)
-        value: (var_ref_id)))))
+    (object_local
+      (binding
+        variable: (var_id)
+        (number)))
+    (field
+      key: (field_key
+        (field_id))
+      visibility: (visibility)
+      value: (var_ref_id))))
 
 ===
 object (assert member)
@@ -159,15 +148,13 @@ object (assert member)
 
 (document
   (object
-    (member
-      (assert
-        condition: (boolean)))
-    (member
-      (field
-        key: (field_key
-          (field_id))
-        visibility: (visibility)
-        value: (number)))))
+    (assert
+      condition: (boolean))
+    (field
+      key: (field_key
+        (field_id))
+      visibility: (visibility)
+      value: (number))))
 
 ===
 object comprehension
@@ -281,12 +268,11 @@ base { b: 2 }
   (object_apply
     target: (var_ref_id)
     object: (object
-      (member
-        (field
-          key: (field_key
-            (field_id))
-          visibility: (visibility)
-          value: (number))))))
+      (field
+        key: (field_key
+          (field_id))
+        visibility: (visibility)
+        value: (number)))))
 
 ===
 object composition (object literal target)
@@ -297,19 +283,17 @@ object composition (object literal target)
 (document
   (object_apply
     target: (object
-      (member
-        (field
-          key: (field_key
-            (field_id))
-          visibility: (visibility)
-          value: (number))))
+      (field
+        key: (field_key
+          (field_id))
+        visibility: (visibility)
+        value: (number)))
     object: (object
-      (member
-        (field
-          key: (field_key
-            (field_id))
-          visibility: (visibility)
-          value: (number))))))
+      (field
+        key: (field_key
+          (field_id))
+        visibility: (visibility)
+        value: (number)))))
 
 ===
 object composition (comprehension body)
@@ -338,16 +322,14 @@ a { b: 1 } { c: 2 }
     target: (object_apply
       target: (var_ref_id)
       object: (object
-        (member
-          (field
-            key: (field_key
-              (field_id))
-            visibility: (visibility)
-            value: (number)))))
-    object: (object
-      (member
         (field
           key: (field_key
             (field_id))
           visibility: (visibility)
-          value: (number))))))
+          value: (number))))
+    object: (object
+      (field
+        key: (field_key
+          (field_id))
+        visibility: (visibility)
+        value: (number)))))

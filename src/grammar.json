@@ -268,7 +268,7 @@
               "members": [
                 {
                   "type": "SYMBOL",
-                  "name": "member"
+                  "name": "_member"
                 },
                 {
                   "type": "REPEAT",
@@ -281,7 +281,7 @@
                       },
                       {
                         "type": "SYMBOL",
-                        "name": "member"
+                        "name": "_member"
                       }
                     ]
                   }
@@ -311,7 +311,7 @@
         }
       ]
     },
-    "member": {
+    "_member": {
       "type": "CHOICE",
       "members": [
         {
@@ -2448,7 +2448,7 @@
   ],
   "conflicts": [
     [
-      "member",
+      "_member",
       "object_comp"
     ],
     [

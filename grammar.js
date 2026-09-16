@@ -47,9 +47,9 @@ export default grammar({
   ],
 
   conflicts: $ => [
-    // NOTE: `object_local` (part of `member`) and `_computed_key` can appear in both `object` and `object_comp`, only a
-    // later `for` decides.
-    [$.member, $.object_comp],
+    // NOTE: `object_local` (part of `_member`) and `_computed_key` can appear in both `object` and `object_comp`, only
+    // a later `for` decides.
+    [$._member, $.object_comp],
     [$._computed_key, $.object_comp],
   ],
 
@@ -99,9 +99,9 @@ export default grammar({
 
     if_spec: $ => seq("if", $.expression),
 
-    object: $ => seq("{", optional(commaSep($.member)), "}"),
+    object: $ => seq("{", optional(commaSep($._member)), "}"),
 
-    member: $ => choice(
+    _member: $ => choice(
       $.object_local,
       $.assert,
       $.field,
