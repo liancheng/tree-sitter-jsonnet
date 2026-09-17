@@ -16,7 +16,7 @@ object (single field)
 (document
   (object
     (field
-      key: (field_key
+      key: (static_key
         (field_id))
       visibility: (visibility)
       value: (number))))
@@ -30,12 +30,12 @@ object (multiple fields with trailing comma)
 (document
   (object
     (field
-      key: (field_key
+      key: (static_key
         (field_id))
       visibility: (visibility)
       value: (number))
     (field
-      key: (field_key
+      key: (static_key
         (field_id))
       visibility: (visibility)
       value: (number))))
@@ -49,7 +49,7 @@ object (string fieldname)
 (document
   (object
     (field
-      key: (field_key
+      key: (static_key
         (quoted_string
           (string_start)
           (string_content)
@@ -66,7 +66,7 @@ object (computed fieldname)
 (document
   (object
     (field
-      key: (field_key
+      key: (computed_key
         expression: (var_ref_id))
       visibility: (visibility)
       value: (number))))
@@ -80,12 +80,12 @@ object (hidden fields)
 (document
   (object
     (field
-      key: (field_key
+      key: (static_key
         (field_id))
       visibility: (visibility)
       value: (number))
     (field
-      key: (field_key
+      key: (static_key
         (field_id))
       visibility: (visibility)
       value: (number))))
@@ -99,7 +99,7 @@ object (merge field)
 (document
   (object
     (field
-      key: (field_key
+      key: (static_key
         (field_id))
       inherit: (inherit)
       visibility: (visibility)
@@ -114,7 +114,7 @@ object (method sugar)
 (document
   (object
     (field
-      key: (field_key
+      key: (static_key
         (field_id))
       parameters: (params
         (param
@@ -135,7 +135,7 @@ object (local member)
         variable: (var_id)
         (number)))
     (field
-      key: (field_key
+      key: (static_key
         (field_id))
       visibility: (visibility)
       value: (var_ref_id))))
@@ -151,7 +151,7 @@ object (assert member)
     (assert
       condition: (boolean))
     (field
-      key: (field_key
+      key: (static_key
         (field_id))
       visibility: (visibility)
       value: (number))))
@@ -164,7 +164,8 @@ object comprehension
 
 (document
   (object_comp
-    key: (var_ref_id)
+    key: (computed_key
+      expression: (var_ref_id))
     value: (var_ref_id)
     (for_spec
       (var_id)
@@ -178,7 +179,8 @@ object comprehension (with if)
 
 (document
   (object_comp
-    key: (var_ref_id)
+    key: (computed_key
+      expression: (var_ref_id))
     value: (var_ref_id)
     (for_spec
       (var_id)
@@ -194,7 +196,8 @@ object comprehension (additive inherit)
 
 (document
   (object_comp
-    key: (var_ref_id)
+    key: (computed_key
+      expression: (var_ref_id))
     value: (var_ref_id)
     (for_spec
       (var_id)
@@ -212,7 +215,8 @@ object comprehension (leading local)
       (binding
         variable: (var_id)
         (number)))
-    key: (var_ref_id)
+    key: (computed_key
+      expression: (var_ref_id))
     value: (var_ref_id)
     (for_spec
       (var_id)
@@ -226,7 +230,8 @@ object comprehension (trailing local)
 
 (document
   (object_comp
-    key: (var_ref_id)
+    key: (computed_key
+      expression: (var_ref_id))
     value: (var_ref_id)
     (object_local
       (binding
@@ -248,7 +253,8 @@ object comprehension (locals before and after)
       (binding
         variable: (var_id)
         (number)))
-    key: (var_ref_id)
+    key: (computed_key
+      expression: (var_ref_id))
     value: (var_ref_id)
     (object_local
       (binding
@@ -269,7 +275,7 @@ base { b: 2 }
     target: (var_ref_id)
     object: (object
       (field
-        key: (field_key
+        key: (static_key
           (field_id))
         visibility: (visibility)
         value: (number)))))
@@ -284,13 +290,13 @@ object composition (object literal target)
   (object_apply
     target: (object
       (field
-        key: (field_key
+        key: (static_key
           (field_id))
         visibility: (visibility)
         value: (number)))
     object: (object
       (field
-        key: (field_key
+        key: (static_key
           (field_id))
         visibility: (visibility)
         value: (number)))))
@@ -305,7 +311,8 @@ x { [k]: v for k in ks }
   (object_apply
     target: (var_ref_id)
     object: (object_comp
-      key: (var_ref_id)
+      key: (computed_key
+        expression: (var_ref_id))
       value: (var_ref_id)
       (for_spec
         (var_id)
@@ -323,13 +330,13 @@ a { b: 1 } { c: 2 }
       target: (var_ref_id)
       object: (object
         (field
-          key: (field_key
+          key: (static_key
             (field_id))
           visibility: (visibility)
           value: (number))))
     object: (object
       (field
-        key: (field_key
+        key: (static_key
           (field_id))
         visibility: (visibility)
         value: (number)))))

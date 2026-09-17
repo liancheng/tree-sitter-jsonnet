@@ -42,8 +42,8 @@ export default grammar({
   conflicts: ($) => [
     // NOTE: `object_local` (part of `_member`) and `_computed_key` can appear in both `object` and `object_comp`, only
     // a later `for` decides.
-    [$._member, $.object_comp],
-    [$._computed_key, $.object_comp],
+    [$.object_comp, $._member],
+    [$.object_comp, $._field_key],
   ],
 
   rules: {
@@ -98,24 +98,24 @@ export default grammar({
     field: ($) =>
       choice(
         seq(
-          field("key", $.field_key),
+          field("key", $._field_key),
           field("inherit", optional($.inherit)),
           field("visibility", $.visibility),
           field("value", $.expression),
         ),
         seq(
-          field("key", $.field_key),
+          field("key", $._field_key),
           field("parameters", $.params),
           field("visibility", $.visibility),
           field("body", $.expression),
         ),
       ),
 
-    field_key: ($) => choice($._static_key, $._computed_key),
+    _field_key: ($) => choice($.static_key, $.computed_key),
 
-    _static_key: ($) => choice($.field_id, $.string),
+    static_key: ($) => choice($.field_id, $.string),
 
-    _computed_key: ($) => seq("[", field("expression", $.expression), "]"),
+    computed_key: ($) => seq("[", field("expression", $.expression), "]"),
 
     object_apply: ($) =>
       prec(
@@ -129,9 +129,7 @@ export default grammar({
       seq(
         "{",
         repeat(seq($.object_local, ",")),
-        "[",
-        field("key", $.expression),
-        "]",
+        field("key", $.computed_key),
         // NOTE: The Jsonnet language spec does not allow `+` here but the Google Jsonnet reference implementation does.
         optional(field("inherit", "+")),
         ":",

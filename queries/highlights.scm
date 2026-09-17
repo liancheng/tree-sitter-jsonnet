@@ -39,13 +39,13 @@
 ] @variable.builtin
 
 ; Object fields
-(field (field_key (field_id) @property))
-(field (field_key (string) @property))
+(field (static_key (field_id) @property))
+(field (static_key (string) @property))
 (object_local "local" @keyword)
 
 ; Method / function definition names
 (field
-  (field_key (field_id) @function.method)
+  (static_key (field_id) @function.method)
   (params))
 
 ; Bindings & parameters
