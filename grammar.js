@@ -25,7 +25,7 @@ const PREC = {
 export default grammar({
   name: "jsonnet",
 
-  externals: $ => [
+  externals: ($) => [
     $.text_block_start,
     $.text_block_blank_line,
     $.text_block_indent,
@@ -33,19 +33,13 @@ export default grammar({
     $.text_block_end,
   ],
 
-  extras: $ => [
-    /\s/,
-    $.comment,
-  ],
+  extras: ($) => [/\s/, $.comment],
 
-  word: $ => $._id,
+  word: ($) => $._id,
 
-  supertypes: $ => [
-    $.expression,
-    $.string
-  ],
+  supertypes: ($) => [$.expression, $.string],
 
-  conflicts: $ => [
+  conflicts: ($) => [
     // NOTE: `object_local` (part of `_member`) and `_computed_key` can appear in both `object` and `object_comp`, only
     // a later `for` decides.
     [$._member, $.object_comp],
@@ -53,127 +47,112 @@ export default grammar({
   ],
 
   rules: {
-    document: $ => $.expression,
+    document: ($) => $.expression,
 
-    expression: $ => choice(
-      $.array,
-      $.array_comp,
-      $.asserted_expr,
-      $.binary,
-      $.boolean,
-      $.call,
-      $.conditional,
-      $.dollar,
-      $.error,
-      $.field_access,
-      $.function,
-      $.import,
-      $.index,
-      $.local,
-      $.null,
-      $.number,
-      $.object,
-      $.object_apply,
-      $.object_comp,
-      $.parenthesized,
-      $.self,
-      $.super,
-      $.unary,
-      $.string,
-      $.var_ref_id,
-    ),
-
-    array: $ => seq("[", optional(commaSep($.expression)), "]"),
-
-    array_comp: $ => seq(
-      "[",
-      $.expression,
-      optional(","),
-      $.for_spec,
-      repeat(choice($.for_spec, $.if_spec)),
-      "]",
-    ),
-
-    for_spec: $ => seq("for", $.var_id, "in", $.expression),
-
-    if_spec: $ => seq("if", $.expression),
-
-    object: $ => seq("{", optional(commaSep($._member)), "}"),
-
-    _member: $ => choice(
-      $.object_local,
-      $.assert,
-      $.field,
-    ),
-
-    inherit: _ => "+",
-
-    visibility: _ => choice(":", "::", ":::"),
-
-    field: $ => choice(
-      seq(
-        field("key", $.field_key),
-        field("inherit", optional($.inherit)),
-        field("visibility", $.visibility),
-        field("value", $.expression)
+    expression: ($) =>
+      choice(
+        $.array,
+        $.array_comp,
+        $.asserted_expr,
+        $.binary,
+        $.boolean,
+        $.call,
+        $.conditional,
+        $.dollar,
+        $.error,
+        $.field_access,
+        $.function,
+        $.import,
+        $.index,
+        $.local,
+        $.null,
+        $.number,
+        $.object,
+        $.object_apply,
+        $.object_comp,
+        $.parenthesized,
+        $.self,
+        $.super,
+        $.unary,
+        $.string,
+        $.var_ref_id,
       ),
-      seq(
-        field("key", $.field_key),
-        field("parameters", $.params),
-        field("visibility", $.visibility),
-        field("body", $.expression)
+
+    array: ($) => seq("[", optional(commaSep($.expression)), "]"),
+
+    array_comp: ($) =>
+      seq("[", $.expression, optional(","), $.for_spec, repeat(choice($.for_spec, $.if_spec)), "]"),
+
+    for_spec: ($) => seq("for", $.var_id, "in", $.expression),
+
+    if_spec: ($) => seq("if", $.expression),
+
+    object: ($) => seq("{", optional(commaSep($._member)), "}"),
+
+    _member: ($) => choice($.object_local, $.assert, $.field),
+
+    inherit: () => "+",
+
+    visibility: () => choice(":", "::", ":::"),
+
+    field: ($) =>
+      choice(
+        seq(
+          field("key", $.field_key),
+          field("inherit", optional($.inherit)),
+          field("visibility", $.visibility),
+          field("value", $.expression),
+        ),
+        seq(
+          field("key", $.field_key),
+          field("parameters", $.params),
+          field("visibility", $.visibility),
+          field("body", $.expression),
+        ),
       ),
-    ),
 
-    field_key: $ => choice(
-      $._static_key,
-      $._computed_key,
-    ),
+    field_key: ($) => choice($._static_key, $._computed_key),
 
-    _static_key: $ => choice($.field_id, $.string),
+    _static_key: ($) => choice($.field_id, $.string),
 
-    _computed_key: $ => seq(
-      "[",
-      field("expression", $.expression),
-      "]"
-    ),
+    _computed_key: ($) => seq("[", field("expression", $.expression), "]"),
 
-    object_apply: $ => prec(
-      PREC.highest,
+    object_apply: ($) =>
+      prec(
+        PREC.highest,
+        seq(field("target", $.expression), field("object", choice($.object, $.object_comp))),
+      ),
+
+    object_local: ($) => seq("local", $.binding),
+
+    object_comp: ($) =>
       seq(
-        field("target", $.expression),
-        field("object", choice($.object, $.object_comp)),
-      )
-    ),
+        "{",
+        repeat(seq($.object_local, ",")),
+        "[",
+        field("key", $.expression),
+        "]",
+        // NOTE: The Jsonnet language spec does not allow `+` here but the Google Jsonnet reference implementation does.
+        optional(field("inherit", "+")),
+        ":",
+        field("value", $.expression),
+        repeat(seq(",", $.object_local)),
+        optional(","),
+        $.for_spec,
+        repeat(choice($.for_spec, $.if_spec)),
+        "}",
+      ),
 
-    object_local: $ => seq("local", $.binding),
+    asserted_expr: ($) => seq($.assert, ";", $.expression),
 
-    object_comp: $ => seq(
-      "{",
-      repeat(seq($.object_local, ",")),
-      "[", field("key", $.expression), "]",
-      // NOTE: The Jsonnet language spec does not allow `+` here but the Google Jsonnet reference implementation does.
-      optional(field("inherit", "+")),
-      ":",
-      field("value", $.expression),
-      repeat(seq(",", $.object_local)),
-      optional(","),
-      $.for_spec,
-      repeat(choice($.for_spec, $.if_spec)),
-      "}",
-    ),
+    assert: ($) =>
+      seq(
+        "assert",
+        field("condition", $.expression),
+        optional(seq(":", field("message", $.expression))),
+      ),
 
-    asserted_expr: $ => seq($.assert, ";", $.expression),
-
-    assert: $ => seq(
-      "assert",
-      field("condition", $.expression),
-      optional(
-        seq(":", field("message", $.expression))
-      )
-    ),
-
-    binary: $ => {
+    binary: ($) => {
       /** @type {[number, RuleOrLiteral][]} */
       const table = [
         [PREC.multiplicative, $.multiplicative],
@@ -196,113 +175,92 @@ export default grammar({
               field("left", $.expression),
               field("operator", operator),
               field("right", $.expression),
-            )
-          )
-        )
-      )
+            ),
+          ),
+        ),
+      );
     },
 
-    multiplicative: _ => choice("*", "/", "%"),
-    additive: _ => choice("+", "-"),
-    bit_shift: _ => choice("<<", ">>"),
-    comparison: _ => choice("<", "<=", ">", ">=", "in"),
-    equality: _ => choice("==", "!="),
-    bit_and: _ => "&",
-    bit_xor: _ => "^",
-    bit_or: _ => "|",
-    and: _ => "&&",
-    or: _ => "||",
+    multiplicative: () => choice("*", "/", "%"),
+    additive: () => choice("+", "-"),
+    bit_shift: () => choice("<<", ">>"),
+    comparison: () => choice("<", "<=", ">", ">=", "in"),
+    equality: () => choice("==", "!="),
+    bit_and: () => "&",
+    bit_xor: () => "^",
+    bit_or: () => "|",
+    and: () => "&&",
+    or: () => "||",
 
-    boolean: _ => choice("true", "false"),
+    boolean: () => choice("true", "false"),
 
-    call: $ => prec(
-      PREC.highest,
-      seq($.expression, $.arguments, optional("tailstrict"))
-    ),
+    call: ($) => prec(PREC.highest, seq($.expression, $.arguments, optional("tailstrict"))),
 
-    arguments: $ => seq("(", optional(commaSep($.argument)), ")"),
+    arguments: ($) => seq("(", optional(commaSep($.argument)), ")"),
 
-    argument: $ => seq(
-      optional(seq(field("name", $.param_ref_id), "=")),
-      $.expression
-    ),
+    argument: ($) => seq(optional(seq(field("name", $.param_ref_id), "=")), $.expression),
 
-    field_access: $ => prec(
-      PREC.highest,
+    field_access: ($) =>
+      prec(PREC.highest, seq(field("object", $.expression), ".", field("field", $.field_ref_id))),
+
+    index: ($) =>
+      prec(
+        PREC.highest,
+        seq(field("object", $.expression), "[", choice(field("index", $.expression), $.slice), "]"),
+      ),
+
+    slice: ($) =>
       seq(
-        field("object", $.expression),
-        ".",
-        field("field", $.field_ref_id),
-      )
-    ),
+        optional(field("start", $.expression)),
+        ":",
+        optional(field("end", $.expression)),
+        optional(seq(":", optional(field("step", $.expression)))),
+      ),
 
-    index: $ => prec(
-      PREC.highest,
-      seq(
-        field("object", $.expression),
-        "[",
-        choice(field("index", $.expression), $.slice,),
-        "]",
-      )
-    ),
+    unary: ($) =>
+      prec(PREC.unary, seq(field("operator", $.unary_operator), field("operand", $.expression))),
 
-    slice: $ => seq(
-      optional(field("start", $.expression)),
-      ":",
-      optional(field("end", $.expression)),
-      optional(seq(":", optional(field("step", $.expression)))),
-    ),
-
-    unary: $ => prec(
-      PREC.unary,
-      seq(
-        field("operator", $.unary_operator),
-        field("operand", $.expression),
-      )
-    ),
-
-    unary_operator: _ => choice("-", "+", "!", "~"),
+    unary_operator: () => choice("-", "+", "!", "~"),
 
     // `error expr` — the operand is an arbitrary expression; the prefix
     // extends as far right as possible (e.g. `error a + b` is `error (a + b)`).
-    error: $ => prec.right(seq("error", field("expression", $.expression))),
+    error: ($) => prec.right(seq("error", field("expression", $.expression))),
 
-    parenthesized: $ => seq("(", field("expression", $.expression), ")"),
+    parenthesized: ($) => seq("(", field("expression", $.expression), ")"),
 
-    conditional: $ => prec.right(
-      seq(
-        "if", field("condition", $.expression),
-        "then", field("consequence", $.expression),
-        optional(
-          seq("else", field("alternative", $.expression))
-        )
-      )
-    ),
+    conditional: ($) =>
+      prec.right(
+        seq(
+          "if",
+          field("condition", $.expression),
+          "then",
+          field("consequence", $.expression),
+          optional(seq("else", field("alternative", $.expression))),
+        ),
+      ),
 
-    import_kind: _ => choice("import", "importstr", "importbin"),
+    import_kind: () => choice("import", "importstr", "importbin"),
 
     // Paths in imports must be single-/double-quoted string literals.
-    import: $ => seq($.import_kind, $.quoted_string),
+    import: ($) => seq($.import_kind, $.quoted_string),
 
-    function: $ => seq("function", $.params, $.expression),
+    function: ($) => seq("function", $.params, $.expression),
 
-    params: $ => seq("(", optional(commaSep($.param)), ")"),
+    params: ($) => seq("(", optional(commaSep($.param)), ")"),
 
-    param: $ => seq(
-      $.var_id,
-      optional(seq("=", field("default", $.expression)))
-    ),
+    param: ($) => seq($.var_id, optional(seq("=", field("default", $.expression)))),
 
-    local: $ => seq("local", $.bindings, ";", $.expression),
+    local: ($) => seq("local", $.bindings, ";", $.expression),
 
-    bindings: $ => commaSepStrict($.binding),
+    bindings: ($) => commaSepStrict($.binding),
 
-    binding: $ => choice(
-      seq(field("variable", $.var_id), "=", $.expression),
-      seq(field("function", $.var_id), $.params, "=", $.expression),
-    ),
+    binding: ($) =>
+      choice(
+        seq(field("variable", $.var_id), "=", $.expression),
+        seq(field("function", $.var_id), $.params, "=", $.expression),
+      ),
 
-    number: _ => {
+    number: () => {
       const binary_literal = /0b[01]+/i;
       const octal_literal = /0o[0-7]+/i;
       const hexical_literal = /0x[0-9a-f]+/i;
@@ -314,72 +272,50 @@ export default grammar({
       const decimal_integer_literal = choice("0", seq(/[1-9]/, optional(decimal_digits)));
 
       const decimal_literal = choice(
-        seq(
-          decimal_integer_literal,
-          ".",
-          optional(decimal_digits),
-          optional(exponent_part),
-        ),
+        seq(decimal_integer_literal, ".", optional(decimal_digits), optional(exponent_part)),
         seq(decimal_integer_literal, exponent_part),
         decimal_integer_literal,
       );
 
-      return token(
-        choice(
-          decimal_literal,
-          hexical_literal,
-          binary_literal,
-          octal_literal,
-        )
-      )
+      return token(choice(decimal_literal, hexical_literal, binary_literal, octal_literal));
     },
 
-    string: $ => choice(
-      $.quoted_string,
-      $.text_block,
-    ),
+    string: ($) => choice($.quoted_string, $.text_block),
 
-    quoted_string: $ => choice(
-      quotedString($, '"', true),
-      quotedString($, "'", true),
-      quotedString($, '"', false),
-      quotedString($, "'", false),
-    ),
-
-    text_block: $ => seq(
-      seq($.text_block_start, token.immediate(/[ \t]*\n/)),
-      repeat($.text_block_blank_line),
-      seq($.text_block_indent, $.text_block_line_content),
-      repeat(
-        choice(
-          $.text_block_blank_line,
-          seq($.text_block_indent, $.text_block_line_content),
-        )
-      ),
-      $.text_block_end,
-    ),
-
-    dollar: _ => "$",
-    null: _ => "null",
-    self: _ => "self",
-    super: _ => "super",
-
-    field_id: $ => $._id,
-    field_ref_id: $ => $._id,
-    param_ref_id: $ => $._id,
-    var_id: $ => $._id,
-    var_ref_id: $ => $._id,
-
-    _id: _ => /[_a-zA-Z][_a-zA-Z0-9]*/,
-
-    comment: _ => token(
+    quoted_string: ($) =>
       choice(
-        /\/\/.*/,
-        /#.*/,
-        /\/\*[^*]*\*+(?:[^/*][^*]*\*+)*\//,
-      )
-    ),
-  }
+        quotedString($, '"', true),
+        quotedString($, "'", true),
+        quotedString($, '"', false),
+        quotedString($, "'", false),
+      ),
+
+    text_block: ($) =>
+      seq(
+        seq($.text_block_start, token.immediate(/[ \t]*\n/)),
+        repeat($.text_block_blank_line),
+        seq($.text_block_indent, $.text_block_line_content),
+        repeat(
+          choice($.text_block_blank_line, seq($.text_block_indent, $.text_block_line_content)),
+        ),
+        $.text_block_end,
+      ),
+
+    dollar: () => "$",
+    null: () => "null",
+    self: () => "self",
+    super: () => "super",
+
+    field_id: ($) => $._id,
+    field_ref_id: ($) => $._id,
+    param_ref_id: ($) => $._id,
+    var_id: ($) => $._id,
+    var_ref_id: ($) => $._id,
+
+    _id: () => /[_a-zA-Z][_a-zA-Z0-9]*/,
+
+    comment: () => token(choice(/\/\/.*/, /#.*/, /\/\*[^*]*\*+(?:[^/*][^*]*\*+)*\//)),
+  },
 });
 
 /** @param {Rule} rule */
@@ -398,7 +334,7 @@ function commaSepStrict(rule) {
  * @param {boolean} verbatim
  */
 function quotedString($, quote, verbatim) {
-  const start = verbatim ? '@' + quote : quote;
+  const start = verbatim ? "@" + quote : quote;
   const end = token.immediate(quote);
 
   let escape, content;
@@ -425,10 +361,7 @@ function quotedString($, quote, verbatim) {
 
   return seq(
     alias(start, $.string_start),
-    repeat(choice(
-      alias(escape, $.escape_sequence),
-      alias(content, $.string_content),
-    )),
+    repeat(choice(alias(escape, $.escape_sequence), alias(content, $.string_content))),
     alias(end, $.string_end),
   );
 }
