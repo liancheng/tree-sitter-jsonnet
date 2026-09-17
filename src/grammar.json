@@ -543,8 +543,12 @@
             "type": "SEQ",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "object_local"
+                "type": "FIELD",
+                "name": "object_local",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "object_local"
+                }
               },
               {
                 "type": "STRING",
@@ -560,6 +564,22 @@
             "type": "SYMBOL",
             "name": "computed_key"
           }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "parameters",
+              "content": {
+                "type": "SYMBOL",
+                "name": "params"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "CHOICE",
@@ -583,7 +603,7 @@
         },
         {
           "type": "FIELD",
-          "name": "value",
+          "name": "value_or_body",
           "content": {
             "type": "SYMBOL",
             "name": "expression"
@@ -599,8 +619,12 @@
                 "value": ","
               },
               {
-                "type": "SYMBOL",
-                "name": "object_local"
+                "type": "FIELD",
+                "name": "object_local",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "object_local"
+                }
               }
             ]
           }
@@ -618,23 +642,31 @@
           ]
         },
         {
-          "type": "SYMBOL",
-          "name": "for_spec"
+          "type": "FIELD",
+          "name": "for_spec",
+          "content": {
+            "type": "SYMBOL",
+            "name": "for_spec"
+          }
         },
         {
           "type": "REPEAT",
           "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "for_spec"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "if_spec"
-              }
-            ]
+            "type": "FIELD",
+            "name": "extra_specs",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "for_spec"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "if_spec"
+                }
+              ]
+            }
           }
         },
         {

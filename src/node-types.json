@@ -803,6 +803,30 @@
     "type": "object_comp",
     "named": true,
     "fields": {
+      "extra_specs": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "for_spec",
+            "named": true
+          },
+          {
+            "type": "if_spec",
+            "named": true
+          }
+        ]
+      },
+      "for_spec": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "for_spec",
+            "named": true
+          }
+        ]
+      },
       "inherited": {
         "multiple": false,
         "required": false,
@@ -823,7 +847,27 @@
           }
         ]
       },
-      "value": {
+      "object_local": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "object_local",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "params",
+            "named": true
+          }
+        ]
+      },
+      "value_or_body": {
         "multiple": false,
         "required": true,
         "types": [
@@ -833,24 +877,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "for_spec",
-          "named": true
-        },
-        {
-          "type": "if_spec",
-          "named": true
-        },
-        {
-          "type": "object_local",
-          "named": true
-        }
-      ]
     }
   },
   {

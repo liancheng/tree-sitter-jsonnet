@@ -128,16 +128,19 @@ export default grammar({
     object_comp: ($) =>
       seq(
         "{",
-        repeat(seq($.object_local, ",")),
+        repeat(seq(field("object_local", $.object_local), ",")),
+        // An object comprehension can only have a single field with a computed key.
         field("key", $.computed_key),
-        // NOTE: The Jsonnet language spec does not allow `+` here but the Google Jsonnet reference implementation does.
+        optional(field("parameters", $.params)),
+        // The Jsonnet language spec does not allow `+` here but the Google Jsonnet reference implementation does.
         optional(field("inherited", "+")),
+        // An object comprehension cannot have hidden fields.
         ":",
-        field("value", $.expression),
-        repeat(seq(",", $.object_local)),
+        field("value_or_body", $.expression),
+        repeat(seq(",", field("object_local", $.object_local))),
         optional(","),
-        $.for_spec,
-        repeat(choice($.for_spec, $.if_spec)),
+        field("for_spec", $.for_spec),
+        repeat(field("extra_specs", choice($.for_spec, $.if_spec))),
         "}",
       ),
 

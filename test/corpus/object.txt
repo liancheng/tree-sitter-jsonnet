@@ -166,8 +166,8 @@ object comprehension
   (object_comp
     key: (computed_key
       expression: (var_ref_id))
-    value: (var_ref_id)
-    (for_spec
+    value_or_body: (var_ref_id)
+    for_spec: (for_spec
       (var_id)
       (var_ref_id))))
 
@@ -181,11 +181,11 @@ object comprehension (with if)
   (object_comp
     key: (computed_key
       expression: (var_ref_id))
-    value: (var_ref_id)
-    (for_spec
+    value_or_body: (var_ref_id)
+    for_spec: (for_spec
       (var_id)
       (var_ref_id))
-    (if_spec
+    extra_specs: (if_spec
       (var_ref_id))))
 
 ===
@@ -198,8 +198,8 @@ object comprehension (additive inherit)
   (object_comp
     key: (computed_key
       expression: (var_ref_id))
-    value: (var_ref_id)
-    (for_spec
+    value_or_body: (var_ref_id)
+    for_spec: (for_spec
       (var_id)
       (var_ref_id))))
 
@@ -211,14 +211,14 @@ object comprehension (leading local)
 
 (document
   (object_comp
-    (object_local
+    object_local: (object_local
       (binding
         variable: (var_id)
         (number)))
     key: (computed_key
       expression: (var_ref_id))
-    value: (var_ref_id)
-    (for_spec
+    value_or_body: (var_ref_id)
+    for_spec: (for_spec
       (var_id)
       (var_ref_id))))
 
@@ -232,12 +232,12 @@ object comprehension (trailing local)
   (object_comp
     key: (computed_key
       expression: (var_ref_id))
-    value: (var_ref_id)
-    (object_local
+    value_or_body: (var_ref_id)
+    object_local: (object_local
       (binding
         variable: (var_id)
         (number)))
-    (for_spec
+    for_spec: (for_spec
       (var_id)
       (var_ref_id))))
 
@@ -249,18 +249,34 @@ object comprehension (locals before and after)
 
 (document
   (object_comp
-    (object_local
+    object_local: (object_local
       (binding
         variable: (var_id)
         (number)))
     key: (computed_key
       expression: (var_ref_id))
-    value: (var_ref_id)
-    (object_local
+    value_or_body: (var_ref_id)
+    object_local: (object_local
       (binding
         variable: (var_id)
         (number)))
-    (for_spec
+    for_spec: (for_spec
+      (var_id)
+      (var_ref_id))))
+
+===
+object comprehension (function field)
+===
+{ [s](): null for s in ss }
+---
+
+(document
+  (object_comp
+    key: (computed_key
+      expression: (var_ref_id))
+    parameters: (params)
+    value_or_body: (null)
+    for_spec: (for_spec
       (var_id)
       (var_ref_id))))
 
@@ -313,8 +329,8 @@ x { [k]: v for k in ks }
     object: (object_comp
       key: (computed_key
         expression: (var_ref_id))
-      value: (var_ref_id)
-      (for_spec
+      value_or_body: (var_ref_id)
+      for_spec: (for_spec
         (var_id)
         (var_ref_id)))))
 
