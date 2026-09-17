@@ -101,7 +101,7 @@ object (merge field)
     (field
       key: (static_key
         (field_id))
-      inherit: (inherit)
+      inherited: (inherited)
       visibility: (visibility)
       value: (number))))
 

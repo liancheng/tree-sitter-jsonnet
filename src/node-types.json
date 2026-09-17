@@ -512,12 +512,12 @@
           }
         ]
       },
-      "inherit": {
+      "inherited": {
         "multiple": false,
         "required": false,
         "types": [
           {
-            "type": "inherit",
+            "type": "inherited",
             "named": true
           }
         ]
@@ -718,7 +718,7 @@
     }
   },
   {
-    "type": "inherit",
+    "type": "inherited",
     "named": true,
     "fields": {}
   },
@@ -803,7 +803,7 @@
     "type": "object_comp",
     "named": true,
     "fields": {
-      "inherit": {
+      "inherited": {
         "multiple": false,
         "required": false,
         "types": [

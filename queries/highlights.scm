@@ -79,7 +79,7 @@
 ] @operator
 
 (field (visibility) @operator)
-(field (inherit) @operator)
+(field (inherited) @operator)
 
 ; Punctuation
 ["{" "}"] @punctuation.bracket

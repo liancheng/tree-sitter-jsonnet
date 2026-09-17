@@ -328,7 +328,7 @@
         }
       ]
     },
-    "inherit": {
+    "inherited": {
       "type": "STRING",
       "value": "+"
     },
@@ -365,13 +365,13 @@
             },
             {
               "type": "FIELD",
-              "name": "inherit",
+              "name": "inherited",
               "content": {
                 "type": "CHOICE",
                 "members": [
                   {
                     "type": "SYMBOL",
-                    "name": "inherit"
+                    "name": "inherited"
                   },
                   {
                     "type": "BLANK"
@@ -566,7 +566,7 @@
           "members": [
             {
               "type": "FIELD",
-              "name": "inherit",
+              "name": "inherited",
               "content": {
                 "type": "STRING",
                 "value": "+"

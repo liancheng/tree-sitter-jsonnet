@@ -91,7 +91,7 @@ export default grammar({
 
     _member: ($) => choice($.object_local, $.assert, $.field),
 
-    inherit: () => "+",
+    inherited: () => "+",
 
     visibility: () => choice(":", "::", ":::"),
 
@@ -99,7 +99,7 @@ export default grammar({
       choice(
         seq(
           field("key", $._field_key),
-          field("inherit", optional($.inherit)),
+          field("inherited", optional($.inherited)),
           field("visibility", $.visibility),
           field("value", $.expression),
         ),
@@ -131,7 +131,7 @@ export default grammar({
         repeat(seq($.object_local, ",")),
         field("key", $.computed_key),
         // NOTE: The Jsonnet language spec does not allow `+` here but the Google Jsonnet reference implementation does.
-        optional(field("inherit", "+")),
+        optional(field("inherited", "+")),
         ":",
         field("value", $.expression),
         repeat(seq(",", $.object_local)),
