@@ -176,6 +176,9 @@ inline static bool scan_text_block_end(void *payload, TSLexer *lexer)
 {
     CharArray *indent = (CharArray *)payload;
 
+    // Skips whitespaces before the ending fence.
+    skip_while_any(lexer, " \t");
+
     if (!consume_all(lexer, "|||"))
         return false;
 
