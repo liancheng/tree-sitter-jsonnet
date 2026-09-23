@@ -1,7 +1,11 @@
 #!/bin/sh
 
-cargo bin tree-sitter generate &&
-	cargo bin tree-sitter test --show-fields &&
-	uv run --frozen --reinstall-package tree-sitter-jsonnet pytest &&
-	cargo test &&
-	cargo bin tree-sitter fuzz -r --iterations 1000 --edits 5
+(
+	cd $(dirname "$0") || exit
+
+	cargo bin tree-sitter generate &&
+		cargo bin tree-sitter test --show-fields &&
+		uv run --frozen --reinstall-package tree-sitter-jsonnet pytest &&
+		cargo test &&
+		cargo bin tree-sitter fuzz -r --iterations 1000 --edits 5
+)
